@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimary">#327AE9</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#ff589ff9</color>
+    <color name="colorProgressBg">#91A7CE</color>
+    <color name="black_232323">#232323</color>
+
+    <color name="hint">#A5A5A5</color>
+
+    <color name="translucent_dark">#80000000</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="titleText">#4789EE</color>
+    <color name="blue_366DCA">#366DCA</color>
+    <color name="gray_B5">#B5B5B5</color>
+    <color name="white_eee">#eee</color>
+
+    <color name="gray868686">#868686</color>
+    <color name="blue169bd5">#169bd5</color>
+    <color name="blue_translucent">#80169bd5</color>
+    <color name="blue0071BD">#0071BD</color>
+    <color name="blue0000FE">#0000FE</color>
+    <color name="black4e4e4e">#4e4e4e</color>
+    <color name="purple7E2E8D">#7E2E8D</color>
+    <color name="redC26685">#C26685</color>
+    <color name="redFE0000">#FE0000</color>
+    <color name="yellowFFFF00">#FFFF00</color>
+    <color name="yellowEAB11D">#EAB11D</color>
+    <color name="brownD95218">#D95218</color>
+    <color name="green01FD01">#01FD01</color>
+</resources>

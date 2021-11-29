@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <paths>
+        <!-- 代表设备的根目录 new File("/") -->
+        <root-path
+                name="root"
+                path="" />
+
+        <!-- 代表 context.getCacheDir() -->
+        <cache-path
+                name="cache"
+                path="" />
+    </paths>
+</resources>

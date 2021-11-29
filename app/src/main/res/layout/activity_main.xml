@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:background="@color/white_eee"
+    tools:context=".MainActivity">
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <TableRow>
+            <TextView
+                style="@style/textStyle_l"
+                android:text="@string/target_training_duration" />
+            <TextView
+                android:id="@+id/tvTargetTrainingDuration"
+                style="@style/textStyle_v"
+                android:text="--m" />
+            <TextView
+                style="@style/textStyle_l"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                android:text="@string/training_duration" />
+            <TextView
+                android:id="@+id/tvTrainingDuration"
+                style="@style/textStyle_v"
+                android:text="-m-s" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                style="@style/textStyle_l"
+                android:text="@string/target_training_num" />
+            <TextView
+                android:id="@+id/tvTargetTrainingNum"
+                style="@style/textStyle_v"
+                android:text="--次" />
+            <TextView
+                style="@style/textStyle_l"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                android:text="@string/target_joint_angle" />
+            <TextView
+                android:id="@+id/tvTargetJointAngle"
+                style="@style/textStyle_v"
+                android:text="--°" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                style="@style/textStyle_l"
+                android:text="@string/current_training_num" />
+            <TextView
+                android:id="@+id/tvCurrentTrainingNum"
+                style="@style/textStyle_v"
+                android:text="--次" />
+            <TextView
+                style="@style/textStyle_l"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                android:text="@string/complete_training_num" />
+            <TextView
+                android:id="@+id/tvCompleteTrainingNum"
+                style="@style/textStyle_v"
+                android:text="--次" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                style="@style/textStyle_l"
+                android:text="@string/joint_angle" />
+            <TextView
+                android:id="@+id/tvJointAngle"
+                style="@style/textStyle_v"
+                android:text="--°" />
+            <TextView
+                style="@style/textStyle_l"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                android:text="@string/joint_angle_velocity" />
+            <TextView
+                android:id="@+id/tvJointAngleVelocity"
+                style="@style/textStyle_v"
+                android:text="--°/s" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                style="@style/textStyle_l"
+                android:text="@string/lateral_femoral_muscle_contraction_strength" />
+            <TextView
+                android:id="@+id/tvLateralFemoralMuscleContractionStrength"
+                style="@style/textStyle_v"
+                android:text="--" />
+            <TextView
+                style="@style/textStyle_l"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                android:text="@string/medial_femoral_muscle_contraction_strength" />
+            <TextView
+                android:id="@+id/tvMedialFemoralMuscleContractionStrength"
+                style="@style/textStyle_v"
+                android:text="--" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                style="@style/textStyle_l"
+                android:text="@string/biceps_femoris_contraction_strength" />
+            <TextView
+                android:id="@+id/tvBicepsFemoralContractionStrength"
+                style="@style/textStyle_v"
+                android:text="--" />
+            <TextView
+                style="@style/textStyle_l"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                android:text="@string/semitendinosus_femoris_contraction_strength" />
+            <TextView
+                android:id="@+id/tvSemitendinosusFemoralContractionStrength"
+                style="@style/textStyle_v"
+                android:text="--" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                style="@style/textStyle_l"
+                android:text="@string/anterior_tibial_tendon_contraction_strength" />
+            <TextView
+                android:id="@+id/tvAnteriorTibialTendonContractionStrength"
+                style="@style/textStyle_v"
+                android:text="--" />
+            <TextView
+                style="@style/textStyle_l"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                android:text="@string/peroneal_muscle_contraction_strength" />
+            <TextView
+                android:id="@+id/tvPeronealMuscleContractionStrength"
+                style="@style/textStyle_v"
+                android:text="--" />
+        </TableRow>
+    </TableLayout>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tableLayout"/>
+
+    <com.chwishay.orthrecnursing.views.ExpandableEditText
+        android:id="@+id/eet"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="10dp"
+        app:eet_center_hint="@string/curr_exercise_num_l"
+        app:eet_center_textSize="12sp"
+        app:eet_pre_text="abc"
+        app:eet_pre_textSize="12sp"
+        app:eet_suf_text="xyz"
+        app:eet_suf_textStyle="bold_italic"
+        app:eet_suf_textSize="17sp"
+        app:eet_suf_textColor="@color/teal_200"
+        app:eet_center_textStyle="bold"
+        app:eet_center_textColor="@color/colorPrimary"
+        app:eet_pre_to_center_spacing="10dp"
+        app:eet_suf_to_center_spacing="10dp"
+        app:eet_isCenterEditable="true"
+        app:eet_center_inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chart"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tvLog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/translucent_dark"
+        android:text="日志"
+        android:visibility="gone"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

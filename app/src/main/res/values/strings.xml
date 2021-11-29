@@ -1,0 +1,110 @@
+<resources>
+    <string name="app_name">骨科延续性康复护理</string>
+
+    <string name="device_list">设备列表</string>
+    <string name="start_scan">开始扫描</string>
+    <string name="rssi_unit">dBm</string>
+    <string name="stop_scan">停止扫描</string>
+    <string name="search_ongoing">正在搜索...</string>
+    <string name="connect_failed">连接失败!</string>
+    <string name="connect_success">连接成功</string>
+    <string name="disconnect">断开连接!</string>
+    <string name="connect_ongoing">正在连接...</string>
+    <string name="bind_ongoing">正在绑定...</string>
+
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="normal">正常</string>
+    <string name="abnormal">异常</string>
+
+    <string name="data_report">数据报告</string>
+    <string name="close">关闭</string>
+
+    <!--  实时状态  -->
+    <string name="curr_knee_joint_activity_angle_l">当前膝关节活动度</string>
+    <string name="curr_knee_joint_angular_velocity_l">当前膝关节角速度</string>
+    <string name="curr_exercise_num_l">当前运动次数</string>
+    <string name="completely_finish_exercise_num_l">完整完成运动次数</string>
+    <string name="medial_thigh_muscle_normal_contraction_l">大腿股内侧肌正常收缩</string>
+    <string name="lateral_thigh_muscle_normal_contraction_l">大腿股外侧肌正常收缩</string>
+    <string name="thigh_biceps_normal_contraction_l">大腿股二头肌正常收缩</string>
+    <string name="semitendinosus_femoris_normal_contraction_l">大腿股半腱肌正常收缩</string>
+    <string name="calf_tibialis_anterior_muscle_normal_contraction_l">小腿胫前肌正常收缩</string>
+    <string name="calf_peroneus_normal_contraction_l">小腿腓长肌正常收缩</string>
+    
+    <string name="target_training_duration">目标训练时长</string>
+    <string name="training_duration">训练时长</string>
+    <string name="target_training_num">目标训练次数</string>
+    <string name="target_joint_angle">目标关节角度</string>
+    <string name="current_training_num">当前运动次数</string>
+    <string name="complete_training_num">完整运动次数</string>
+    <string name="joint_angle">关节角度</string>
+    <string name="joint_angle_velocity">关节角速度</string>
+    <string name="lateral_femoral_muscle_contraction_strength">股外侧肌收缩强度</string>
+    <string name="medial_femoral_muscle_contraction_strength">股内侧肌收缩强度</string>
+    <string name="biceps_femoris_contraction_strength">股二头肌收缩强度</string>
+    <string name="semitendinosus_femoris_contraction_strength">股半腱肌收缩强度</string>
+    <string name="anterior_tibial_tendon_contraction_strength">胫前肌收缩强度</string>
+    <string name="peroneal_muscle_contraction_strength">腓长肌收缩强度</string>
+
+    <!--  设置  -->
+    <string name="setting">设置</string>
+    <string name="everyday_training_duration">每天训练时长</string>
+    <string name="everyday_training_group">每天训练组数</string>
+    <string name="group_training_num">每组训练次数</string>
+    <string name="target_angle">目标角度</string>
+    <string name="target_angle_velocity">目标角速度</string>
+    <string name="lateral_femoral_muscle_if_work">股外侧肌是否要求出力</string>
+    <string name="medial_femoral_muscle_if_work">股内侧肌是否要求出力</string>
+    <string name="biceps_femoris_if_work">股二头肌是否要求出力</string>
+    <string name="semitendinosus_femoris_if_work">股半腱肌是否要求出力</string>
+    <string name="anterior_tibial_tendon_if_work">胫前肌否要求出力</string>
+    <string name="peroneal_muscle_if_work">腓长肌否要求出力</string>
+    <string name="confirm">确定</string>
+
+    <string name="joint_angle_curve">关节角度曲线显示</string>
+
+    <string name="curr_knee_joint_activity_angle_v">%d°</string>
+    <string name="curr_knee_joint_angular_velocity_v">%d°/s</string>
+    <string name="curr_exercise_num_v">%d次</string>
+    <string name="completely_finish_exercise_num_v">%d次</string>
+    <string name="medial_thigh_muscle_normal_contraction_v">%d</string>
+    <string name="lateral_thigh_muscle_normal_contraction_v">%d</string>
+    <string name="thigh_biceps_normal_contraction_v">%d</string>
+    <string name="semitendinosus_femoris_normal_contraction_v">%d</string>
+    <string name="calf_tibialis_anterior_muscle_normal_contraction_v">%d</string>
+    <string name="calf_peroneus_normal_contraction_v">%d</string>
+
+    <!--  评价报告  -->
+    <string name="knee_joint_activity_angle">膝关节活动度:%d°(设定目标:%d°)</string>
+    <string name="knee_joint_angular_velocity">膝关节角速度:%d°/s(设定目标:%d°/s)</string>
+    <string name="exercise_num">运动次数:%d次(设定目标:%d次)</string>
+    <string name="complete_exercise_num">完整运动次数:%d次</string>
+    <string name="medial_thigh_muscle_contraction_state">大腿股内侧肌收缩状况:%s</string>
+    <string name="lateral_thigh_muscle_contraction_state">大腿股外侧肌收缩状况:%s</string>
+    <string name="thigh_biceps_contraction_state">大腿股二头肌收缩状况:%s</string>
+    <string name="semitendinosus_femoris_contraction_state">大腿股半腱肌收缩状况:%s</string>
+    <string name="calf_tibialis_anterior_muscle_contraction_state">小腿胫前肌收缩状况:%s</string>
+    <string name="calf_peroneus_contraction_state">小腿腓长肌收缩状况:%s</string>
+    <string name="recovery_exercise_completion_degree">康复运动完成度:%d%</string>
+
+    <string name="actually_training_num">实际训练次数</string>
+    <string name="effective_training_num">有效训练次数</string>
+    <string name="actually_training_duration">实际训练时长</string>
+    <string name="setting_joint_active_range">设定关节活动范围</string>
+    <string name="actually_joint_active_range">实际关节活动范围</string>
+    <string name="setting_joint_angle_velocity">设定关节角速度</string>
+    <string name="actually_joint_angle_velocity">实际关节角速度</string>
+    <string name="average_strength_of_lateral_thigh">股外侧肌平均出力</string>
+    <string name="average_strength_of_medial_femoris">股内侧肌平均出力</string>
+    <string name="average_strength_of_biceps_femoris">股谷二头肌平均出力</string>
+    <string name="average_strength_of_semitendinosus_femoris">股半腱肌平均出力</string>
+    <string name="average_strength_of_tibialis_anteriormuscle">胫前肌平均出力</string>
+    <string name="average_strength_of_peroneus_longus">腓长肌平均出力</string>
+
+    <!--  提示  -->
+    <string name="knee_joint_out_of_range">膝关节超出限制范围提示</string>
+    <string name="knee_joint_too_fast_or_too_low">膝关节运动过快或过慢提示</string>
+    <string name="muscle_abnormal_force">肌肉非正常发力提示</string>
+    <string name="action_up_to_standard">动作达标提示</string>
+</resources>

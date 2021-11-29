@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/fillet_white_bg"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/llMain"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:orientation="vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:text="@string/data_report"
+            android:textColor="@color/black_232323"
+            android:textSize="16sp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/shape_dot_line"
+            android:layerType="software" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+            <TableRow>
+                <TextView
+                    style="@style/textStyle_l"
+                    android:text="@string/target_training_duration" />
+                <TextView
+                    android:id="@+id/tvTargetTrainingDuration"
+                    style="@style/textStyle_v"
+                    android:text="--m" />
+                <TextView
+                    style="@style/textStyle_l"
+                    android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                    android:text="@string/actually_training_duration" />
+                <TextView
+                    android:id="@+id/tvActuallyTrainingDuration"
+                    style="@style/textStyle_v"
+                    android:text="-m-s" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    style="@style/textStyle_l"
+                    android:text="@string/target_training_num" />
+                <TextView
+                    android:id="@+id/tvTargetTrainingNum"
+                    style="@style/textStyle_v"
+                    android:text="--次" />
+                <TextView
+                    style="@style/textStyle_l"
+                    android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                    android:text="@string/actually_training_num" />
+                <TextView
+                    android:id="@+id/tvActuallyTrainingNum"
+                    style="@style/textStyle_v"
+                    android:text="--次" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    style="@style/textStyle_l"
+                    android:text="@string/setting_joint_active_range"
+                    android:visibility="invisible"/>
+                <TextView
+                    style="@style/textStyle_v"
+                    android:text="--°"
+                    android:visibility="invisible"/>
+                <TextView
+                    style="@style/textStyle_l"
+                    android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                    android:text="@string/effective_training_num" />
+                <TextView
+                    android:id="@+id/tvEffectiveTrainingNum"
+                    style="@style/textStyle_v"
+                    android:text="--次" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    style="@style/textStyle_l"
+                    android:text="@string/setting_joint_active_range" />
+                <TextView
+                    android:id="@+id/tvSettingJointActiveRange"
+                    style="@style/textStyle_v"
+                    android:text="--°" />
+                <TextView
+                    style="@style/textStyle_l"
+                    android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                    android:text="@string/actually_joint_active_range" />
+                <TextView
+                    android:id="@+id/tvActuallyJointActiveRange"
+                    style="@style/textStyle_v"
+                    android:text="--°" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    style="@style/textStyle_l"
+                    android:text="@string/setting_joint_angle_velocity" />
+                <TextView
+                    android:id="@+id/tvSettingJointAngleVelocity"
+                    style="@style/textStyle_v"
+                    android:text="--°/s" />
+                <TextView
+                    style="@style/textStyle_l"
+                    android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                    android:text="@string/actually_joint_angle_velocity" />
+                <TextView
+                    android:id="@+id/tvActuallyJointAngleVelocity"
+                    style="@style/textStyle_v"
+                    android:text="--°/s" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    style="@style/textStyle_l"
+                    android:text="@string/average_strength_of_lateral_thigh" />
+                <TextView
+                    android:id="@+id/tvAverageStrengthOfLateralThigh"
+                    style="@style/textStyle_v"
+                    android:text="--" />
+                <TextView
+                    style="@style/textStyle_l"
+                    android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                    android:text="@string/average_strength_of_medial_femoris" />
+                <TextView
+                    android:id="@+id/tvAverageStrengthOfMedialFemoris"
+                    style="@style/textStyle_v"
+                    android:text="--" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    style="@style/textStyle_l"
+                    android:text="@string/average_strength_of_biceps_femoris" />
+                <TextView
+                    android:id="@+id/tvAverageStrengthOfBicepsFemoris"
+                    style="@style/textStyle_v"
+                    android:text="--" />
+                <TextView
+                    style="@style/textStyle_l"
+                    android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                    android:text="@string/average_strength_of_semitendinosus_femoris" />
+                <TextView
+                    android:id="@+id/tvAverageStrengthOfSemitendinosusFemoris"
+                    style="@style/textStyle_v"
+                    android:text="--" />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    style="@style/textStyle_l"
+                    android:text="@string/average_strength_of_tibialis_anteriormuscle" />
+                <TextView
+                    android:id="@+id/tvAverageStrengthOfTibialisAnteriormuscle"
+                    style="@style/textStyle_v"
+                    android:text="--" />
+                <TextView
+                    style="@style/textStyle_l"
+                    android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                    android:text="@string/average_strength_of_peroneus_longus" />
+                <TextView
+                    android:id="@+id/tvAverageStrengthOfPeroneusLongus"
+                    style="@style/textStyle_v"
+                    android:text="--" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvClose"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/close"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:background="@color/colorAccent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llMain" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
