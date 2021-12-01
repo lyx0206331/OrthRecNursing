@@ -78,7 +78,7 @@ object BluetoothServer {
 
     private var index = 0
 
-    private val cacheDataArray = ByteArray(19)
+    private val cacheDataArray = ByteArray(22)
 
     //帧头帧尾
     var frameHead: ByteArray? = null
@@ -514,7 +514,7 @@ object BluetoothServer {
                                             dataReceiveSubject.onNext(fd)
                                         }
                                     } else {
-                                        writeLog("数据校验不通过")
+                                        writeLog("校验失败:${cmd.contentToString().also { LOG_TAG.logE(it) }}", LOG_ERROR)
                                     }
                                     cacheDataState = STATE_IDLE
                                 }
@@ -582,7 +582,7 @@ object BluetoothServer {
             }
             outputStream?.write(data)
 //            outputStream?.flush()
-            writeLog("写入数据:${data.formatHexString(" ")}")
+            writeLog("写入数据:${data.formatHexString(" ")?.also { "写数据".logE(it) }}", LOG_WARN)
             return true
         } catch (ex: Exception) {
             writeLog("写入失败:${data.formatHexString(" ")}", LOG_ERROR)

@@ -119,29 +119,29 @@ class MainActivity : BaseActivity() {
         DispatchUtil.onResultObservable().observeOn(AndroidSchedulers.mainThread()).subscribe() {
             if (DispatchUtil.isTimerStart) {
 //                "BYTES_VALUE".logE("${it}")
-                lineChart.addEntry(it)
-                tvTargetTrainingDuration.text =
-                    "${it.targetTrainingDuration}min"
-                tvTargetTrainingNum.text = "${it.targetTrainingNum}次"
-                tvTargetJointAngle.text = "${it.targetJointAngle}°"
-                tvCurrentTrainingNum.text = "${it.currentTrainingNum}次"
-                tvCompleteTrainingNum.text =
-                    "${it.completeTrainingNum}次"
-                tvJointAngle.text = "${it.jointAngle}°"
-                tvJointAngleVelocity.text =
-                    "${it.jointAngleVelocity}°/s"
-                tvLateralFemoralMuscleContractionStrength.text =
-                    "${it.lateralFemoralMuscleContractionStrength}"
-                tvMedialFemoralMuscleContractionStrength.text =
-                    "${it.medialFemoralMuscleContractionStrength}"
-                tvBicepsFemoralContractionStrength.text =
-                    "${it.bicepsFemoralContractionStrength}"
-                tvSemitendinosusFemoralContractionStrength.text =
-                    "${it.semitendinosusFemoralContractionStrength}"
-                tvAnteriorTibialTendonContractionStrength.text =
-                    "${it.anteriorTibialTendonContractionStrength}"
-                tvPeronealMuscleContractionStrength.text =
-                    "${it.peronealMuscleContractionStrength}"
+//                lineChart.addEntry(it)
+//                tvTargetTrainingDuration.text =
+//                    "${it.targetTrainingDuration}min"
+//                tvTargetTrainingNum.text = "${it.targetTrainingNum}次"
+//                tvTargetJointAngle.text = "${it.targetJointAngle}°"
+//                tvCurrentTrainingNum.text = "${it.currentTrainingNum}次"
+//                tvCompleteTrainingNum.text =
+//                    "${it.completeTrainingNum}次"
+//                tvJointAngle.text = "${it.jointAngle}°"
+//                tvJointAngleVelocity.text =
+//                    "${it.jointAngleVelocity}°/s"
+//                tvLateralFemoralMuscleContractionStrength.text =
+//                    "${it.lateralFemoralMuscleContractionStrength}"
+//                tvMedialFemoralMuscleContractionStrength.text =
+//                    "${it.medialFemoralMuscleContractionStrength}"
+//                tvBicepsFemoralContractionStrength.text =
+//                    "${it.bicepsFemoralContractionStrength}"
+//                tvSemitendinosusFemoralContractionStrength.text =
+//                    "${it.semitendinosusFemoralContractionStrength}"
+//                tvAnteriorTibialTendonContractionStrength.text =
+//                    "${it.anteriorTibialTendonContractionStrength}"
+//                tvPeronealMuscleContractionStrength.text =
+//                    "${it.peronealMuscleContractionStrength}"
             }
         }
 
@@ -173,14 +173,14 @@ class MainActivity : BaseActivity() {
                 lds.setDrawCircles(false)
                 d.addDataSet(lds)
             }
-        d.addEntry(Entry(getDateSet(0, ColorTemplate.getHoloBlue(), "角度").entryCount.toFloat(), dataInfo.jointAngle.toFloat()), 0)
-        d.addEntry(Entry(getDateSet(1, getColor1(R.color.green01FD01), "角速度").entryCount.toFloat(), dataInfo.jointAngleVelocity.toFloat()), 1)
-        d.addEntry(Entry(getDateSet(2, getColor1(R.color.yellowFFFF00), "股外肌收缩强度").entryCount.toFloat(), dataInfo.lateralFemoralMuscleContractionStrength.toFloat()), 2)
-        d.addEntry(Entry(getDateSet(3, getColor1(R.color.purple7E2E8D), "股内肌收缩强度").entryCount.toFloat(), dataInfo.medialFemoralMuscleContractionStrength.toFloat()), 3)
-        d.addEntry(Entry(getDateSet(4, getColor1(R.color.colorPrimary), "二头肌收缩强度").entryCount.toFloat(), dataInfo.bicepsFemoralContractionStrength.toFloat()), 4)
-        d.addEntry(Entry(getDateSet(5, getColor1(R.color.redFE0000), "半腱肌收缩强度").entryCount.toFloat(), dataInfo.semitendinosusFemoralContractionStrength.toFloat()), 5)
-        d.addEntry(Entry(getDateSet(6, getColor1(R.color.brownD95218), "胫前肌收缩强度").entryCount.toFloat(), dataInfo.anteriorTibialTendonContractionStrength.toFloat()), 6)
-        d.addEntry(Entry(getDateSet(7, getColor1(R.color.blue0000FE), "腓长肌收缩强度").entryCount.toFloat(), dataInfo.peronealMuscleContractionStrength.toFloat()), 7)
+//        d.addEntry(Entry(getDateSet(0, ColorTemplate.getHoloBlue(), "角度").entryCount.toFloat(), dataInfo.jointAngle.toFloat()), 0)
+//        d.addEntry(Entry(getDateSet(1, getColor1(R.color.green01FD01), "角速度").entryCount.toFloat(), dataInfo.jointAngleVelocity.toFloat()), 1)
+//        d.addEntry(Entry(getDateSet(2, getColor1(R.color.yellowFFFF00), "股外肌收缩强度").entryCount.toFloat(), dataInfo.lateralFemoralMuscleContractionStrength.toFloat()), 2)
+//        d.addEntry(Entry(getDateSet(3, getColor1(R.color.purple7E2E8D), "股内肌收缩强度").entryCount.toFloat(), dataInfo.medialFemoralMuscleContractionStrength.toFloat()), 3)
+//        d.addEntry(Entry(getDateSet(4, getColor1(R.color.colorPrimary), "二头肌收缩强度").entryCount.toFloat(), dataInfo.bicepsFemoralContractionStrength.toFloat()), 4)
+//        d.addEntry(Entry(getDateSet(5, getColor1(R.color.redFE0000), "半腱肌收缩强度").entryCount.toFloat(), dataInfo.semitendinosusFemoralContractionStrength.toFloat()), 5)
+//        d.addEntry(Entry(getDateSet(6, getColor1(R.color.brownD95218), "胫前肌收缩强度").entryCount.toFloat(), dataInfo.anteriorTibialTendonContractionStrength.toFloat()), 6)
+//        d.addEntry(Entry(getDateSet(7, getColor1(R.color.blue0000FE), "腓长肌收缩强度").entryCount.toFloat(), dataInfo.peronealMuscleContractionStrength.toFloat()), 7)
         d.notifyDataChanged()
 
         this.notifyDataSetChanged()

@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.CheckBox
-import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -16,14 +15,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chwishay.orthrecnursing.DispatchUtil.format2Date
-import com.chwishay.orthrecnursing.DispatchUtil.getVerifyCode
 import com.chwishay.orthrecnursing.views.ExpandableEditText
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.anko.find
-import org.w3c.dom.Text
 
 //                       _ooOoo_
 //                      o8888888o
@@ -168,32 +165,32 @@ class ReportDialog(context: Context, private val lifecycleOwner: LifecycleOwner)
             cancel()
         }
         find<TextView>(R.id.tvTargetTrainingDuration).text =
-            "${DispatchUtil.targetTrainingDuration}m"
+            "${DispatchUtil.everydayTrainingDuration}m"
         find<TextView>(R.id.tvActuallyTrainingDuration).text =
-            "${DispatchUtil.actuallyTrainingDurationSum.format2Date()}"
-        find<TextView>(R.id.tvTargetTrainingNum).text = "${DispatchUtil.targetTrainingNum}次"
-        find<TextView>(R.id.tvActuallyTrainingNum).text = "${DispatchUtil.actuallyTrainingNum}次"
-        find<TextView>(R.id.tvEffectiveTrainingNum).text = "${DispatchUtil.effectiveTrainingNum}次"
+            "${DispatchUtil.eachGroupTrainingNum.format2Date()}"
+        find<TextView>(R.id.tvTargetTrainingNum).text = "${DispatchUtil.everydayTrainingNum}次"
+        find<TextView>(R.id.tvActuallyTrainingNum).text = "${DispatchUtil.targetJointAngle}次"
+        find<TextView>(R.id.tvEffectiveTrainingNum).text = "${DispatchUtil.currentTrainingNum}次"
         find<TextView>(R.id.tvSettingJointActiveRange).text =
-            "0~${DispatchUtil.settingJointActiveRange}°"
+            "0~${DispatchUtil.jointAngle}°"
         find<TextView>(R.id.tvActuallyJointActiveRange).text =
-            "${DispatchUtil.actuallyJointActiveRange}°"
+            "${DispatchUtil.lateral_femoral_muscle}°"
         find<TextView>(R.id.tvSettingJointAngleVelocity).text =
-            "${DispatchUtil.settingJointAngleVelocity}°/s"
+            "${DispatchUtil.jointAngleVelocity}°/s"
         find<TextView>(R.id.tvActuallyJointAngleVelocity).text =
-            "${DispatchUtil.actuallyJointAngleVelocitySum / DispatchUtil.actuallyTrainingDurationSum}°/s"
+            "${DispatchUtil.medial_femoris / DispatchUtil.eachGroupTrainingNum}°/s"
         find<TextView>(R.id.tvAverageStrengthOfLateralThigh).text =
-            "${DispatchUtil.averageStrengthOfLateralThighSum / DispatchUtil.actuallyTrainingDurationSum}"
+            "${DispatchUtil.biceps_femoris / DispatchUtil.eachGroupTrainingNum}"
         find<TextView>(R.id.tvAverageStrengthOfMedialFemoris).text =
-            "${DispatchUtil.averageStrengthOfMedialFemorisSum / DispatchUtil.actuallyTrainingDurationSum}"
+            "${DispatchUtil.semitendinosus_femoris / DispatchUtil.eachGroupTrainingNum}"
         find<TextView>(R.id.tvAverageStrengthOfBicepsFemoris).text =
-            "${DispatchUtil.averageStrengthOfBicepsFemorisSum / DispatchUtil.actuallyTrainingDurationSum}"
+            "${DispatchUtil.tibialis_anterior_muscle / DispatchUtil.eachGroupTrainingNum}"
         find<TextView>(R.id.tvAverageStrengthOfSemitendinosusFemoris).text =
-            "${DispatchUtil.averageStrengthOfSemitendinosusFemorisSum / DispatchUtil.actuallyTrainingDurationSum}"
+            "${DispatchUtil.peroneus_longus / DispatchUtil.eachGroupTrainingNum}"
         find<TextView>(R.id.tvAverageStrengthOfTibialisAnteriormuscle).text =
-            "${DispatchUtil.averageStrengthOfTibialisAnteriormuscleSum / DispatchUtil.actuallyTrainingDurationSum}"
-        find<TextView>(R.id.tvAverageStrengthOfPeroneusLongus).text =
-            "${DispatchUtil.averageStrengthOfPeroneusLongusSum / DispatchUtil.actuallyTrainingDurationSum}"
+            "${DispatchUtil.exception / DispatchUtil.eachGroupTrainingNum}"
+//        find<TextView>(R.id.tvAverageStrengthOfPeroneusLongus).text =
+//            "${DispatchUtil.averageStrengthOfPeroneusLongusSum / DispatchUtil.eachGroupTrainingNum}"
     }
 }
 
