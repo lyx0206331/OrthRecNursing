@@ -31,27 +31,28 @@
     <string name="semitendinosus_femoris_normal_contraction_l">大腿股半腱肌正常收缩</string>
     <string name="calf_tibialis_anterior_muscle_normal_contraction_l">小腿胫前肌正常收缩</string>
     <string name="calf_peroneus_normal_contraction_l">小腿腓长肌正常收缩</string>
-    
+
     <string name="target_training_duration">目标训练时长</string>
     <string name="training_duration">训练时长</string>
     <string name="target_training_num">目标训练次数</string>
     <string name="target_joint_angle">目标关节角度</string>
-    <string name="current_training_num">当前运动次数</string>
+    <string name="current_training_num">当前训练次数</string>
     <string name="complete_training_num">完整运动次数</string>
     <string name="joint_angle">关节角度</string>
     <string name="joint_angle_velocity">关节角速度</string>
-    <string name="lateral_femoral_muscle_contraction_strength">股外侧肌收缩强度</string>
-    <string name="medial_femoral_muscle_contraction_strength">股内侧肌收缩强度</string>
-    <string name="biceps_femoris_contraction_strength">股二头肌收缩强度</string>
-    <string name="semitendinosus_femoris_contraction_strength">股半腱肌收缩强度</string>
+    <string name="lateral_femoral_muscle_contraction_strength">股外侧肌\n收缩强度</string>
+    <string name="medial_femoral_muscle_contraction_strength">股内侧肌\n收缩强度</string>
+    <string name="biceps_femoris_contraction_strength">股二头肌\n收缩强度</string>
+    <string name="semitendinosus_femoris_contraction_strength">股半腱肌\n收缩强度</string>
     <string name="anterior_tibial_tendon_contraction_strength">胫前肌收缩强度</string>
     <string name="peroneal_muscle_contraction_strength">腓长肌收缩强度</string>
 
-    <!--  设置  -->
     <string name="setting">设置</string>
     <string name="everyday_training_duration">每天训练时长</string>
-    <string name="everyday_training_group">每天训练组数</string>
+    <string name="everyday_training_groups">每天训练组数</string>
     <string name="group_training_num">每组训练次数</string>
+    <string name="current_training_duration">当前训练时长</string>
+    <string name="current_training_group">当前训练组数</string>
     <string name="target_angle">目标角度</string>
     <string name="target_angle_velocity">目标角速度</string>
     <string name="lateral_femoral_muscle_if_work">股外侧肌是否要求出力</string>
@@ -62,7 +63,14 @@
     <string name="peroneal_muscle_if_work">腓长肌否要求出力</string>
     <string name="confirm">确定</string>
 
-    <string name="joint_angle_curve">关节角度曲线显示</string>
+    <string name="joint_angle_curve">关节角度曲线</string>
+    <string name="joint_angle_velocity_curve">关节角速度曲线</string>
+    <string name="lateral_muscle_caurve">外侧肌曲线</string>
+    <string name="biceps_curve">二头肌曲线</string>
+    <string name="semitendinosus_curve">半腱肌曲线</string>
+    <string name="medial_muscle_curve">内侧肌曲线</string>
+    <string name="tibialis_anterior_muscle_curve">胫前肌曲线</string>
+    <string name="peroneus_longus_curve">腓长肌曲线</string>
 
     <string name="curr_knee_joint_activity_angle_v">%d°</string>
     <string name="curr_knee_joint_angular_velocity_v">%d°/s</string>

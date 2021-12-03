@@ -12,86 +12,131 @@
         android:id="@+id/tableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <TableRow>
+
             <TextView
                 style="@style/textStyle_l"
-                android:text="@string/target_training_duration" />
+                android:text="@string/everyday_training_duration" />
             <TextView
-                android:id="@+id/tvTargetTrainingDuration"
+                android:id="@+id/tvEverydayTrainingDuration"
                 style="@style/textStyle_v"
                 android:text="--m" />
+
             <TextView
                 style="@style/textStyle_l"
                 android:layout_marginLeft="@dimen/inner_frame_layout_padding"
-                android:text="@string/training_duration" />
+                android:text="@string/current_training_duration" />
             <TextView
-                android:id="@+id/tvTrainingDuration"
+                android:id="@+id/tvCurrentTrainingDuration"
                 style="@style/textStyle_v"
                 android:text="-m-s" />
-        </TableRow>
-        <TableRow>
-            <TextView
-                style="@style/textStyle_l"
-                android:text="@string/target_training_num" />
-            <TextView
-                android:id="@+id/tvTargetTrainingNum"
-                style="@style/textStyle_v"
-                android:text="--次" />
+
             <TextView
                 style="@style/textStyle_l"
                 android:layout_marginLeft="@dimen/inner_frame_layout_padding"
-                android:text="@string/target_joint_angle" />
-            <TextView
-                android:id="@+id/tvTargetJointAngle"
-                style="@style/textStyle_v"
-                android:text="--°" />
-        </TableRow>
-        <TableRow>
-            <TextView
-                style="@style/textStyle_l"
                 android:text="@string/current_training_num" />
+
             <TextView
                 android:id="@+id/tvCurrentTrainingNum"
                 style="@style/textStyle_v"
                 android:text="--次" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
+            <TextView
+                style="@style/textStyle_l"
+                android:text="@string/everyday_training_groups" />
+
+            <TextView
+                android:id="@+id/tvEverydayTrainingGroups"
+                style="@style/textStyle_v"
+                android:text="--组" />
+
             <TextView
                 style="@style/textStyle_l"
                 android:layout_marginLeft="@dimen/inner_frame_layout_padding"
-                android:text="@string/complete_training_num" />
+                android:text="@string/current_training_group" />
+
             <TextView
-                android:id="@+id/tvCompleteTrainingNum"
+                android:id="@+id/tvCurrentTrainingGroups"
+                style="@style/textStyle_v"
+                android:text="--组" />
+
+            <TextView
+                style="@style/textStyle_l"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                android:text="@string/group_training_num" />
+
+            <TextView
+                android:id="@+id/tvGroupTrainingNum"
                 style="@style/textStyle_v"
                 android:text="--次" />
         </TableRow>
-        <TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
             <TextView
                 style="@style/textStyle_l"
+                android:text="@string/target_joint_angle" />
+
+            <TextView
+                android:id="@+id/tvTargetJointAngle"
+                style="@style/textStyle_v"
+                android:text="--°" />
+
+            <TextView
+                style="@style/textStyle_l"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
                 android:text="@string/joint_angle" />
+
             <TextView
                 android:id="@+id/tvJointAngle"
                 style="@style/textStyle_v"
                 android:text="--°" />
+
             <TextView
                 style="@style/textStyle_l"
                 android:layout_marginLeft="@dimen/inner_frame_layout_padding"
                 android:text="@string/joint_angle_velocity" />
+
             <TextView
                 android:id="@+id/tvJointAngleVelocity"
                 style="@style/textStyle_v"
                 android:text="--°/s" />
         </TableRow>
-        <TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartJointAngle"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartJointAngleVelocity"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
             <TextView
                 style="@style/textStyle_l"
                 android:text="@string/lateral_femoral_muscle_contraction_strength" />
+
             <TextView
                 android:id="@+id/tvLateralFemoralMuscleContractionStrength"
                 style="@style/textStyle_v"
                 android:text="--" />
+
             <TextView
                 style="@style/textStyle_l"
                 android:layout_marginLeft="@dimen/inner_frame_layout_padding"
@@ -100,51 +145,96 @@
                 android:id="@+id/tvMedialFemoralMuscleContractionStrength"
                 style="@style/textStyle_v"
                 android:text="--" />
-        </TableRow>
-        <TableRow>
             <TextView
                 style="@style/textStyle_l"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
                 android:text="@string/biceps_femoris_contraction_strength" />
             <TextView
                 android:id="@+id/tvBicepsFemoralContractionStrength"
                 style="@style/textStyle_v"
                 android:text="--" />
+
             <TextView
                 style="@style/textStyle_l"
                 android:layout_marginLeft="@dimen/inner_frame_layout_padding"
                 android:text="@string/semitendinosus_femoris_contraction_strength" />
+
             <TextView
                 android:id="@+id/tvSemitendinosusFemoralContractionStrength"
                 style="@style/textStyle_v"
                 android:text="--" />
         </TableRow>
-        <TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartLateralMuscle"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartBiceps"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartSemitendinosus"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartMedialMuscle"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
             <TextView
                 style="@style/textStyle_l"
                 android:text="@string/anterior_tibial_tendon_contraction_strength" />
+
             <TextView
                 android:id="@+id/tvAnteriorTibialTendonContractionStrength"
                 style="@style/textStyle_v"
                 android:text="--" />
+
             <TextView
                 style="@style/textStyle_l"
                 android:layout_marginLeft="@dimen/inner_frame_layout_padding"
                 android:text="@string/peroneal_muscle_contraction_strength" />
+
             <TextView
                 android:id="@+id/tvPeronealMuscleContractionStrength"
                 style="@style/textStyle_v"
                 android:text="--" />
         </TableRow>
-    </TableLayout>
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_margin="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tableLayout"/>
+        <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartTibialisAnteriorMuscle"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartPeroneusLongus"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="@dimen/inner_frame_layout_padding"
+                android:layout_weight="1" />
+        </TableRow>
+    </TableLayout>
 
     <com.chwishay.orthrecnursing.views.ExpandableEditText
         android:id="@+id/eet"
@@ -168,7 +258,7 @@
         app:eet_center_inputType="number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chart"
+        app:layout_constraintTop_toBottomOf="@id/tableLayout"
         android:visibility="gone"/>
 
     <TextView
