@@ -55,12 +55,12 @@
     <string name="current_training_group">当前训练组数</string>
     <string name="target_angle">目标角度</string>
     <string name="target_angle_velocity">目标角速度</string>
-    <string name="lateral_femoral_muscle_if_work">股外侧肌是否要求出力</string>
-    <string name="medial_femoral_muscle_if_work">股内侧肌是否要求出力</string>
-    <string name="biceps_femoris_if_work">股二头肌是否要求出力</string>
-    <string name="semitendinosus_femoris_if_work">股半腱肌是否要求出力</string>
-    <string name="anterior_tibial_tendon_if_work">胫前肌否要求出力</string>
-    <string name="peroneal_muscle_if_work">腓长肌否要求出力</string>
+    <string name="lateral_femoral_muscle_if_work">股外侧肌\n是否要求出力</string>
+    <string name="medial_femoral_muscle_if_work">股内侧肌\n是否要求出力</string>
+    <string name="biceps_femoris_if_work">股二头肌\n是否要求出力</string>
+    <string name="semitendinosus_femoris_if_work">股半腱肌\n是否要求出力</string>
+    <string name="anterior_tibial_tendon_if_work">胫前肌\n是否要求出力</string>
+    <string name="peroneal_muscle_if_work">腓长肌\n是否要求出力</string>
     <string name="confirm">确定</string>
 
     <string name="joint_angle_curve">关节角度曲线</string>

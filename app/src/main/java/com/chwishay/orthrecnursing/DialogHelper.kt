@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chwishay.orthrecnursing.DispatchUtil.format2Date
+import com.chwishay.orthrecnursing.DispatchUtil.lastFrameData
 import com.chwishay.orthrecnursing.views.ExpandableEditText
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.Dispatchers
@@ -228,31 +229,37 @@ class SettingDialog(context: Context, private val lifecycleOwner: LifecycleOwner
             centerText = "${DispatchUtil.paramsInfo.getTargetAngleVelocity()}"
         }
         cbLateralFemoralMuscleIfWork = find<CheckBox>(R.id.cbLateralFemoralMuscleIfWork).apply {
+            isChecked = DispatchUtil.paramsInfo.lateralFemoralMuscleIfWork == 1.toByte()
             setOnCheckedChangeListener { buttonView, isChecked ->
                 DispatchUtil.paramsInfo.lateralFemoralMuscleIfWork = if (isChecked) 1 else 0
             }
         }
         cbMedialFemoralMuscleIfWork = find<CheckBox>(R.id.cbMedialFemoralMuscleIfWork).apply {
+            isChecked = DispatchUtil.paramsInfo.lateralFemoralMuscleIfWork == 1.toByte()
             setOnCheckedChangeListener { buttonView, isChecked ->
                 DispatchUtil.paramsInfo.medialFemoralMuscleIfWork = if (isChecked) 1 else 0
             }
         }
         cbBicepsFemorisIfWork = find<CheckBox>(R.id.cbBicepsFemorisIfWork).apply {
+            isChecked = DispatchUtil.paramsInfo.bicepsFemorisIfWork == 1.toByte()
             setOnCheckedChangeListener { buttonView, isChecked ->
                 DispatchUtil.paramsInfo.bicepsFemorisIfWork = if (isChecked) 1 else 0
             }
         }
         cbSemitendinosusFemorisIfWork = find<CheckBox>(R.id.cbSemitendinosusFemorisIfWork).apply {
+            isChecked = DispatchUtil.paramsInfo.semitendinosusFemorisIfWork == 1.toByte()
             setOnCheckedChangeListener { buttonView, isChecked ->
                 DispatchUtil.paramsInfo.semitendinosusFemorisIfWork = if (isChecked) 1 else 0
             }
         }
         cbAnteriorTibialTendonIfWork = find<CheckBox>(R.id.cbAnteriorTibialTendonIfWork).apply {
+            isChecked = DispatchUtil.paramsInfo.anteriorTibialTendonIfWork == 1.toByte()
             setOnCheckedChangeListener { buttonView, isChecked ->
                 DispatchUtil.paramsInfo.anteriorTibialTendonIfWork = if (isChecked) 1 else 0
             }
         }
         cbPeronealMuscleIfWork = find<CheckBox>(R.id.cbPeronealMuscleIfWork).apply {
+            isChecked = DispatchUtil.paramsInfo.peronealMuscleIfWork == 1.toByte()
             setOnCheckedChangeListener { buttonView, isChecked ->
                 DispatchUtil.paramsInfo.peronealMuscleIfWork = if (isChecked) 1 else 0
             }
@@ -267,17 +274,22 @@ class SettingDialog(context: Context, private val lifecycleOwner: LifecycleOwner
                 etEverydayTrainingGroup.centerText.isNullOrEmpty() ||
                 etGroupTrainingNum.centerText.isNullOrEmpty() ||
                 etTargetAngle.centerText.isNullOrEmpty() ||
-                etTargetAngleVelocity.centerText.isNullOrEmpty()) {
+                etTargetAngleVelocity.centerText.isNullOrEmpty()
+            ) {
                 showShortToast("参数输入异常，请检查参数")
                 return@onClick
             }
+            DispatchUtil.paramsInfo.historyTrainingDuration =
+                lastFrameData.sumTrainingDuration.toShort()
+            DispatchUtil.paramsInfo.historyTrainingNum = lastFrameData.currentTrainingNum.toShort()
             DispatchUtil.paramsInfo.everydayTrainingDuration =
                 Integer.parseInt(etEverydayTrainingDuration.centerText).toByte()
             DispatchUtil.paramsInfo.everydayTrainingGroupNum =
                 Integer.parseInt(etEverydayTrainingGroup.centerText).toByte()
             DispatchUtil.paramsInfo.groupTrainingNum =
                 Integer.parseInt(etGroupTrainingNum.centerText).toByte()
-            DispatchUtil.paramsInfo.targetAngle = Integer.parseInt(etTargetAngle.centerText).toByte()
+            DispatchUtil.paramsInfo.targetAngle =
+                Integer.parseInt(etTargetAngle.centerText).toByte()
             Integer.parseInt(etTargetAngleVelocity.centerText).toBytesLE().also {
                 DispatchUtil.paramsInfo.targetAngleVelocityLowBit = it[0]
                 DispatchUtil.paramsInfo.targetAngleVelocityHighBit = it[1]

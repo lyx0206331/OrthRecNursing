@@ -7,7 +7,6 @@ import com.chwishay.orthrecnursing.DispatchUtil.getVerifyCode
 import com.chwishay.orthrecnursing.DispatchUtil.jointAngleVelocity
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import kotlinx.coroutines.*
 
 //                       _ooOoo_
 //                      o8888888o
@@ -43,9 +42,13 @@ object DispatchUtil {
 
     val resultSubject by lazy { BehaviorSubject.create<DataInfo>() }
 
-    var paramsInfo = ParamsInfo(0.toShort(), 0.toShort(), 60.toByte(), 1.toByte(), 10.toByte(),
+    var lastFrameData: DataInfo = DataInfo()
+
+    var paramsInfo = ParamsInfo(
+        0.toShort(), 0.toShort(), 60.toByte(), 1.toByte(), 10.toByte(),
         60, 40, 0, 1, 1,
-        1, 1, 1, 1)
+        1, 1, 1, 1
+    )
 
     fun onResultObservable(): Observable<DataInfo> = resultSubject
 
@@ -64,37 +67,37 @@ object DispatchUtil {
     var peroneus_longus = 0
     var exception = 0
 
-    val timeCounterLiveData = MutableLiveData("0m0s")
+//    val timeCounterLiveData = MutableLiveData("0m0s")
 
     val frameHead = byteArrayOf(0xAB.toByte(), 0xCD.toByte())
 
-    private var timerValue = 0
-        set(value) {
-            field = value
-//            "TIMER_VALUE".logE("$field")
-            if (field > 0) {
-                eachGroupTrainingNum = field
-            }
-            timeCounterLiveData.postValue(field.format2Date())
-        }
+//    private var timerValue = 0
+//        set(value) {
+//            field = value
+//            if (field > 0) {
+//                eachGroupTrainingNum = field
+//            }
+//            timeCounterLiveData.postValue(field.format2Date())
+//        }
 
-    fun Int.format2Date() = if (this < 0) "0m0s" else "${this/60}m${this%60}s"
-    private var timerJob: Job? = null
+    fun Int.format2Date() = if (this < 0) "0m0s" else "${this / 60}m${this % 60}s"
 
+    //    private var timerJob: Job? = null
+//
     var isTimerStart = false
         set(value) {
             field = value
             if (field) {
-                timerValue = 0
+//                timerValue = 0
                 resetData()
-                timerJob = GlobalScope.launch(Dispatchers.IO) {
-                    while (true) {
-                        delay(1000)
-                        ++timerValue
-                    }
-                }
-            } else {
-                timerJob?.cancel("停止计时")
+//                timerJob = GlobalScope.launch(Dispatchers.IO) {
+//                    while (true) {
+//                        delay(1000)
+//                        ++timerValue
+//                    }
+//                }
+//            } else {
+//                timerJob?.cancel("停止计时")
             }
         }
     
@@ -121,6 +124,7 @@ object DispatchUtil {
                 val result = frameData.data!!.parseData()
 //                resultLiveData.postValue(result)
                 appendData(result)
+                lastFrameData = result
                 resultSubject.onNext(result)
             }
         }, {
@@ -140,12 +144,13 @@ object DispatchUtil {
         currentTrainingNum = dataInfo.currentTrainingNum
         jointAngle = dataInfo.jointAngle
         jointAngleVelocity = dataInfo.jointAngleVelocity
-        lateral_femoral_muscle = if (dataInfo.jointAngle > lateral_femoral_muscle) dataInfo.jointAngle else lateral_femoral_muscle
-        medial_femoris += dataInfo.medial_femoris
-        biceps_femoris += dataInfo.biceps_femoris
-        semitendinosus_femoris += dataInfo.semitendinosus_femoris
-        tibialis_anterior_muscle += dataInfo.tibialis_anterior_muscle
-        peroneus_longus += dataInfo.peroneus_longus
+        lateral_femoral_muscle =
+            if (dataInfo.jointAngle > lateral_femoral_muscle) dataInfo.jointAngle else lateral_femoral_muscle
+        medial_femoris += dataInfo.medialFemoris
+        biceps_femoris += dataInfo.bicepsFemoris
+        semitendinosus_femoris += dataInfo.semitendinosusFemoris
+        tibialis_anterior_muscle += dataInfo.tibialisAnteriorMuscle
+        peroneus_longus += dataInfo.peroneusLongus
     }
 
     fun resetData() {
@@ -165,39 +170,41 @@ object DispatchUtil {
     }
 }
 
-data class DataInfo(var everydayTrainingDuration: Int = 0,
-                    var everydayTrainingNum: Int = 0,
-                    var eachGroupTrainingNum: Int = 0,
-                    var targetJointAngle: Int = 0,
-                    var sumTrainingDuration: Int = 0,
-                    var currentTrainingNum: Int = 0,
-                    var jointAngle: Int = 0,
-                    var jointAngleVelocity: Int = 0,
-                    var lateral_femoral_muscle : Int= 0,    //股外侧肌
-                    var medial_femoris: Int = 0,            //股内侧肌
-                    var biceps_femoris: Int = 0,            //股二头肌
-                    var semitendinosus_femoris: Int = 0,    //股半腱肌
-                    var tibialis_anterior_muscle: Int = 0,  //胫前肌
-                    var peroneus_longus: Int = 0,           //腓长肌
-                    var exceptionCode: Int) {
-}
+data class DataInfo(
+    var everydayTrainingDuration: Int = 0,
+    var everydayTrainingNum: Int = 0,
+    var eachGroupTrainingNum: Int = 0,
+    var targetJointAngle: Int = 0,
+    var sumTrainingDuration: Int = 0,
+    var currentTrainingNum: Int = 0,
+    var jointAngle: Int = 0,
+    var jointAngleVelocity: Int = 0,
+    var lateralFemoralMuscle: Int = 0,    //股外侧肌
+    var medialFemoris: Int = 0,            //股内侧肌
+    var bicepsFemoris: Int = 0,            //股二头肌
+    var semitendinosusFemoris: Int = 0,    //股半腱肌
+    var tibialisAnteriorMuscle: Int = 0,  //胫前肌
+    var peroneusLongus: Int = 0,           //腓长肌
+    var exceptionCode: Int = 0
+)
 
 fun ByteArray.parseData() = DataInfo(
     this[0].toUByte().toInt(),
     this[1].toUByte().toInt(),
     this[2].toUByte().toInt(),
     this[3].toUByte().toInt(),
-    this.copyOfRange(4, 6).read2ShortLE().toInt(),
-    this.copyOfRange(6, 8).read2ShortLE().toInt(),
-    this.copyOfRange(8, 10).read2ShortLE()/10,
-    this.copyOfRange(10, 12).read2ShortLE()/10,
+    this.copyOfRange(4, 6).toUnsignInt(),
+    this.copyOfRange(6, 8).toUnsignInt(),
+    this.copyOfRange(8, 10).read2ShortLE() / 10,
+    this.copyOfRange(10, 12).read2ShortLE() / 10,
     this[12].toUByte().toInt(),
     this[13].toUByte().toInt(),
     this[14].toUByte().toInt(),
     this[15].toUByte().toInt(),
     this[16].toUByte().toInt(),
     this[17].toUByte().toInt(),
-    this[18].toUByte().toInt())
+    this[18].toUByte().toInt()
+)
 
 data class ParamsInfo(
                         var historyTrainingDuration: Short = 0.toShort(),
@@ -230,13 +237,34 @@ data class ParamsInfo(
 //        peronealMuscleIfWork = 1
     }
 
-    fun getTargetAngleVelocity() = byteArrayOf(targetAngleVelocityLowBit, targetAngleVelocityHighBit).read2IntLE()
+    fun getTargetAngleVelocity() =
+        byteArrayOf(targetAngleVelocityLowBit, targetAngleVelocityHighBit).read2IntLE()
+
     fun toFrameByteArray(): ByteArray {
         val hisDuration = historyTrainingDuration.toBytesLE()
         val hisNum = historyTrainingNum.toBytesLE()
-        val content = byteArrayOf(hisDuration[0], hisDuration[1], hisNum[0], hisNum[1], everydayTrainingDuration, everydayTrainingGroupNum, groupTrainingNum, targetAngle, targetAngleVelocityLowBit, targetAngleVelocityHighBit,
-        lateralFemoralMuscleIfWork, medialFemoralMuscleIfWork, bicepsFemorisIfWork, semitendinosusFemorisIfWork, anteriorTibialTendonIfWork, peronealMuscleIfWork)
+        val content = byteArrayOf(
+            hisDuration[0],
+            hisDuration[1],
+            hisNum[0],
+            hisNum[1],
+            everydayTrainingDuration,
+            everydayTrainingGroupNum,
+            groupTrainingNum,
+            targetAngle,
+            targetAngleVelocityLowBit,
+            targetAngleVelocityHighBit,
+            lateralFemoralMuscleIfWork,
+            medialFemoralMuscleIfWork,
+            bicepsFemorisIfWork,
+            semitendinosusFemorisIfWork,
+            anteriorTibialTendonIfWork,
+            peronealMuscleIfWork
+        )
         val data = byteArrayOf(*frameHead, *content)
         return byteArrayOf(*data, data.getVerifyCode().toByte())
     }
 }
+
+fun ByteArray.toUnsignInt(): Int =
+    (this[1].toInt() and 0xFF) shl 8 or (this[0].toInt() and 0xFF)

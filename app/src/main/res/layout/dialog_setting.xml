@@ -52,34 +52,44 @@
                     app:eet_suf_text="组"
                     app:eet_center_text="--"/>
             </TableRow>
-            <TableRow>
+            <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
                 <TextView
                     style="@style/textStyle_l"
                     android:text="@string/group_training_num" />
+
                 <com.chwishay.orthrecnursing.views.ExpandableEditText
                     android:id="@+id/etGroupTrainingNum"
                     style="@style/eetStyle"
                     app:eet_suf_text="次"
-                    app:eet_center_text="--"/>
+                    app:eet_center_text="--" />
+
                 <TextView
                     style="@style/textStyle_l"
                     android:layout_marginLeft="@dimen/inner_frame_layout_padding"
                     android:text="@string/target_angle" />
+
                 <com.chwishay.orthrecnursing.views.ExpandableEditText
                     android:id="@+id/etTargetAngle"
                     style="@style/eetStyle"
+                    android:paddingStart="5dp"
+                    app:eet_pre_text="0~"
                     app:eet_suf_text="°"
                     app:eet_center_text="--" />
             </TableRow>
-            <TableRow>
+
+            <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
                 <TextView
                     style="@style/textStyle_l"
                     android:text="@string/setting_joint_active_range"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
+
                 <TextView
                     style="@style/textStyle_v"
                     android:text="--°"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
+
                 <TextView
                     style="@style/textStyle_l"
                     android:layout_marginLeft="@dimen/inner_frame_layout_padding"
@@ -91,13 +101,16 @@
                     app:eet_center_text="--" />
             </TableRow>
 
-            <TableRow>
+            <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
                 <TextView
                     style="@style/textStyle_l"
                     android:text="@string/lateral_femoral_muscle_if_work" />
+
                 <CheckBox
                     android:id="@+id/cbLateralFemoralMuscleIfWork"
-                    style="@style/checkboxStyle"/>
+                    style="@style/checkboxStyle" />
+
                 <TextView
                     style="@style/textStyle_l"
                     android:layout_marginLeft="@dimen/inner_frame_layout_padding"
@@ -106,13 +119,17 @@
                     android:id="@+id/cbMedialFemoralMuscleIfWork"
                     style="@style/checkboxStyle" />
             </TableRow>
-            <TableRow>
+
+            <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
                 <TextView
                     style="@style/textStyle_l"
                     android:text="@string/biceps_femoris_if_work" />
+
                 <CheckBox
                     android:id="@+id/cbBicepsFemorisIfWork"
                     style="@style/checkboxStyle" />
+
                 <TextView
                     style="@style/textStyle_l"
                     android:layout_marginLeft="@dimen/inner_frame_layout_padding"
@@ -121,13 +138,17 @@
                     android:id="@+id/cbSemitendinosusFemorisIfWork"
                     style="@style/checkboxStyle" />
             </TableRow>
-            <TableRow>
+
+            <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
                 <TextView
                     style="@style/textStyle_l"
                     android:text="@string/anterior_tibial_tendon_if_work" />
+
                 <CheckBox
                     android:id="@+id/cbAnteriorTibialTendonIfWork"
                     style="@style/checkboxStyle" />
+
                 <TextView
                     style="@style/textStyle_l"
                     android:layout_marginLeft="@dimen/inner_frame_layout_padding"

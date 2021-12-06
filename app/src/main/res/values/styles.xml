@@ -15,7 +15,6 @@
     <style name="textStyle_l">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:padding">0dp</item>
         <item name="android:layout_weight">5</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@color/gray_B5</item>
@@ -36,26 +35,28 @@
     <style name="checkboxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">50dp</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_weight">3</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:background">@color/white</item>
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/black_232323</item>
-        <item name="android:text">y/n</item>
-        <item name="android:layoutDirection">rtl</item>
+        <item name="android:text">是/否</item>
+        <item name="android:layoutDirection">ltr</item>
     </style>
 
     <style name="eetStyle">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_weight">3</item>
         <item name="android:background">@color/white</item>
         <item name="android:paddingRight">5dp</item>
         <item name="eet_center_textColor">@color/black_232323</item>
         <item name="eet_center_textSize">5sp</item>
         <item name="eet_suf_textColor">@color/black_232323</item>
         <item name="eet_suf_textSize">5sp</item>
+        <item name="eet_pre_textColor">@color/black_232323</item>
+        <item name="eet_pre_textSize">5sp</item>
         <item name="eet_isCenterEditable">true</item>
         <item name="eet_center_inputType">number</item>
     </style>

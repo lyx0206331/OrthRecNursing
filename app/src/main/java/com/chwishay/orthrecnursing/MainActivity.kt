@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.ColorInt
 import androidx.core.view.isVisible
+import com.chwishay.orthrecnursing.DispatchUtil.format2Date
 import com.chwishay.orthrecnursing.views.ExpandableEditText
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
@@ -22,6 +23,8 @@ import kotlin.math.round
 import kotlin.system.exitProcess
 
 class MainActivity : BaseActivity() {
+
+    private var validCycleIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,13 +51,14 @@ class MainActivity : BaseActivity() {
             }.addTo(defaultCompositeDisposable)
         }
 
-        DispatchUtil.timeCounterLiveData.observe(this) {
-            tvCurrentTrainingDuration.text = it
-        }
+//        DispatchUtil.timeCounterLiveData.observe(this) {
+//            tvCurrentTrainingDuration.text = it
+//        }
 
         DispatchUtil.onResultObservable().observeOn(AndroidSchedulers.mainThread()).subscribe {
             if (DispatchUtil.isTimerStart) {
                 tvEverydayTrainingDuration.text = "${it.everydayTrainingDuration}m"
+                tvCurrentTrainingDuration.text = "${it.currentTrainingNum.format2Date()}"
                 tvCurrentTrainingNum.text = "${it.currentTrainingNum}次"
                 tvEverydayTrainingGroups.text = "${it.eachGroupTrainingNum}组"
                 tvCurrentTrainingGroups.text =
@@ -63,26 +67,43 @@ class MainActivity : BaseActivity() {
                 tvTargetJointAngle.text = "${it.targetJointAngle}°"
                 tvJointAngle.text = "${it.jointAngle}°"
                 tvJointAngleVelocity.text = "${it.jointAngleVelocity}°/s"
-                tvLateralFemoralMuscleContractionStrength.text = "${it.lateral_femoral_muscle}"
-                tvMedialFemoralMuscleContractionStrength.text = "${it.medial_femoris}"
-                tvBicepsFemoralContractionStrength.text = "${it.biceps_femoris}"
-                tvSemitendinosusFemoralContractionStrength.text = "${it.semitendinosus_femoris}"
-                tvAnteriorTibialTendonContractionStrength.text = "${it.tibialis_anterior_muscle}"
-                tvPeronealMuscleContractionStrength.text = "${it.peroneus_longus}"
+                tvLateralFemoralMuscleContractionStrength.text = "${it.lateralFemoralMuscle}"
+                tvMedialFemoralMuscleContractionStrength.text = "${it.medialFemoris}"
+                tvBicepsFemoralContractionStrength.text = "${it.bicepsFemoris}"
+                tvSemitendinosusFemoralContractionStrength.text = "${it.semitendinosusFemoris}"
+                tvAnteriorTibialTendonContractionStrength.text = "${it.tibialisAnteriorMuscle}"
+                tvPeronealMuscleContractionStrength.text = "${it.peroneusLongus}"
 
-                chartJointAngle.addEntry(LineEntry("角度", it.jointAngle.toFloat()))
-                chartJointAngleVelocity.addEntry(LineEntry("角速度", it.jointAngleVelocity.toFloat()))
-                chartLateralMuscle.addEntry(LineEntry("外侧肌", it.lateral_femoral_muscle.toFloat()))
-                chartBiceps.addEntry(LineEntry("二头肌", it.biceps_femoris.toFloat()))
-                chartSemitendinosus.addEntry(LineEntry("半腱肌", it.semitendinosus_femoris.toFloat()))
-                chartMedialMuscle.addEntry(LineEntry("内侧肌", it.medial_femoris.toFloat()))
-                chartTibialisAnteriorMuscle.addEntry(
-                    LineEntry(
-                        "胫前肌",
-                        it.tibialis_anterior_muscle.toFloat()
+                if (validCycleIndex++ % 2 == 0) {
+                    chartJointAngle.addEntry(LineEntity("角度", it.jointAngle.toFloat()))
+                    chartJointAngleVelocity.addEntry(
+                        LineEntity(
+                            "角速度",
+                            it.jointAngleVelocity.toFloat()
+                        )
                     )
-                )
-                chartPeroneusLongus.addEntry(LineEntry("腓长肌", it.peroneus_longus.toFloat()))
+                    chartLateralMuscle.addEntry(
+                        LineEntity(
+                            "外侧肌",
+                            it.lateralFemoralMuscle.toFloat()
+                        )
+                    )
+                    chartBiceps.addEntry(LineEntity("二头肌", it.bicepsFemoris.toFloat()))
+                    chartSemitendinosus.addEntry(
+                        LineEntity(
+                            "半腱肌",
+                            it.semitendinosusFemoris.toFloat()
+                        )
+                    )
+                    chartMedialMuscle.addEntry(LineEntity("内侧肌", it.medialFemoris.toFloat()))
+                    chartTibialisAnteriorMuscle.addEntry(
+                        LineEntity(
+                            "胫前肌",
+                            it.tibialisAnteriorMuscle.toFloat()
+                        )
+                    )
+                    chartPeroneusLongus.addEntry(LineEntity("腓长肌", it.peroneusLongus.toFloat()))
+                }
 
 //                "BYTES_VALUE".logE("${it}")
             }
@@ -139,7 +160,7 @@ class MainActivity : BaseActivity() {
         description.text = desc
     }
 
-    private fun LineChart.addEntry(vararg entries: LineEntry) = this.data?.let { d ->
+    private fun LineChart.addEntry(vararg entities: LineEntity) = this.data?.let { d ->
         fun getDateSet(index: Int, @ColorInt color: Int, name: String) =
             d.getDataSetByIndex(index) ?: LineDataSet(null, name).also { lds ->
                 lds.axisDependency = YAxis.AxisDependency.LEFT
@@ -155,14 +176,14 @@ class MainActivity : BaseActivity() {
                 lds.setDrawCircles(false)
                 d.addDataSet(lds)
             }
-        entries.forEachIndexed { index, lineEntry ->
+        entities.forEachIndexed { index, lineEntity ->
             d.addEntry(
                 Entry(
                     getDateSet(
                         index,
-                        lineEntry.color,
-                        lineEntry.name
-                    ).entryCount.toFloat(), lineEntry.value
+                        lineEntity.color,
+                        lineEntity.name
+                    ).entryCount.toFloat(), lineEntity.value
                 ), index
             )
         }
@@ -203,7 +224,7 @@ class MainActivity : BaseActivity() {
 
         this.notifyDataSetChanged()
 
-        this.setVisibleXRangeMaximum(1000f)
+        this.setVisibleXRangeMaximum(100f)
 
         this.moveViewToX(d.entryCount.toFloat())
     }
@@ -268,4 +289,4 @@ class MainActivity : BaseActivity() {
     }
 }
 
-class LineEntry(val name: String, val value: Float, @ColorInt val color: Int = Color.BLACK)
+class LineEntity(val name: String, val value: Float, @ColorInt val color: Int = Color.BLACK)
