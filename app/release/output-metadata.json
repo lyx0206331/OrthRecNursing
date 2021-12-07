@@ -11,9 +11,9 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 3,
-      "versionName": "1.2",
-      "outputFile": "P10_v1.2_2021-12-06_release.apk"
+      "versionCode": 5,
+      "versionName": "1.2.1",
+      "outputFile": "P10_v1.2.1_2021-12-07_release.apk"
     }
   ],
   "elementType": "File"

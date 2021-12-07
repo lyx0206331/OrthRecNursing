@@ -135,20 +135,24 @@ object BluetoothServer {
     }
 
     //蓝牙连接状态.注意：配对时会发送停止扫描设备通知
-    @BluetoothConnState var btConnState = STATE_BT_DISCONNECT_SUCCESS
+    @BluetoothConnState
+    var btConnState = STATE_BT_DISCONNECT_SUCCESS
         set(value) {
 //            if (field != value) {
-                field = value
-                connStateSubject.onNext(field)
-                "connectState".logE("state:$field")
+            field = value
+            connStateSubject.onNext(field)
+            "connectState".logE("state:$field")
 //            }
         }
+
+    var isConnected = /*btConnState == STATE_BT_CONNECT_SUCCESS*/true
 
     private val discBtStateSubject by lazy { BehaviorSubject.create<Int>() }
 
     fun onBtDiscStateChange(): Observable<Int> = discBtStateSubject
 
-    @BluetoothDiscState var btDiscState = STATE_BT_DISCOVERY_FINISHED
+    @BluetoothDiscState
+    var btDiscState = STATE_BT_DISCOVERY_FINISHED
         set(value) {
             if (field != value) {
                 field = value
@@ -287,7 +291,7 @@ object BluetoothServer {
     /**
      * 是否已打开蓝牙
      */
-    private fun isBluetoothEnabled() = btAdapter?.state == BluetoothAdapter.STATE_ON
+    private fun isBluetoothEnabled() = btAdapter.state == BluetoothAdapter.STATE_ON
 
     /**
      * 蓝牙是否可用
@@ -296,7 +300,7 @@ object BluetoothServer {
         return if (!isBluetoothSupported()) {
             throw IllegalStateException("设备不支持蓝牙")
         } else {
-            btAdapter?.isEnabled.orDefault()
+            btAdapter.isEnabled.orDefault()
         }
     }
 
@@ -306,7 +310,7 @@ object BluetoothServer {
      * 自动异步打开蓝牙（无提示）
      */
     fun openBluetoothAsyn(activity: Activity) {
-        btAdapter?.enable().orDefault()
+        btAdapter.enable().orDefault()
     }
 
     /**
@@ -322,7 +326,7 @@ object BluetoothServer {
     /**
      * 关闭蓝牙
      */
-    fun closeBluetooth() = btAdapter?.disable().orDefault()
+    fun closeBluetooth() = btAdapter.disable().orDefault()
 
     /**
      * 扫描蓝牙设备
@@ -355,7 +359,7 @@ object BluetoothServer {
     }
 
     fun getRemoteDevice(mac: String): BluetoothDevice? =
-            if (!TextUtils.isEmpty(mac)) btAdapter?.getRemoteDevice(mac) else null
+        if (!TextUtils.isEmpty(mac)) btAdapter.getRemoteDevice(mac) else null
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     fun getConnectedBleDevices(): List<BluetoothDevice> {
@@ -373,7 +377,7 @@ object BluetoothServer {
     fun getBondState(mac: String): Int =
             getRemoteDevice(mac)?.bondState.orDefault(BluetoothDevice.BOND_NONE)
 
-    fun getBondedClassicBtDevices(): List<BluetoothDevice>? = btAdapter?.bondedDevices?.toList()
+    fun getBondedClassicBtDevices(): List<BluetoothDevice>? = btAdapter.bondedDevices?.toList()
 
     fun isConnected(mac: String): Boolean =
             getConnectStatus(mac) == BluetoothProfile.STATE_CONNECTED

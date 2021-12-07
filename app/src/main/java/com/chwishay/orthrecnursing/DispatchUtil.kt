@@ -7,7 +7,6 @@ import com.chwishay.orthrecnursing.DispatchUtil.getVerifyCode
 import com.chwishay.orthrecnursing.DispatchUtil.jointAngleVelocity
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import kotlinx.coroutines.*
 
 //                       _ooOoo_
 //                      o8888888o
@@ -45,12 +44,6 @@ object DispatchUtil {
 
     var lastFrameData: DataInfo = DataInfo()
 
-    var paramsInfo = ParamsInfo(
-        0.toShort(), 0.toShort(), 60.toByte(), 1.toByte(), 10.toByte(),
-        60, 40, 0, 1, 1,
-        1, 1, 1, 1
-    )
-
     fun onResultObservable(): Observable<DataInfo> = resultSubject
 
     var everydayTrainingDuration = 0
@@ -68,37 +61,37 @@ object DispatchUtil {
     var peroneusLongus = 0
     var exception = 0
 
-    val timeCounterLiveData = MutableLiveData("0m0s")
+//    val timeCounterLiveData = MutableLiveData("0m0s")
 
     val frameHead = byteArrayOf(0xAB.toByte(), 0xCD.toByte())
 
-    private var timerValue = 0
-        set(value) {
-            field = value
+//    private var timerValue = 0
+//        set(value) {
+//            field = value
 //            if (field > 0) {
 //                eachGroupTrainingNum = field
 //            }
-            timeCounterLiveData.postValue(field.format2Date())
-        }
+//            timeCounterLiveData.postValue(field.format2Date())
+//        }
 
     fun Int.format2Date() = if (this < 0) "0m0s" else "${this / 60}m${this % 60}s"
 
-    private var timerJob: Job? = null
+//    private var timerJob: Job? = null
 
     var isTimerStart = false
         set(value) {
             field = value
             if (field) {
-                timerValue = 0
+//                timerValue = 0
                 resetData()
-                timerJob = GlobalScope.launch(Dispatchers.IO) {
-                    while (true) {
-                        delay(1000)
-                        ++timerValue
-                    }
-                }
-            } else {
-                timerJob?.cancel("停止计时")
+//                timerJob = GlobalScope.launch(Dispatchers.IO) {
+//                    while (true) {
+//                        delay(1000)
+//                        ++timerValue
+//                    }
+//                }
+//            } else {
+//                timerJob?.cancel("停止计时")
             }
         }
     

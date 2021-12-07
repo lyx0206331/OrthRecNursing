@@ -21,6 +21,7 @@
             <TextView
                 style="@style/textStyle_l"
                 android:text="@string/everyday_training_duration" />
+
             <TextView
                 android:id="@+id/tvEverydayTrainingDuration"
                 style="@style/textStyle_v"
@@ -29,19 +30,20 @@
             <TextView
                 style="@style/textStyle_l"
                 android:layout_marginLeft="@dimen/inner_frame_layout_padding"
-                android:text="@string/current_training_duration" />
+                android:text="@string/everyday_training_groups" />
+
             <TextView
-                android:id="@+id/tvCurrentTrainingDuration"
+                android:id="@+id/tvEverydayTrainingGroups"
                 style="@style/textStyle_v"
-                android:text="-m-s" />
+                android:text="--组" />
 
             <TextView
                 style="@style/textStyle_l"
                 android:layout_marginLeft="@dimen/inner_frame_layout_padding"
-                android:text="@string/current_training_num" />
+                android:text="@string/group_training_num" />
 
             <TextView
-                android:id="@+id/tvCurrentTrainingNum"
+                android:id="@+id/tvGroupTrainingNum"
                 style="@style/textStyle_v"
                 android:text="--次" />
         </TableRow>
@@ -50,12 +52,12 @@
 
             <TextView
                 style="@style/textStyle_l"
-                android:text="@string/everyday_training_groups" />
+                android:text="@string/current_training_duration" />
 
             <TextView
-                android:id="@+id/tvEverydayTrainingGroups"
+                android:id="@+id/tvCurrentTrainingDuration"
                 style="@style/textStyle_v"
-                android:text="--组" />
+                android:text="-m-s" />
 
             <TextView
                 style="@style/textStyle_l"
@@ -70,10 +72,10 @@
             <TextView
                 style="@style/textStyle_l"
                 android:layout_marginLeft="@dimen/inner_frame_layout_padding"
-                android:text="@string/group_training_num" />
+                android:text="@string/current_training_num" />
 
             <TextView
-                android:id="@+id/tvGroupTrainingNum"
+                android:id="@+id/tvCurrentTrainingNum"
                 style="@style/textStyle_v"
                 android:text="--次" />
         </TableRow>

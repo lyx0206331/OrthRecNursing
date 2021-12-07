@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.ColorInt
 import androidx.core.view.isVisible
+import com.chwishay.orthrecnursing.DispatchUtil.format2Date
 import com.chwishay.orthrecnursing.views.ExpandableEditText
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
@@ -50,14 +51,14 @@ class MainActivity : BaseActivity() {
             }.addTo(defaultCompositeDisposable)
         }
 
-        DispatchUtil.timeCounterLiveData.observe(this) {
-            tvCurrentTrainingDuration.text = it
-        }
+//        DispatchUtil.timeCounterLiveData.observe(this) {
+//            tvCurrentTrainingDuration.text = it
+//        }
 
         DispatchUtil.onResultObservable().observeOn(AndroidSchedulers.mainThread()).subscribe {
             if (DispatchUtil.isTimerStart) {
                 tvEverydayTrainingDuration.text = "${it.everydayTrainingDuration}m"
-//                tvCurrentTrainingDuration.text = "${it.currentTrainingNum.format2Date()}"
+                tvCurrentTrainingDuration.text = "${it.sumTrainingDuration.format2Date()}"
                 tvCurrentTrainingNum.text = "${it.currentTrainingNum}次"
                 tvEverydayTrainingGroups.text = "${it.eachGroupTrainingNum}组"
                 tvCurrentTrainingGroups.text =
@@ -119,6 +120,8 @@ class MainActivity : BaseActivity() {
             { text, start, before, count ->
                 "EET".logE("text:$text, start:$start, before:$before, count:$count")
             }
+
+        PARAMS.logE("params:${SP.get<ParamsInfo>(PARAMS)}")
     }
 
     private fun LineChart.init(desc: String) {
@@ -256,7 +259,7 @@ class MainActivity : BaseActivity() {
                 true
             }
             R.id.action_setting -> {
-                if (BluetoothServer.btConnState == BluetoothServer.STATE_BT_CONNECT_SUCCESS) {
+                if (BluetoothServer.isConnected) {
                     SettingDialog(this, this).show()
                 } else {
                     showShortToast("请先搜索连接设备...")

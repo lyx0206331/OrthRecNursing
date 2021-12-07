@@ -2,10 +2,8 @@ package com.chwishay.orthrecnursing.views
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.Typeface
 import android.text.InputType
-import android.text.InputType.TYPE_CLASS_PHONE
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.EditText
@@ -16,10 +14,8 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.IntDef
 import androidx.annotation.Nullable
-import androidx.core.view.marginEnd
 import androidx.core.widget.addTextChangedListener
 import com.chwishay.orthrecnursing.R
-import com.chwishay.orthrecnursing.orDefault
 import com.chwishay.orthrecnursing.toEditable
 
 //                       _ooOoo_
@@ -165,18 +161,21 @@ class ExpandableEditText @JvmOverloads constructor(context: Context, @Nullable a
             field = value
             tvPrefix.text = field
         }
+        get() = (tvPrefix.text ?: "").toString()
 
     var sufText: String = ""
         set(value) {
             field = value
             tvSuffix.text = field
         }
+        get() = (tvSuffix.text ?: "").toString()
 
     var centerText: String = ""
         set(value) {
             field = value
             etCenter.text = field.toEditable()
         }
+        get() = (etCenter.text ?: "").toString()
 
     @InputableType
     var centerInputType = INPUT_TYPE_TEXT
@@ -190,6 +189,7 @@ class ExpandableEditText @JvmOverloads constructor(context: Context, @Nullable a
             field = value
             etCenter.hint = field
         }
+        get() = (etCenter.hint ?: "").toString()
 
     @ColorInt
     var centerHintColor: Int = Color.LTGRAY
@@ -207,17 +207,25 @@ class ExpandableEditText @JvmOverloads constructor(context: Context, @Nullable a
         addView(etCenter)
         addView(tvSuffix)
 
-        context.obtainStyledAttributes(attrs, R.styleable.ExpandableEditText)?.also {
-            preTextColor = it.getColor(R.styleable.ExpandableEditText_eet_pre_textColor, preTextColor)
-            preTextSize = it.getDimension(R.styleable.ExpandableEditText_eet_pre_textSize, preTextSize)
+        context.obtainStyledAttributes(attrs, R.styleable.ExpandableEditText).also {
+            preTextColor =
+                it.getColor(R.styleable.ExpandableEditText_eet_pre_textColor, preTextColor)
+            preTextSize =
+                it.getDimension(R.styleable.ExpandableEditText_eet_pre_textSize, preTextSize)
             preTextStyle = it.getInt(R.styleable.ExpandableEditText_eet_pre_textStyle, preTextStyle)
-            sufTextColor = it.getColor(R.styleable.ExpandableEditText_eet_suf_textColor, sufTextColor)
-            sufTextSize = it.getDimension(R.styleable.ExpandableEditText_eet_suf_textSize, sufTextSize)
+            sufTextColor =
+                it.getColor(R.styleable.ExpandableEditText_eet_suf_textColor, sufTextColor)
+            sufTextSize =
+                it.getDimension(R.styleable.ExpandableEditText_eet_suf_textSize, sufTextSize)
             sufTextStyle = it.getInt(R.styleable.ExpandableEditText_eet_suf_textStyle, sufTextStyle)
-            centerTextColor = it.getColor(R.styleable.ExpandableEditText_eet_center_textColor, centerTextColor)
-            centerTextSize = it.getDimension(R.styleable.ExpandableEditText_eet_center_textSize, centerTextSize)
-            centerTextStyle = it.getInt(R.styleable.ExpandableEditText_eet_center_textStyle, centerTextStyle)
-            isCenterEditable = it.getBoolean(R.styleable.ExpandableEditText_eet_isCenterEditable, isCenterEditable)
+            centerTextColor =
+                it.getColor(R.styleable.ExpandableEditText_eet_center_textColor, centerTextColor)
+            centerTextSize =
+                it.getDimension(R.styleable.ExpandableEditText_eet_center_textSize, centerTextSize)
+            centerTextStyle =
+                it.getInt(R.styleable.ExpandableEditText_eet_center_textStyle, centerTextStyle)
+            isCenterEditable =
+                it.getBoolean(R.styleable.ExpandableEditText_eet_isCenterEditable, isCenterEditable)
             preToCenterSpacing = it.getDimensionPixelSize(R.styleable.ExpandableEditText_eet_pre_to_center_spacing, preToCenterSpacing)
             sufToCenterSpacing = it.getDimensionPixelSize(R.styleable.ExpandableEditText_eet_suf_to_center_spacing, sufToCenterSpacing)
             preText = it.getString(R.styleable.ExpandableEditText_eet_pre_text) ?: preText

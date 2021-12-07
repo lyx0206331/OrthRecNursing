@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -16,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chwishay.orthrecnursing.DispatchUtil.format2Date
 import com.chwishay.orthrecnursing.DispatchUtil.lastFrameData
-import com.chwishay.orthrecnursing.views.ExpandableEditText
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.dialog_setting.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -198,75 +197,30 @@ class ReportDialog(context: Context, private val lifecycleOwner: LifecycleOwner)
 class SettingDialog(context: Context, private val lifecycleOwner: LifecycleOwner) :
     Dialog(context, R.style.DialogTheme) {
 
-    private lateinit var etEverydayTrainingDuration: ExpandableEditText
-    private lateinit var etEverydayTrainingGroup: ExpandableEditText
-    private lateinit var etGroupTrainingNum: ExpandableEditText
-    private lateinit var etTargetAngle: ExpandableEditText
-    private lateinit var etTargetAngleVelocity: ExpandableEditText
-    private lateinit var cbLateralFemoralMuscleIfWork: CheckBox
-    private lateinit var cbMedialFemoralMuscleIfWork: CheckBox
-    private lateinit var cbBicepsFemorisIfWork: CheckBox
-    private lateinit var cbSemitendinosusFemorisIfWork: CheckBox
-    private lateinit var cbAnteriorTibialTendonIfWork: CheckBox
-    private lateinit var cbPeronealMuscleIfWork: CheckBox
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_setting)
-        etEverydayTrainingDuration = find<ExpandableEditText>(R.id.etEverydayTrainingDuration).apply {
-            centerText = "${DispatchUtil.paramsInfo.everydayTrainingDuration}"
-        }
-        etEverydayTrainingGroup = find<ExpandableEditText>(R.id.etEverydayTrainingGroup).apply {
-            centerText = "${DispatchUtil.paramsInfo.everydayTrainingGroupNum}"
-        }
-        etGroupTrainingNum = find<ExpandableEditText>(R.id.etGroupTrainingNum).apply {
-            centerText = "${DispatchUtil.paramsInfo.groupTrainingNum}"
-        }
-        etTargetAngle = find<ExpandableEditText>(R.id.etTargetAngle).apply {
-            centerText = "${DispatchUtil.paramsInfo.targetAngle}"
-        }
-        etTargetAngleVelocity = find<ExpandableEditText>(R.id.etTargetAngleVelocity).apply {
-            centerText = "${DispatchUtil.paramsInfo.getTargetAngleVelocity()}"
-        }
-        cbLateralFemoralMuscleIfWork = find<CheckBox>(R.id.cbLateralFemoralMuscleIfWork).apply {
-            isChecked = DispatchUtil.paramsInfo.lateralFemoralMuscleIfWork == 1.toByte()
-            setOnCheckedChangeListener { buttonView, isChecked ->
-                DispatchUtil.paramsInfo.lateralFemoralMuscleIfWork = if (isChecked) 1 else 0
-            }
-        }
-        cbMedialFemoralMuscleIfWork = find<CheckBox>(R.id.cbMedialFemoralMuscleIfWork).apply {
-            isChecked = DispatchUtil.paramsInfo.lateralFemoralMuscleIfWork == 1.toByte()
-            setOnCheckedChangeListener { buttonView, isChecked ->
-                DispatchUtil.paramsInfo.medialFemoralMuscleIfWork = if (isChecked) 1 else 0
-            }
-        }
-        cbBicepsFemorisIfWork = find<CheckBox>(R.id.cbBicepsFemorisIfWork).apply {
-            isChecked = DispatchUtil.paramsInfo.bicepsFemorisIfWork == 1.toByte()
-            setOnCheckedChangeListener { buttonView, isChecked ->
-                DispatchUtil.paramsInfo.bicepsFemorisIfWork = if (isChecked) 1 else 0
-            }
-        }
-        cbSemitendinosusFemorisIfWork = find<CheckBox>(R.id.cbSemitendinosusFemorisIfWork).apply {
-            isChecked = DispatchUtil.paramsInfo.semitendinosusFemorisIfWork == 1.toByte()
-            setOnCheckedChangeListener { buttonView, isChecked ->
-                DispatchUtil.paramsInfo.semitendinosusFemorisIfWork = if (isChecked) 1 else 0
-            }
-        }
-        cbAnteriorTibialTendonIfWork = find<CheckBox>(R.id.cbAnteriorTibialTendonIfWork).apply {
-            isChecked = DispatchUtil.paramsInfo.anteriorTibialTendonIfWork == 1.toByte()
-            setOnCheckedChangeListener { buttonView, isChecked ->
-                DispatchUtil.paramsInfo.anteriorTibialTendonIfWork = if (isChecked) 1 else 0
-            }
-        }
-        cbPeronealMuscleIfWork = find<CheckBox>(R.id.cbPeronealMuscleIfWork).apply {
-            isChecked = DispatchUtil.paramsInfo.peronealMuscleIfWork == 1.toByte()
-            setOnCheckedChangeListener { buttonView, isChecked ->
-                DispatchUtil.paramsInfo.peronealMuscleIfWork = if (isChecked) 1 else 0
-            }
-        }
 
-        find<TextView>(R.id.tvConfirm).onClick {
-            if (BluetoothServer.btConnState != BluetoothServer.STATE_BT_CONNECT_SUCCESS) {
+        var paramsInfo: ParamsInfo = SP.get<ParamsInfo>(PARAMS) ?: ParamsInfo(
+            0.toShort(), 0.toShort(), 60.toByte(), 1.toByte(), 10.toByte(),
+            60, 40, 0, 1, 1,
+            1, 1, 1, 1
+        )
+        etEverydayTrainingDuration.centerText = "${paramsInfo.everydayTrainingDuration}"
+        etEverydayTrainingGroup.centerText = "${paramsInfo.everydayTrainingGroupNum}"
+        etGroupTrainingNum.centerText = "${paramsInfo.groupTrainingNum}"
+        etTargetAngle.centerText = "${paramsInfo.targetAngle}"
+        etTargetAngleVelocity.centerText = "${paramsInfo.getTargetAngleVelocity()}"
+        cbLateralFemoralMuscleIfWork.isChecked = paramsInfo.lateralFemoralMuscleIfWork == 1.toByte()
+        cbMedialFemoralMuscleIfWork.isChecked = paramsInfo.medialFemoralMuscleIfWork == 1.toByte()
+        cbBicepsFemorisIfWork.isChecked = paramsInfo.bicepsFemorisIfWork == 1.toByte()
+        cbSemitendinosusFemorisIfWork.isChecked =
+            paramsInfo.semitendinosusFemorisIfWork == 1.toByte()
+        cbAnteriorTibialTendonIfWork.isChecked = paramsInfo.anteriorTibialTendonIfWork == 1.toByte()
+        cbPeronealMuscleIfWork.isChecked = paramsInfo.peronealMuscleIfWork == 1.toByte()
+
+        tvConfirm.onClick {
+            if (!BluetoothServer.isConnected) {
                 showShortToast("请先搜索连接设备...")
                 return@onClick
             }
@@ -279,23 +233,39 @@ class SettingDialog(context: Context, private val lifecycleOwner: LifecycleOwner
                 showShortToast("参数输入异常，请检查参数")
                 return@onClick
             }
-            DispatchUtil.paramsInfo.historyTrainingDuration =
+            paramsInfo.historyTrainingDuration =
                 lastFrameData.sumTrainingDuration.toShort()
-            DispatchUtil.paramsInfo.historyTrainingNum = lastFrameData.currentTrainingNum.toShort()
-            DispatchUtil.paramsInfo.everydayTrainingDuration =
-                Integer.parseInt(etEverydayTrainingDuration.centerText).toByte()
-            DispatchUtil.paramsInfo.everydayTrainingGroupNum =
-                Integer.parseInt(etEverydayTrainingGroup.centerText).toByte()
-            DispatchUtil.paramsInfo.groupTrainingNum =
-                Integer.parseInt(etGroupTrainingNum.centerText).toByte()
-            DispatchUtil.paramsInfo.targetAngle =
-                Integer.parseInt(etTargetAngle.centerText).toByte()
-            Integer.parseInt(etTargetAngleVelocity.centerText).toBytesLE().also {
-                DispatchUtil.paramsInfo.targetAngleVelocityLowBit = it[0]
-                DispatchUtil.paramsInfo.targetAngleVelocityHighBit = it[1]
+            paramsInfo.historyTrainingNum = lastFrameData.currentTrainingNum.toShort()
+            paramsInfo.everydayTrainingDuration =
+                Integer.parseInt(etEverydayTrainingDuration.centerText.apply { PARAMS.logE("everydayTrDu:$this") })
+                    .toByte()
+            paramsInfo.everydayTrainingGroupNum =
+                Integer.parseInt(etEverydayTrainingGroup.centerText.apply { PARAMS.logE("everydayTrGr:$this") })
+                    .toByte()
+            paramsInfo.groupTrainingNum =
+                Integer.parseInt(etGroupTrainingNum.centerText.apply { PARAMS.logE("groupTrNum:$this") })
+                    .toByte()
+            paramsInfo.targetAngle =
+                Integer.parseInt(etTargetAngle.centerText.apply { PARAMS.logE("targetAngle:$this") })
+                    .toByte()
+            Integer.parseInt(etTargetAngleVelocity.centerText.apply { PARAMS.logE("targetVel:$this") })
+                .toBytesLE().also {
+                paramsInfo.targetAngleVelocityLowBit = it[0]
+                paramsInfo.targetAngleVelocityHighBit = it[1]
             }
+            paramsInfo.lateralFemoralMuscleIfWork =
+                if (cbLateralFemoralMuscleIfWork.isChecked) 1 else 0
+            paramsInfo.medialFemoralMuscleIfWork =
+                if (cbMedialFemoralMuscleIfWork.isChecked) 1 else 0
+            paramsInfo.bicepsFemorisIfWork = if (cbBicepsFemorisIfWork.isChecked) 1 else 0
+            paramsInfo.semitendinosusFemorisIfWork =
+                if (cbSemitendinosusFemorisIfWork.isChecked) 1 else 0
+            paramsInfo.anteriorTibialTendonIfWork =
+                if (cbAnteriorTibialTendonIfWork.isChecked) 1 else 0
+            paramsInfo.peronealMuscleIfWork = if (cbPeronealMuscleIfWork.isChecked) 1 else 0
             lifecycleOwner.lifecycleScope.launch {
-                BluetoothServer.sendData(DispatchUtil.paramsInfo.toFrameByteArray())
+                SP.put(PARAMS, paramsInfo.apply { PARAMS.logE("save:${toString()}") })
+                BluetoothServer.sendData(paramsInfo.toFrameByteArray())
                 cancel()
             }
         }
