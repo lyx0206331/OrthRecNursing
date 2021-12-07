@@ -175,19 +175,19 @@ class ReportDialog(context: Context, private val lifecycleOwner: LifecycleOwner)
         find<TextView>(R.id.tvSettingJointActiveRange).text =
             "0~${DispatchUtil.jointAngle}°"
         find<TextView>(R.id.tvActuallyJointActiveRange).text =
-            "${DispatchUtil.lateral_femoral_muscle}°"
+            "${DispatchUtil.lateralFemoralMuscle}°"
         find<TextView>(R.id.tvSettingJointAngleVelocity).text =
             "${DispatchUtil.jointAngleVelocity}°/s"
         find<TextView>(R.id.tvActuallyJointAngleVelocity).text =
-            "${DispatchUtil.medial_femoris / DispatchUtil.eachGroupTrainingNum}°/s"
+            "${DispatchUtil.medialFemoris / DispatchUtil.eachGroupTrainingNum}°/s"
         find<TextView>(R.id.tvAverageStrengthOfLateralThigh).text =
-            "${DispatchUtil.biceps_femoris / DispatchUtil.eachGroupTrainingNum}"
+            "${DispatchUtil.bicepsFemoris / DispatchUtil.eachGroupTrainingNum}"
         find<TextView>(R.id.tvAverageStrengthOfMedialFemoris).text =
-            "${DispatchUtil.semitendinosus_femoris / DispatchUtil.eachGroupTrainingNum}"
+            "${DispatchUtil.semitendinosusFemoris / DispatchUtil.eachGroupTrainingNum}"
         find<TextView>(R.id.tvAverageStrengthOfBicepsFemoris).text =
-            "${DispatchUtil.tibialis_anterior_muscle / DispatchUtil.eachGroupTrainingNum}"
+            "${DispatchUtil.tibialisAnteriorMuscle / DispatchUtil.eachGroupTrainingNum}"
         find<TextView>(R.id.tvAverageStrengthOfSemitendinosusFemoris).text =
-            "${DispatchUtil.peroneus_longus / DispatchUtil.eachGroupTrainingNum}"
+            "${DispatchUtil.peroneusLongus / DispatchUtil.eachGroupTrainingNum}"
         find<TextView>(R.id.tvAverageStrengthOfTibialisAnteriormuscle).text =
             "${DispatchUtil.exception / DispatchUtil.eachGroupTrainingNum}"
 //        find<TextView>(R.id.tvAverageStrengthOfPeroneusLongus).text =

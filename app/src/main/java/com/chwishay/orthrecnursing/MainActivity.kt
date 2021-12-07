@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.ColorInt
 import androidx.core.view.isVisible
-import com.chwishay.orthrecnursing.DispatchUtil.format2Date
 import com.chwishay.orthrecnursing.views.ExpandableEditText
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
@@ -51,14 +50,14 @@ class MainActivity : BaseActivity() {
             }.addTo(defaultCompositeDisposable)
         }
 
-//        DispatchUtil.timeCounterLiveData.observe(this) {
-//            tvCurrentTrainingDuration.text = it
-//        }
+        DispatchUtil.timeCounterLiveData.observe(this) {
+            tvCurrentTrainingDuration.text = it
+        }
 
         DispatchUtil.onResultObservable().observeOn(AndroidSchedulers.mainThread()).subscribe {
             if (DispatchUtil.isTimerStart) {
                 tvEverydayTrainingDuration.text = "${it.everydayTrainingDuration}m"
-                tvCurrentTrainingDuration.text = "${it.currentTrainingNum.format2Date()}"
+//                tvCurrentTrainingDuration.text = "${it.currentTrainingNum.format2Date()}"
                 tvCurrentTrainingNum.text = "${it.currentTrainingNum}次"
                 tvEverydayTrainingGroups.text = "${it.eachGroupTrainingNum}组"
                 tvCurrentTrainingGroups.text =

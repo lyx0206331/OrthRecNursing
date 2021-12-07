@@ -7,6 +7,7 @@ import com.chwishay.orthrecnursing.DispatchUtil.getVerifyCode
 import com.chwishay.orthrecnursing.DispatchUtil.jointAngleVelocity
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import kotlinx.coroutines.*
 
 //                       _ooOoo_
 //                      o8888888o
@@ -59,45 +60,45 @@ object DispatchUtil {
     var currentTrainingNum = 0
     var jointAngle = 0
     var jointAngleVelocity = 0
-    var lateral_femoral_muscle = 0
-    var medial_femoris = 0
-    var biceps_femoris = 0
-    var semitendinosus_femoris = 0
-    var tibialis_anterior_muscle = 0
-    var peroneus_longus = 0
+    var lateralFemoralMuscle = 0
+    var medialFemoris = 0
+    var bicepsFemoris = 0
+    var semitendinosusFemoris = 0
+    var tibialisAnteriorMuscle = 0
+    var peroneusLongus = 0
     var exception = 0
 
-//    val timeCounterLiveData = MutableLiveData("0m0s")
+    val timeCounterLiveData = MutableLiveData("0m0s")
 
     val frameHead = byteArrayOf(0xAB.toByte(), 0xCD.toByte())
 
-//    private var timerValue = 0
-//        set(value) {
-//            field = value
+    private var timerValue = 0
+        set(value) {
+            field = value
 //            if (field > 0) {
 //                eachGroupTrainingNum = field
 //            }
-//            timeCounterLiveData.postValue(field.format2Date())
-//        }
+            timeCounterLiveData.postValue(field.format2Date())
+        }
 
     fun Int.format2Date() = if (this < 0) "0m0s" else "${this / 60}m${this % 60}s"
 
-    //    private var timerJob: Job? = null
-//
+    private var timerJob: Job? = null
+
     var isTimerStart = false
         set(value) {
             field = value
             if (field) {
-//                timerValue = 0
+                timerValue = 0
                 resetData()
-//                timerJob = GlobalScope.launch(Dispatchers.IO) {
-//                    while (true) {
-//                        delay(1000)
-//                        ++timerValue
-//                    }
-//                }
-//            } else {
-//                timerJob?.cancel("停止计时")
+                timerJob = GlobalScope.launch(Dispatchers.IO) {
+                    while (true) {
+                        delay(1000)
+                        ++timerValue
+                    }
+                }
+            } else {
+                timerJob?.cancel("停止计时")
             }
         }
     
@@ -144,13 +145,13 @@ object DispatchUtil {
         currentTrainingNum = dataInfo.currentTrainingNum
         jointAngle = dataInfo.jointAngle
         jointAngleVelocity = dataInfo.jointAngleVelocity
-        lateral_femoral_muscle =
-            if (dataInfo.jointAngle > lateral_femoral_muscle) dataInfo.jointAngle else lateral_femoral_muscle
-        medial_femoris += dataInfo.medialFemoris
-        biceps_femoris += dataInfo.bicepsFemoris
-        semitendinosus_femoris += dataInfo.semitendinosusFemoris
-        tibialis_anterior_muscle += dataInfo.tibialisAnteriorMuscle
-        peroneus_longus += dataInfo.peroneusLongus
+        lateralFemoralMuscle =
+            if (dataInfo.jointAngle > lateralFemoralMuscle) dataInfo.jointAngle else lateralFemoralMuscle
+        medialFemoris += dataInfo.medialFemoris
+        bicepsFemoris += dataInfo.bicepsFemoris
+        semitendinosusFemoris += dataInfo.semitendinosusFemoris
+        tibialisAnteriorMuscle += dataInfo.tibialisAnteriorMuscle
+        peroneusLongus += dataInfo.peroneusLongus
     }
 
     fun resetData() {
@@ -161,12 +162,12 @@ object DispatchUtil {
         currentTrainingNum = 0
         jointAngle = 0
         jointAngleVelocity = 0
-        lateral_femoral_muscle = 0
-        medial_femoris = 0
-        biceps_femoris = 0
-        semitendinosus_femoris = 0
-        tibialis_anterior_muscle = 0
-        peroneus_longus = 0
+        lateralFemoralMuscle = 0
+        medialFemoris = 0
+        bicepsFemoris = 0
+        semitendinosusFemoris = 0
+        tibialisAnteriorMuscle = 0
+        peroneusLongus = 0
     }
 }
 
