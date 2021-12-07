@@ -74,36 +74,36 @@ class MainActivity : BaseActivity() {
                 tvAnteriorTibialTendonContractionStrength.text = "${it.tibialisAnteriorMuscle}"
                 tvPeronealMuscleContractionStrength.text = "${it.peroneusLongus}"
 
-                if (validCycleIndex++ % 2 == 0) {
-                    chartJointAngle.addEntry(LineEntity("角度", it.jointAngle.toFloat()))
-                    chartJointAngleVelocity.addEntry(
-                        LineEntity(
-                            "角速度",
-                            it.jointAngleVelocity.toFloat()
-                        )
-                    )
-                    chartLateralMuscle.addEntry(
-                        LineEntity(
-                            "外侧肌",
-                            it.lateralFemoralMuscle.toFloat()
-                        )
-                    )
-                    chartBiceps.addEntry(LineEntity("二头肌", it.bicepsFemoris.toFloat()))
-                    chartSemitendinosus.addEntry(
-                        LineEntity(
-                            "半腱肌",
-                            it.semitendinosusFemoris.toFloat()
-                        )
-                    )
-                    chartMedialMuscle.addEntry(LineEntity("内侧肌", it.medialFemoris.toFloat()))
-                    chartTibialisAnteriorMuscle.addEntry(
-                        LineEntity(
-                            "胫前肌",
-                            it.tibialisAnteriorMuscle.toFloat()
-                        )
-                    )
-                    chartPeroneusLongus.addEntry(LineEntity("腓长肌", it.peroneusLongus.toFloat()))
-                }
+//                if (validCycleIndex++ % 2 == 0) {
+//                    chartJointAngle.addEntry(LineEntity("角度", it.jointAngle.toFloat()))
+//                    chartJointAngleVelocity.addEntry(
+//                        LineEntity(
+//                            "角速度",
+//                            it.jointAngleVelocity.toFloat()
+//                        )
+//                    )
+//                    chartLateralMuscle.addEntry(
+//                        LineEntity(
+//                            "外侧肌",
+//                            it.lateralFemoralMuscle.toFloat()
+//                        )
+//                    )
+//                    chartBiceps.addEntry(LineEntity("二头肌", it.bicepsFemoris.toFloat()))
+//                    chartSemitendinosus.addEntry(
+//                        LineEntity(
+//                            "半腱肌",
+//                            it.semitendinosusFemoris.toFloat()
+//                        )
+//                    )
+//                    chartMedialMuscle.addEntry(LineEntity("内侧肌", it.medialFemoris.toFloat()))
+//                    chartTibialisAnteriorMuscle.addEntry(
+//                        LineEntity(
+//                            "胫前肌",
+//                            it.tibialisAnteriorMuscle.toFloat()
+//                        )
+//                    )
+//                    chartPeroneusLongus.addEntry(LineEntity("腓长肌", it.peroneusLongus.toFloat()))
+//                }
 
 //                "BYTES_VALUE".logE("${it}")
             }

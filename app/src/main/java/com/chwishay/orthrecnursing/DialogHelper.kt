@@ -237,18 +237,18 @@ class SettingDialog(context: Context, private val lifecycleOwner: LifecycleOwner
                 lastFrameData.sumTrainingDuration.toShort()
             paramsInfo.historyTrainingNum = lastFrameData.currentTrainingNum.toShort()
             paramsInfo.everydayTrainingDuration =
-                Integer.parseInt(etEverydayTrainingDuration.centerText.apply { PARAMS.logE("everydayTrDu:$this") })
+                Integer.parseInt(etEverydayTrainingDuration.centerText)
                     .toByte()
             paramsInfo.everydayTrainingGroupNum =
-                Integer.parseInt(etEverydayTrainingGroup.centerText.apply { PARAMS.logE("everydayTrGr:$this") })
+                Integer.parseInt(etEverydayTrainingGroup.centerText)
                     .toByte()
             paramsInfo.groupTrainingNum =
-                Integer.parseInt(etGroupTrainingNum.centerText.apply { PARAMS.logE("groupTrNum:$this") })
+                Integer.parseInt(etGroupTrainingNum.centerText)
                     .toByte()
             paramsInfo.targetAngle =
-                Integer.parseInt(etTargetAngle.centerText.apply { PARAMS.logE("targetAngle:$this") })
+                Integer.parseInt(etTargetAngle.centerText)
                     .toByte()
-            Integer.parseInt(etTargetAngleVelocity.centerText.apply { PARAMS.logE("targetVel:$this") })
+            Integer.parseInt(etTargetAngleVelocity.centerText)
                 .toBytesLE().also {
                 paramsInfo.targetAngleVelocityLowBit = it[0]
                 paramsInfo.targetAngleVelocityHighBit = it[1]
@@ -264,7 +264,7 @@ class SettingDialog(context: Context, private val lifecycleOwner: LifecycleOwner
                 if (cbAnteriorTibialTendonIfWork.isChecked) 1 else 0
             paramsInfo.peronealMuscleIfWork = if (cbPeronealMuscleIfWork.isChecked) 1 else 0
             lifecycleOwner.lifecycleScope.launch {
-                SP.put(PARAMS, paramsInfo.apply { PARAMS.logE("save:${toString()}") })
+                SP.put(PARAMS, paramsInfo)
                 BluetoothServer.sendData(paramsInfo.toFrameByteArray())
                 cancel()
             }

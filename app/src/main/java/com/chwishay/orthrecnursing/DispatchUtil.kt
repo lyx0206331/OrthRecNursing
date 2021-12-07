@@ -1,12 +1,12 @@
 package com.chwishay.orthrecnursing
 
-import androidx.lifecycle.MutableLiveData
 import com.chwishay.orthrecnursing.BluetoothServer.LOG_TAG
 import com.chwishay.orthrecnursing.DispatchUtil.frameHead
 import com.chwishay.orthrecnursing.DispatchUtil.getVerifyCode
 import com.chwishay.orthrecnursing.DispatchUtil.jointAngleVelocity
 import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.processors.BehaviorProcessor
+import io.reactivex.schedulers.Schedulers
 
 //                       _ooOoo_
 //                      o8888888o
@@ -38,13 +38,14 @@ object DispatchUtil {
 
     val DATA_SIZE = 22
 
-    val resultLiveData = MutableLiveData<DataInfo>()
-
-    val resultSubject by lazy { BehaviorSubject.create<DataInfo>() }
+    val resultSubject by lazy {
+        BehaviorProcessor.create<DataInfo>().apply { observeOn(Schedulers.io()) }
+//        BehaviorSubject.create<DataInfo>().toFlowable(BackpressureStrategy.LATEST)
+    }
 
     var lastFrameData: DataInfo = DataInfo()
 
-    fun onResultObservable(): Observable<DataInfo> = resultSubject
+    fun onResultObservable(): Observable<DataInfo> = resultSubject.toObservable()
 
     var everydayTrainingDuration = 0
     var everydayTrainingNum = 0
