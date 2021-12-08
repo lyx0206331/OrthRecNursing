@@ -5,8 +5,8 @@ import com.chwishay.orthrecnursing.DispatchUtil.frameHead
 import com.chwishay.orthrecnursing.DispatchUtil.getVerifyCode
 import com.chwishay.orthrecnursing.DispatchUtil.jointAngleVelocity
 import io.reactivex.Observable
-import io.reactivex.processors.BehaviorProcessor
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
+import kotlinx.coroutines.*
 
 //                       _ooOoo_
 //                      o8888888o
@@ -39,13 +39,14 @@ object DispatchUtil {
     val DATA_SIZE = 22
 
     val resultSubject by lazy {
-        BehaviorProcessor.create<DataInfo>().apply { observeOn(Schedulers.io()) }
+        BehaviorSubject.create<DataInfo>()
+//        BehaviorProcessor.create<DataInfo>().apply { observeOn(Schedulers.io()) }
 //        BehaviorSubject.create<DataInfo>().toFlowable(BackpressureStrategy.LATEST)
     }
 
     var lastFrameData: DataInfo = DataInfo()
 
-    fun onResultObservable(): Observable<DataInfo> = resultSubject.toObservable()
+    fun onResultObservable(): Observable<DataInfo> = resultSubject
 
     var everydayTrainingDuration = 0
     var everydayTrainingNum = 0
@@ -93,6 +94,9 @@ object DispatchUtil {
 //                }
 //            } else {
 //                timerJob?.cancel("停止计时")
+                test()
+            } else {
+                testJob?.cancel("停止发送数据")
             }
         }
     
@@ -102,7 +106,7 @@ object DispatchUtil {
             LOG_TAG.logE("接收数据:${it.formatHexString(" ")}")
             writeLog("${it.formatHexString(" ")}")
             if (it != null && it.size == DATA_SIZE) {
-                FrameData(data = it.copyOfRange(frameHead.size, DATA_SIZE))
+                FrameData(data = it.copyOfRange(frameHead.size, DATA_SIZE - 1))
             } else {
                 writeLog("数据异常:size:${it?.size.orDefault()}.content:${it.formatHexString(" ")}", LOG_ERROR)
                 null
@@ -110,7 +114,7 @@ object DispatchUtil {
         }
         BluetoothServer.verifyBlock = {
             val code = if (it == null || it.size <= 3) 0 else {
-                it.copyOfRange(0, it.size-1).sum()
+                it.copyOfRange(0, it.size - 1).getVerifyCode()
             }
             code.toUByte() == it!!.last().toUByte()
         }
@@ -123,10 +127,13 @@ object DispatchUtil {
                 resultSubject.onNext(result)
             }
         }, {
-            "Exception".logE(it.message?:"unknown exception")
+            "Exception".logE(it.message ?: "unknown exception")
         })
     }
 
+    /**
+     * 获取校验码
+     */
     fun ByteArray.getVerifyCode(): Int = if (this == null || this.size <= 3) 0 else {
         this.copyOfRange(0, size).sum()
     }
@@ -183,6 +190,26 @@ data class DataInfo(
     var exceptionCode: Int = 0
 )
 
+var testJob: Job? = null
+
+private fun test() {
+    testJob = GlobalScope.launch {
+        while (DispatchUtil.isTimerStart) {
+            delay(20)
+            val arrayData = byteArrayOf(
+                10, 65, 20, 40, *(1..200).random().toShort().toBytesLE(),
+                *(1..40).random().toShort().toBytesLE(), *(10..100).random().toShort().toBytesLE(),
+                *(10..125).random().toShort().toBytesLE(), (0..40).random().toByte(),
+                (0..40).random().toByte(), (0..40).random().toByte(), (0..40).random().toByte(),
+                (0..40).random().toByte(), (0..40).random().toByte(), (0..12).random().toByte()
+            )
+
+            BluetoothServer.dataReceiveSubject.onNext(FrameData(data = arrayData))
+        }
+    }
+
+}
+
 fun ByteArray.parseData() = DataInfo(
     this[0].toUByte().toInt(),
     this[1].toUByte().toInt(),
@@ -190,8 +217,8 @@ fun ByteArray.parseData() = DataInfo(
     this[3].toUByte().toInt(),
     this.copyOfRange(4, 6).toUnsignInt(),
     this.copyOfRange(6, 8).toUnsignInt(),
-    this.copyOfRange(8, 10).read2ShortLE() / 10,
-    this.copyOfRange(10, 12).read2ShortLE() / 10,
+    this.copyOfRange(8, 10).toUnsignInt() / 10,
+    this.copyOfRange(10, 12).toUnsignInt() / 10,
     this[12].toUByte().toInt(),
     this[13].toUByte().toInt(),
     this[14].toUByte().toInt(),

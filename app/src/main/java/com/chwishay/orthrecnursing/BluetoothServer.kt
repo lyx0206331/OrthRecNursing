@@ -118,7 +118,7 @@ object BluetoothServer {
         return connStateSubject
     }
 
-    private val dataReceiveSubject by lazy {
+    val dataReceiveSubject by lazy {
         PublishSubject.create<FrameData>()
     }
 
@@ -145,7 +145,7 @@ object BluetoothServer {
 //            }
         }
 
-    var isConnected = /*btConnState == STATE_BT_CONNECT_SUCCESS*/true
+    var isConnected = btConnState == STATE_BT_CONNECT_SUCCESS
 
     private val discBtStateSubject by lazy { BehaviorSubject.create<Int>() }
 

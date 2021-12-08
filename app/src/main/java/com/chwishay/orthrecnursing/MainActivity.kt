@@ -60,9 +60,10 @@ class MainActivity : BaseActivity() {
                 tvEverydayTrainingDuration.text = "${it.everydayTrainingDuration}m"
                 tvCurrentTrainingDuration.text = "${it.sumTrainingDuration.format2Date()}"
                 tvCurrentTrainingNum.text = "${it.currentTrainingNum}次"
-                tvEverydayTrainingGroups.text = "${it.eachGroupTrainingNum}组"
+                tvEverydayTrainingGroups.text =
+                    "${(SP.get<ParamsInfo>(PARAMS) ?: ParamsInfo()).everydayTrainingGroupNum}组"
                 tvCurrentTrainingGroups.text =
-                    "${round(1f * it.currentTrainingNum / it.eachGroupTrainingNum)}组"
+                    "${round(1f * it.currentTrainingNum / it.eachGroupTrainingNum).toInt()}组"
                 tvGroupTrainingNum.text = "${it.eachGroupTrainingNum}次"
                 tvTargetJointAngle.text = "${it.targetJointAngle}°"
                 tvJointAngle.text = "${it.jointAngle}°"
@@ -74,36 +75,36 @@ class MainActivity : BaseActivity() {
                 tvAnteriorTibialTendonContractionStrength.text = "${it.tibialisAnteriorMuscle}"
                 tvPeronealMuscleContractionStrength.text = "${it.peroneusLongus}"
 
-//                if (validCycleIndex++ % 2 == 0) {
-//                    chartJointAngle.addEntry(LineEntity("角度", it.jointAngle.toFloat()))
-//                    chartJointAngleVelocity.addEntry(
-//                        LineEntity(
-//                            "角速度",
-//                            it.jointAngleVelocity.toFloat()
-//                        )
-//                    )
-//                    chartLateralMuscle.addEntry(
-//                        LineEntity(
-//                            "外侧肌",
-//                            it.lateralFemoralMuscle.toFloat()
-//                        )
-//                    )
-//                    chartBiceps.addEntry(LineEntity("二头肌", it.bicepsFemoris.toFloat()))
-//                    chartSemitendinosus.addEntry(
-//                        LineEntity(
-//                            "半腱肌",
-//                            it.semitendinosusFemoris.toFloat()
-//                        )
-//                    )
-//                    chartMedialMuscle.addEntry(LineEntity("内侧肌", it.medialFemoris.toFloat()))
-//                    chartTibialisAnteriorMuscle.addEntry(
-//                        LineEntity(
-//                            "胫前肌",
-//                            it.tibialisAnteriorMuscle.toFloat()
-//                        )
-//                    )
-//                    chartPeroneusLongus.addEntry(LineEntity("腓长肌", it.peroneusLongus.toFloat()))
-//                }
+                if (validCycleIndex++ % 2 == 0) {
+                    chartJointAngle.addEntry(LineEntity("角度", it.jointAngle.toFloat()))
+                    chartJointAngleVelocity.addEntry(
+                        LineEntity(
+                            "角速度",
+                            it.jointAngleVelocity.toFloat()
+                        )
+                    )
+                    chartLateralMuscle.addEntry(
+                        LineEntity(
+                            "外侧肌",
+                            it.lateralFemoralMuscle.toFloat()
+                        )
+                    )
+                    chartBiceps.addEntry(LineEntity("二头肌", it.bicepsFemoris.toFloat()))
+                    chartSemitendinosus.addEntry(
+                        LineEntity(
+                            "半腱肌",
+                            it.semitendinosusFemoris.toFloat()
+                        )
+                    )
+                    chartMedialMuscle.addEntry(LineEntity("内侧肌", it.medialFemoris.toFloat()))
+                    chartTibialisAnteriorMuscle.addEntry(
+                        LineEntity(
+                            "胫前肌",
+                            it.tibialisAnteriorMuscle.toFloat()
+                        )
+                    )
+                    chartPeroneusLongus.addEntry(LineEntity("腓长肌", it.peroneusLongus.toFloat()))
+                }
 
 //                "BYTES_VALUE".logE("${it}")
             }
@@ -143,12 +144,13 @@ class MainActivity : BaseActivity() {
         legend.apply {
             form = Legend.LegendForm.LINE
             textColor = Color.WHITE
+            isEnabled = false
         }
         xAxis.apply {
             textColor = Color.WHITE
             setDrawGridLines(false)
             setAvoidFirstLastClipping(false)
-            isEnabled = true
+            isEnabled = false
         }
 //            it.axisLeft.apply {
 //                textColor = Color.WHITE
@@ -245,11 +247,11 @@ class MainActivity : BaseActivity() {
                 true
             }
             R.id.action_start -> {
-                if (BluetoothServer.btConnState == BluetoothServer.STATE_BT_CONNECT_SUCCESS) {
-                    DispatchUtil.isTimerStart = !DispatchUtil.isTimerStart
-                } else {
-                    showShortToast("请先搜索连接设备...")
-                }
+//                if (BluetoothServer.btConnState == BluetoothServer.STATE_BT_CONNECT_SUCCESS) {
+                DispatchUtil.isTimerStart = !DispatchUtil.isTimerStart
+//                } else {
+//                    showShortToast("请先搜索连接设备...")
+//                }
                 true
             }
             R.id.action_report -> {
