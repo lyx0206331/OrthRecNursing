@@ -247,11 +247,11 @@ class MainActivity : BaseActivity() {
                 true
             }
             R.id.action_start -> {
-//                if (BluetoothServer.btConnState == BluetoothServer.STATE_BT_CONNECT_SUCCESS) {
+                if (BluetoothServer.btConnState == BluetoothServer.STATE_BT_CONNECT_SUCCESS) {
                 DispatchUtil.isTimerStart = !DispatchUtil.isTimerStart
-//                } else {
-//                    showShortToast("请先搜索连接设备...")
-//                }
+                } else {
+                    showShortToast("请先搜索连接设备...")
+                }
                 true
             }
             R.id.action_report -> {

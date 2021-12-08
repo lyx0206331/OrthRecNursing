@@ -94,9 +94,9 @@ object DispatchUtil {
 //                }
 //            } else {
 //                timerJob?.cancel("停止计时")
-                test()
+//                test()
             } else {
-                testJob?.cancel("停止发送数据")
+//                testJob?.cancel("停止发送数据")
             }
         }
     
