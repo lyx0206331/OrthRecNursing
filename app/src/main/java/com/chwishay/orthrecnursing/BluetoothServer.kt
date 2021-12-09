@@ -442,7 +442,7 @@ object BluetoothServer {
         }
     }
 
-    fun createSocket(dev: BluetoothDevice) {
+    suspend fun createSocket(dev: BluetoothDevice) {
             isScanningOrConnecting = true
             socket = dev.createRfcommSocketToServiceRecord(DEV_UUID)
             try {
@@ -471,7 +471,7 @@ object BluetoothServer {
     /**
      * 创建IO流
      */
-    private fun buildIOStream() {
+    private suspend fun buildIOStream() {
         socket?.also { s ->
             inputStream = s.inputStream
             outputStream = s.outputStream
@@ -481,6 +481,7 @@ object BluetoothServer {
 
             while (isTransportable) {
                 try {
+                    delay(20)
 //                    LOG_TAG.logE("read abailable:${inputStream?.available()}")
                     if (inputStream?.available() != 0) {
                         count = inputStream?.read(buffer).orDefault()
@@ -489,41 +490,45 @@ object BluetoothServer {
 //                        LOG_TAG.logE("接收数据:${data.formatHexString(" ")}")
                         if (frameHead == null) {
                             LOG_TAG.logE("数据帧头不能为空")
-                            continue
-                        }
-                        data.forEach {
-                            if (it == frameHead!![0]) {
-                                cacheDataState = STATE_HEAD_0
-                                index = 0
-                                cacheDataArray[index] = it
-                            } else if (it == frameHead!![1]) {
-                                if (cacheDataState == STATE_HEAD_0) {
-                                    cacheDataState = STATE_HEAD_1
+                        } else {
+                            data.forEach {
+                                if (it == frameHead!![0]) {
+                                    cacheDataState = STATE_HEAD_0
+                                    index = 0
+                                    cacheDataArray[index] = it
+                                } else if (it == frameHead!![1]) {
+                                    if (cacheDataState == STATE_HEAD_0) {
+                                        cacheDataState = STATE_HEAD_1
+                                        index++
+                                        cacheDataArray[index] = it
+                                    } else {
+                                        cacheDataState = STATE_IDLE
+                                    }
+                                } else if (cacheDataState == STATE_HEAD_1) {
+                                    cacheDataState = STATE_DATA
                                     index++
                                     cacheDataArray[index] = it
+                                } else if (cacheDataState == STATE_DATA) {
+                                    index++
+                                    cacheDataArray[index] = it
+                                    if (index == cacheDataArray.size - 1) {
+                                        val cmd = cacheDataArray.copyOf()
+                                        if (verifyBlock?.invoke(cmd).orDefault()) {
+                                            cmd.toFrameData(parseBlock)?.also { fd ->
+                                                dataReceiveSubject.onNext(fd)
+                                            }
+                                        } else {
+                                            writeLog(
+                                                "校验失败:${
+                                                    cmd.contentToString().also { LOG_TAG.logE(it) }
+                                                }", LOG_ERROR
+                                            )
+                                        }
+                                        cacheDataState = STATE_IDLE
+                                    }
                                 } else {
                                     cacheDataState = STATE_IDLE
                                 }
-                            } else if (cacheDataState == STATE_HEAD_1) {
-                                cacheDataState = STATE_DATA
-                                index++
-                                cacheDataArray[index] = it
-                            } else if (cacheDataState == STATE_DATA) {
-                                index++
-                                cacheDataArray[index] = it
-                                if (index == cacheDataArray.size - 1) {
-                                    val cmd = cacheDataArray.copyOf()
-                                    if (verifyBlock?.invoke(cmd).orDefault()) {
-                                        cmd.toFrameData(parseBlock)?.also { fd ->
-                                            dataReceiveSubject.onNext(fd)
-                                        }
-                                    } else {
-                                        writeLog("校验失败:${cmd.contentToString().also { LOG_TAG.logE(it) }}", LOG_ERROR)
-                                    }
-                                    cacheDataState = STATE_IDLE
-                                }
-                            } else {
-                                cacheDataState = STATE_IDLE
                             }
                         }
 
