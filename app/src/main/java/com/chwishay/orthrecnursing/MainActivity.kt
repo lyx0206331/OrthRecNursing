@@ -58,7 +58,7 @@ class MainActivity : BaseActivity() {
         DispatchUtil.onResultObservable().observeOn(AndroidSchedulers.mainThread()).subscribe {
             if (DispatchUtil.isTimerStart) {
                 tvEverydayTrainingDuration.text = "${it.everydayTrainingDuration}m"
-                tvCurrentTrainingDuration.text = "${it.sumTrainingDuration.format2Date()}"
+                tvCurrentTrainingDuration.text = "${it.sumTrainingDuration.toInt().format2Date()}"
                 tvCurrentTrainingNum.text = "${it.currentTrainingNum}次"
                 tvEverydayTrainingGroups.text =
                     "${(SP.get<ParamsInfo>(PARAMS) ?: ParamsInfo()).everydayTrainingGroupNum}组"
@@ -75,7 +75,6 @@ class MainActivity : BaseActivity() {
                 tvAnteriorTibialTendonContractionStrength.text = "${it.tibialisAnteriorMuscle}"
                 tvPeronealMuscleContractionStrength.text = "${it.peroneusLongus}"
 
-                if (validCycleIndex++ % 2 == 0) {
                     chartJointAngle.addEntry(LineEntity("角度", it.jointAngle.toFloat()))
                     chartJointAngleVelocity.addEntry(
                         LineEntity(
@@ -104,7 +103,7 @@ class MainActivity : BaseActivity() {
                         )
                     )
                     chartPeroneusLongus.addEntry(LineEntity("腓长肌", it.peroneusLongus.toFloat()))
-                }
+
 
 //                "BYTES_VALUE".logE("${it}")
             }
@@ -123,6 +122,14 @@ class MainActivity : BaseActivity() {
             }
 
         PARAMS.logE("params:${SP.get<ParamsInfo>(PARAMS)}")
+    }
+
+    override fun onBackPressed() {
+        if (tvLog.isVisible) {
+            tvLog.isVisible = false
+        } else {
+            super.onBackPressed()
+        }
     }
 
     private fun LineChart.init(desc: String) {
@@ -200,39 +207,6 @@ class MainActivity : BaseActivity() {
         this.moveViewToX(d.entryCount.toFloat())
     }
 
-    fun LineChart.addEntry2(dataInfo: DataInfo) = this.data?.let { d ->
-        fun getDateSet(index: Int, @ColorInt color: Int, name: String) =
-            d.getDataSetByIndex(index) ?: LineDataSet(null, name).also { lds ->
-                lds.axisDependency = YAxis.AxisDependency.LEFT
-                lds.color = color
-                lds.setCircleColor(Color.WHITE)
-                lds.lineWidth = 1f
-                lds.circleRadius = 2f
-                lds.fillAlpha = 65
-                lds.fillColor = color
-                lds.highLightColor = Color.rgb(244, 177, 177)
-                lds.valueTextColor = Color.WHITE
-                lds.valueTextSize = 9f
-                lds.setDrawCircles(false)
-                d.addDataSet(lds)
-            }
-//        d.addEntry(Entry(getDateSet(0, ColorTemplate.getHoloBlue(), "角度").entryCount.toFloat(), dataInfo.jointAngle.toFloat()), 0)
-//        d.addEntry(Entry(getDateSet(1, getColor1(R.color.green01FD01), "角速度").entryCount.toFloat(), dataInfo.jointAngleVelocity.toFloat()), 1)
-//        d.addEntry(Entry(getDateSet(2, getColor1(R.color.yellowFFFF00), "股外肌收缩强度").entryCount.toFloat(), dataInfo.lateralFemoralMuscleContractionStrength.toFloat()), 2)
-//        d.addEntry(Entry(getDateSet(3, getColor1(R.color.purple7E2E8D), "股内肌收缩强度").entryCount.toFloat(), dataInfo.medialFemoralMuscleContractionStrength.toFloat()), 3)
-//        d.addEntry(Entry(getDateSet(4, getColor1(R.color.colorPrimary), "二头肌收缩强度").entryCount.toFloat(), dataInfo.bicepsFemoralContractionStrength.toFloat()), 4)
-//        d.addEntry(Entry(getDateSet(5, getColor1(R.color.redFE0000), "半腱肌收缩强度").entryCount.toFloat(), dataInfo.semitendinosusFemoralContractionStrength.toFloat()), 5)
-//        d.addEntry(Entry(getDateSet(6, getColor1(R.color.brownD95218), "胫前肌收缩强度").entryCount.toFloat(), dataInfo.anteriorTibialTendonContractionStrength.toFloat()), 6)
-//        d.addEntry(Entry(getDateSet(7, getColor1(R.color.blue0000FE), "腓长肌收缩强度").entryCount.toFloat(), dataInfo.peronealMuscleContractionStrength.toFloat()), 7)
-        d.notifyDataChanged()
-
-        this.notifyDataSetChanged()
-
-        this.setVisibleXRangeMaximum(100f)
-
-        this.moveViewToX(d.entryCount.toFloat())
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return true
@@ -247,6 +221,7 @@ class MainActivity : BaseActivity() {
                 true
             }
             R.id.action_start -> {
+//                test()
                 if (BluetoothServer.btConnState == BluetoothServer.STATE_BT_CONNECT_SUCCESS) {
                 DispatchUtil.isTimerStart = !DispatchUtil.isTimerStart
                 } else {

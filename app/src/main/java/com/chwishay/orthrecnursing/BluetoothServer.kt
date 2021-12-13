@@ -14,6 +14,7 @@ import androidx.annotation.IntDef
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.AsyncSubject
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.*
@@ -197,7 +198,7 @@ object BluetoothServer {
                             isScanningOrConnecting = false
                             btDiscState = STATE_BT_DISCOVERY_FINISHED
                             device?.let {
-                                GlobalScope.launch(Dispatchers.IO) {
+                                GlobalScope.launch {
                                     createSocket(it)
                                 }
                             }
@@ -443,6 +444,7 @@ object BluetoothServer {
     }
 
     suspend fun createSocket(dev: BluetoothDevice) {
+        GlobalScope.launch(Dispatchers.IO) {
             isScanningOrConnecting = true
             socket = dev.createRfcommSocketToServiceRecord(DEV_UUID)
             try {
@@ -456,6 +458,7 @@ object BluetoothServer {
                 isScanningOrConnecting = false
                 //                release()
             }
+        }
     }
 
     /**
@@ -481,7 +484,7 @@ object BluetoothServer {
 
             while (isTransportable) {
                 try {
-                    delay(20)
+                    delay(40)
 //                    LOG_TAG.logE("read abailable:${inputStream?.available()}")
                     if (inputStream?.available() != 0) {
                         count = inputStream?.read(buffer).orDefault()

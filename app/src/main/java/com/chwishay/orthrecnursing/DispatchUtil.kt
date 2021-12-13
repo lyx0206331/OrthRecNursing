@@ -7,6 +7,7 @@ import com.chwishay.orthrecnursing.DispatchUtil.jointAngleVelocity
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.coroutines.*
+import java.nio.ByteBuffer
 
 //                       _ooOoo_
 //                      o8888888o
@@ -94,7 +95,6 @@ object DispatchUtil {
 //                }
 //            } else {
 //                timerJob?.cancel("停止计时")
-//                test()
             } else {
 //                testJob?.cancel("停止发送数据")
             }
@@ -103,7 +103,7 @@ object DispatchUtil {
     fun init() {
         BluetoothServer.frameHead = frameHead
         BluetoothServer.parseBlock = {
-            LOG_TAG.logE("接收数据:${it.formatHexString(" ")}")
+            LOG_TAG.logE("待解析数据:${it.formatHexString(" ")}")
             writeLog("${it.formatHexString(" ")}")
             if (it != null && it.size == DATA_SIZE) {
                 FrameData(data = it.copyOfRange(frameHead.size, DATA_SIZE - 1))
@@ -120,8 +120,13 @@ object DispatchUtil {
         }
         BluetoothServer.onReceiveBytesData().subscribe({ frameData ->
             if (frameData != null) {
-                val result = frameData.data!!.parseData()
-//                resultLiveData.postValue(result)
+                val result = frameData.data!!.parseData()/*DataInfo(
+                    10, 65, 20, 40, (1..200).random().toShort(),
+                    (1..40).random().toShort(), (10..100).random().toShort(),
+                    (10..125).random().toShort(), (0..40).random().toByte(),
+                    (0..40).random().toByte(), (0..40).random().toByte(), (0..40).random().toByte(),
+                    (0..40).random().toByte(), (0..40).random().toByte(), (0..12).random().toByte()
+                )*/
                 appendData(result)
                 lastFrameData = result
                 resultSubject.onNext(result)
@@ -139,15 +144,15 @@ object DispatchUtil {
     }
 
     fun appendData(dataInfo: DataInfo) {
-        everydayTrainingDuration = dataInfo.everydayTrainingDuration
-        everydayTrainingNum = dataInfo.everydayTrainingNum
-        eachGroupTrainingNum = dataInfo.eachGroupTrainingNum
-        targetJointAngle = dataInfo.targetJointAngle
-        currentTrainingNum = dataInfo.currentTrainingNum
-        jointAngle = dataInfo.jointAngle
-        jointAngleVelocity = dataInfo.jointAngleVelocity
+        everydayTrainingDuration = dataInfo.everydayTrainingDuration.toInt()
+        everydayTrainingNum = dataInfo.everydayTrainingNum.toInt()
+        eachGroupTrainingNum = dataInfo.eachGroupTrainingNum.toInt()
+        targetJointAngle = dataInfo.targetJointAngle.toInt()
+        currentTrainingNum = dataInfo.currentTrainingNum.toInt()
+        jointAngle = dataInfo.jointAngle.toInt()
+        jointAngleVelocity = dataInfo.jointAngleVelocity.toInt()
         lateralFemoralMuscle =
-            if (dataInfo.jointAngle > lateralFemoralMuscle) dataInfo.jointAngle else lateralFemoralMuscle
+            if (dataInfo.jointAngle > lateralFemoralMuscle) dataInfo.jointAngle.toInt() else lateralFemoralMuscle
         medialFemoris += dataInfo.medialFemoris
         bicepsFemoris += dataInfo.bicepsFemoris
         semitendinosusFemoris += dataInfo.semitendinosusFemoris
@@ -173,26 +178,27 @@ object DispatchUtil {
 }
 
 data class DataInfo(
-    var everydayTrainingDuration: Int = 0,
-    var everydayTrainingNum: Int = 0,
-    var eachGroupTrainingNum: Int = 0,
-    var targetJointAngle: Int = 0,
-    var sumTrainingDuration: Int = 0,
-    var currentTrainingNum: Int = 0,
-    var jointAngle: Int = 0,
-    var jointAngleVelocity: Int = 0,
-    var lateralFemoralMuscle: Int = 0,    //股外侧肌
-    var medialFemoris: Int = 0,            //股内侧肌
-    var bicepsFemoris: Int = 0,            //股二头肌
-    var semitendinosusFemoris: Int = 0,    //股半腱肌
-    var tibialisAnteriorMuscle: Int = 0,  //胫前肌
-    var peroneusLongus: Int = 0,           //腓长肌
-    var exceptionCode: Int = 0
+    var everydayTrainingDuration: Byte = 0,
+    var everydayTrainingNum: Byte = 0,
+    var eachGroupTrainingNum: Byte = 0,
+    var targetJointAngle: Byte = 0,
+    var sumTrainingDuration: Short = 0,
+    var currentTrainingNum: Short = 0,
+    var jointAngle: Short = 0,
+    var jointAngleVelocity: Short = 0,
+    var lateralFemoralMuscle: Byte = 0,    //股外侧肌
+    var medialFemoris: Byte = 0,            //股内侧肌
+    var bicepsFemoris: Byte = 0,            //股二头肌
+    var semitendinosusFemoris: Byte = 0,    //股半腱肌
+    var tibialisAnteriorMuscle: Byte = 0,  //胫前肌
+    var peroneusLongus: Byte = 0,           //腓长肌
+    var exceptionCode: Byte = 0
 )
 
 var testJob: Job? = null
 
-private fun test() {
+fun test() {
+    DispatchUtil.isTimerStart = !DispatchUtil.isTimerStart
     testJob = GlobalScope.launch {
         while (DispatchUtil.isTimerStart) {
             delay(20)
@@ -210,23 +216,44 @@ private fun test() {
 
 }
 
-fun ByteArray.parseData() = DataInfo(
-    this[0].toUByte().toInt(),
-    this[1].toUByte().toInt(),
-    this[2].toUByte().toInt(),
-    this[3].toUByte().toInt(),
-    this.copyOfRange(4, 6).toUnsignInt(),
-    this.copyOfRange(6, 8).toUnsignInt(),
-    this.copyOfRange(8, 10).toUnsignInt() / 10,
-    this.copyOfRange(10, 12).toUnsignInt() / 10,
-    this[12].toUByte().toInt(),
-    this[13].toUByte().toInt(),
-    this[14].toUByte().toInt(),
-    this[15].toUByte().toInt(),
-    this[16].toUByte().toInt(),
-    this[17].toUByte().toInt(),
-    this[18].toUByte().toInt()
-)
+fun ByteArray.parseData(): DataInfo {
+    return ByteBuffer.wrap(this).let {
+        DataInfo(
+            it.get(),
+            it.get(),
+            it.get(),
+            it.get(),
+            it.short,
+            it.short,
+            it.short,
+            it.short,
+            it.get(),
+            it.get(),
+            it.get(),
+            it.get(),
+            it.get(),
+            it.get(),
+            it.get()
+            )
+    }
+//    DataInfo(
+//        this[0].toUByte().toInt(),
+//        this[1].toUByte().toInt(),
+//        this[2].toUByte().toInt(),
+//        this[3].toUByte().toInt(),
+//        this.copyOfRange(4, 6).toUnsignInt(),
+//        this.copyOfRange(6, 8).toUnsignInt(),
+//        this.copyOfRange(8, 10).toUnsignInt() / 10,
+//        this.copyOfRange(10, 12).toUnsignInt() / 10,
+//        this[12].toUByte().toInt(),
+//        this[13].toUByte().toInt(),
+//        this[14].toUByte().toInt(),
+//        this[15].toUByte().toInt(),
+//        this[16].toUByte().toInt(),
+//        this[17].toUByte().toInt(),
+//        this[18].toUByte().toInt()
+//    )
+}
 
 data class ParamsInfo(
                         var historyTrainingDuration: Short = 0.toShort(),

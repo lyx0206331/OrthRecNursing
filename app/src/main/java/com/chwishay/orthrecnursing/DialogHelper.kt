@@ -67,8 +67,6 @@ class BtDevListDialog(context: Context, private val lifecycleOwner: LifecycleOwn
                 } else {
                     flLoading.isVisible = true
                     BluetoothServer.device = dev.dev
-                    withContext(Dispatchers.IO) {
-                        lifecycleOwner.lifecycleScope.launch {
                             if (dev.isBond()) {
                                 tvStateText.text =
                                     "${context.getString(R.string.connect_ongoing)}\n${BluetoothServer.device!!.address}"
@@ -78,9 +76,7 @@ class BtDevListDialog(context: Context, private val lifecycleOwner: LifecycleOwn
                                         "${context.getString(R.string.bind_ongoing)}\n${BluetoothServer.device!!.address}"
                                 }
                             }
-                        }
-                        BluetoothServer.createSocket(dev.dev)
-                    }
+                    BluetoothServer.createSocket(dev.dev)
                 }
             }
         }
