@@ -75,34 +75,34 @@ class MainActivity : BaseActivity() {
                 tvAnteriorTibialTendonContractionStrength.text = "${it.tibialisAnteriorMuscle}"
                 tvPeronealMuscleContractionStrength.text = "${it.peroneusLongus}"
 
-                    chartJointAngle.addEntry(LineEntity("角度", it.jointAngle.toFloat()))
-                    chartJointAngleVelocity.addEntry(
-                        LineEntity(
-                            "角速度",
-                            it.jointAngleVelocity.toFloat()
-                        )
+                chartJointAngle.addEntry(LineEntity("角度", it.jointAngle.toFloat()))
+                chartJointAngleVelocity.addEntry(
+                    LineEntity(
+                        "角速度",
+                        it.jointAngleVelocity.toFloat()
                     )
-                    chartLateralMuscle.addEntry(
-                        LineEntity(
-                            "外侧肌",
-                            it.lateralFemoralMuscle.toFloat()
-                        )
+                )
+                chartLateralMuscle.addEntry(
+                    LineEntity(
+                        "外侧肌",
+                        it.lateralFemoralMuscle.toFloat()
                     )
-                    chartBiceps.addEntry(LineEntity("二头肌", it.bicepsFemoris.toFloat()))
-                    chartSemitendinosus.addEntry(
-                        LineEntity(
-                            "半腱肌",
-                            it.semitendinosusFemoris.toFloat()
-                        )
+                )
+                chartBiceps.addEntry(LineEntity("二头肌", it.bicepsFemoris.toFloat()))
+                chartSemitendinosus.addEntry(
+                    LineEntity(
+                        "半腱肌",
+                        it.semitendinosusFemoris.toFloat()
                     )
-                    chartMedialMuscle.addEntry(LineEntity("内侧肌", it.medialFemoris.toFloat()))
-                    chartTibialisAnteriorMuscle.addEntry(
-                        LineEntity(
-                            "胫前肌",
-                            it.tibialisAnteriorMuscle.toFloat()
-                        )
+                )
+                chartMedialMuscle.addEntry(LineEntity("内侧肌", it.medialFemoris.toFloat()))
+                chartTibialisAnteriorMuscle.addEntry(
+                    LineEntity(
+                        "胫前肌",
+                        it.tibialisAnteriorMuscle.toFloat()
                     )
-                    chartPeroneusLongus.addEntry(LineEntity("腓长肌", it.peroneusLongus.toFloat()))
+                )
+                chartPeroneusLongus.addEntry(LineEntity("腓长肌", it.peroneusLongus.toFloat()))
 
 
 //                "BYTES_VALUE".logE("${it}")
@@ -213,7 +213,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.action_scan -> {
                 checkConnectState {
                     "CheckConn".logE("蓝牙连接检测。。。")
@@ -222,8 +222,9 @@ class MainActivity : BaseActivity() {
             }
             R.id.action_start -> {
 //                test()
-                if (BluetoothServer.btConnState == BluetoothServer.STATE_BT_CONNECT_SUCCESS) {
-                DispatchUtil.isTimerStart = !DispatchUtil.isTimerStart
+//                BluetoothServer.mock()
+                if (BluetoothServer.isConnected) {
+                    DispatchUtil.isTimerStart = !DispatchUtil.isTimerStart
                 } else {
                     showShortToast("请先搜索连接设备...")
                 }

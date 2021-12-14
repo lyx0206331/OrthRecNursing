@@ -10,11 +10,12 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.text.TextUtils
+import android.util.Log
 import androidx.annotation.IntDef
+import com.chwishay.orthrecnursing.DispatchUtil.getVerifyCode
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.AsyncSubject
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.*
@@ -100,8 +101,8 @@ object BluetoothServer {
 
     const val LOG_TAG = "BT_LOG"
 
-    var parseBlock:((data: ByteArray?) -> FrameData?)? = null
-    var verifyBlock: ((data: ByteArray?) -> Boolean?)? = null
+    var parseBlock: ((data: ByteArray?) -> FrameData?)? = null
+    var verifyBlock: ((data: ByteArray?) -> Boolean)? = null
 
     const val REQUEST_ENABLE_BT = 999
     private val DEV_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9B34FB")
@@ -146,7 +147,8 @@ object BluetoothServer {
 //            }
         }
 
-    var isConnected = btConnState == STATE_BT_CONNECT_SUCCESS
+    var isConnected: Boolean = false
+        get() = btConnState == STATE_BT_CONNECT_SUCCESS
 
     private val discBtStateSubject by lazy { BehaviorSubject.create<Int>() }
 
@@ -542,6 +544,131 @@ object BluetoothServer {
                         writeLog("接收消息异常,断开连接", LOG_ERROR)
                     }
                     break
+                }
+            }
+        }
+    }
+
+    private var mockJob: Job? = null
+
+    fun mock() {
+        StateMachineParseUtil.init(22, frameHead!!, verifyBlock!!, parseBlock)
+        DispatchUtil.isTimerStart = !DispatchUtil.isTimerStart
+        if (DispatchUtil.isTimerStart) {
+            mockJob = GlobalScope.launch {
+                while (DispatchUtil.isTimerStart) {
+                    delay(20)
+                    val arrayData = byteArrayOf(
+                        *frameHead!!,
+                        10,
+                        65,
+                        20,
+                        40,
+                        *(1..200).random().toShort().toBytesLE(),
+                        *(1..40).random().toShort().toBytesLE(),
+                        *(10..100).random().toShort().toBytesLE(),
+                        *(10..125).random().toShort().toBytesLE(),
+                        (0..40).random().toByte(),
+                        (0..40).random().toByte(),
+                        (0..40).random().toByte(),
+                        (0..40).random().toByte(),
+                        (0..40).random().toByte(),
+                        (0..40).random().toByte(),
+                        (0..12).random().toByte()
+                    )
+                    val fullData = byteArrayOf(*arrayData, arrayData.getVerifyCode().toByte())
+                    StateMachineParseUtil.parse(fullData) { fd ->
+                        fd?.also { data ->
+//                        LOG_TAG.logE("$data")
+                            dataReceiveSubject.onNext(data)
+                        }
+                    }
+                }
+            }
+        } else {
+            mockJob?.cancel("cancel mock")
+        }
+    }
+
+    object StateMachineParseUtil {
+        private const val STATE_IDLE = 0
+        private const val STATE_HEAD_0 = 1
+        private const val STATE_HEAD_1 = 2
+        private const val STATE_DATA = 3
+
+        @Retention(AnnotationRetention.SOURCE)
+        @IntDef(STATE_IDLE, STATE_HEAD_0, STATE_HEAD_1, STATE_DATA)
+        annotation class TransDataState
+
+        @TransDataState
+        private var cacheDataState = STATE_IDLE
+
+        private var index = 0
+
+        private var cacheDataArray = ByteArray(22)
+
+        private var dataSize = 22
+
+        private var frameHead: ByteArray? = null
+
+        private var parseBlock: ((data: ByteArray?) -> FrameData?)? = null
+        private var verifyBytes: ((data: ByteArray?) -> Boolean)? = null
+
+        fun init(
+            dataSize: Int,
+            frameHead: ByteArray,
+            verifyBytes: ((data: ByteArray?) -> Boolean),
+            parseBlock: ((data: ByteArray?) -> FrameData?)?
+        ) {
+            this.dataSize = dataSize
+            cacheDataArray = ByteArray(dataSize)
+            this.frameHead = frameHead
+            this.verifyBytes = verifyBytes
+            this.parseBlock = parseBlock
+        }
+
+        fun parse(data: ByteArray, callback: (FrameData?) -> Unit) {
+            if (frameHead == null || frameHead?.size != 2) {
+                Log.e("ERROR", "Please setting correct frame head data!")
+                return
+            }
+            data.forEach {
+                if (it == frameHead!![0]) {
+                    cacheDataState = STATE_HEAD_0
+                    index = 0
+                    cacheDataArray[index] = it
+                } else if (it == frameHead!![1]) {
+                    if (cacheDataState == STATE_HEAD_0) {
+                        cacheDataState = STATE_HEAD_1
+                        index++
+                        cacheDataArray[index] = it
+                    } else {
+                        cacheDataState = STATE_IDLE
+                    }
+                } else if (cacheDataState == STATE_HEAD_1) {
+                    cacheDataState = STATE_DATA
+                    index++
+                    cacheDataArray[index] = it
+                } else if (cacheDataState == STATE_DATA) {
+                    index++
+                    cacheDataArray[index] = it
+                    if (index == cacheDataArray.size - 1) {
+                        val cmd = cacheDataArray.copyOf()
+                        if (verifyBytes?.invoke(cmd).orDefault()) {
+                            cmd.toFrameData(parseBlock).let { fd ->
+                                callback.invoke(fd)
+                            }
+                        } else {
+                            writeLog(
+                                "校验失败:${
+                                    cmd.contentToString().also { LOG_TAG.logE(it) }
+                                }", LOG_ERROR
+                            )
+                        }
+                        cacheDataState = STATE_IDLE
+                    }
+                } else {
+                    cacheDataState = STATE_IDLE
                 }
             }
         }

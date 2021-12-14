@@ -1,13 +1,11 @@
 package com.chwishay.orthrecnursing
 
-import com.chwishay.orthrecnursing.BluetoothServer.LOG_TAG
 import com.chwishay.orthrecnursing.DispatchUtil.frameHead
 import com.chwishay.orthrecnursing.DispatchUtil.getVerifyCode
 import com.chwishay.orthrecnursing.DispatchUtil.jointAngleVelocity
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.coroutines.*
-import java.nio.ByteBuffer
 
 //                       _ooOoo_
 //                      o8888888o
@@ -103,12 +101,15 @@ object DispatchUtil {
     fun init() {
         BluetoothServer.frameHead = frameHead
         BluetoothServer.parseBlock = {
-            LOG_TAG.logE("待解析数据:${it.formatHexString(" ")}")
-            writeLog("${it.formatHexString(" ")}")
+//            LOG_TAG.logE("待解析数据:${it.formatHexString(" ")}")
+//            writeLog("${it.formatHexString(" ")}")
             if (it != null && it.size == DATA_SIZE) {
                 FrameData(data = it.copyOfRange(frameHead.size, DATA_SIZE - 1))
             } else {
-                writeLog("数据异常:size:${it?.size.orDefault()}.content:${it.formatHexString(" ")}", LOG_ERROR)
+                writeLog(
+                    "数据异常:size:${it?.size.orDefault()}.content:${it.formatHexString(" ")}",
+                    LOG_ERROR
+                )
                 null
             }
         }
@@ -120,7 +121,9 @@ object DispatchUtil {
         }
         BluetoothServer.onReceiveBytesData().subscribe({ frameData ->
             if (frameData != null) {
-                val result = frameData.data!!.parseData()/*DataInfo(
+//                LOG_TAG.logE("$frameData")
+                val result = frameData.data!!.parseData()
+                /*DataInfo(
                     10, 65, 20, 40, (1..200).random().toShort(),
                     (1..40).random().toShort(), (10..100).random().toShort(),
                     (10..125).random().toShort(), (0..40).random().toByte(),
@@ -140,7 +143,7 @@ object DispatchUtil {
      * 获取校验码
      */
     fun ByteArray.getVerifyCode(): Int = if (this == null || this.size <= 3) 0 else {
-        this.copyOfRange(0, size).sum()
+        this.sum()
     }
 
     fun appendData(dataInfo: DataInfo) {
@@ -178,46 +181,60 @@ object DispatchUtil {
 }
 
 data class DataInfo(
-    var everydayTrainingDuration: Byte = 0,
-    var everydayTrainingNum: Byte = 0,
-    var eachGroupTrainingNum: Byte = 0,
-    var targetJointAngle: Byte = 0,
-    var sumTrainingDuration: Short = 0,
-    var currentTrainingNum: Short = 0,
-    var jointAngle: Short = 0,
-    var jointAngleVelocity: Short = 0,
-    var lateralFemoralMuscle: Byte = 0,    //股外侧肌
-    var medialFemoris: Byte = 0,            //股内侧肌
-    var bicepsFemoris: Byte = 0,            //股二头肌
-    var semitendinosusFemoris: Byte = 0,    //股半腱肌
-    var tibialisAnteriorMuscle: Byte = 0,  //胫前肌
-    var peroneusLongus: Byte = 0,           //腓长肌
-    var exceptionCode: Byte = 0
+    var everydayTrainingDuration: Int = 0,
+    var everydayTrainingNum: Int = 0,
+    var eachGroupTrainingNum: Int = 0,
+    var targetJointAngle: Int = 0,
+    var sumTrainingDuration: Int = 0,
+    var currentTrainingNum: Int = 0,
+    var jointAngle: Int = 0,
+    var jointAngleVelocity: Int = 0,
+    var lateralFemoralMuscle: Int = 0,    //股外侧肌
+    var medialFemoris: Int = 0,            //股内侧肌
+    var bicepsFemoris: Int = 0,            //股二头肌
+    var semitendinosusFemoris: Int = 0,    //股半腱肌
+    var tibialisAnteriorMuscle: Int = 0,  //胫前肌
+    var peroneusLongus: Int = 0,           //腓长肌
+    var exceptionCode: Int = 0
 )
 
 var testJob: Job? = null
 
 fun test() {
     DispatchUtil.isTimerStart = !DispatchUtil.isTimerStart
-    testJob = GlobalScope.launch {
-        while (DispatchUtil.isTimerStart) {
-            delay(20)
-            val arrayData = byteArrayOf(
-                10, 65, 20, 40, *(1..200).random().toShort().toBytesLE(),
-                *(1..40).random().toShort().toBytesLE(), *(10..100).random().toShort().toBytesLE(),
-                *(10..125).random().toShort().toBytesLE(), (0..40).random().toByte(),
-                (0..40).random().toByte(), (0..40).random().toByte(), (0..40).random().toByte(),
-                (0..40).random().toByte(), (0..40).random().toByte(), (0..12).random().toByte()
-            )
+    if (DispatchUtil.isTimerStart) {
+        testJob = GlobalScope.launch {
+            while (DispatchUtil.isTimerStart) {
+                delay(20)
+                val arrayData = byteArrayOf(
+                    10,
+                    65,
+                    20,
+                    40,
+                    *(1..200).random().toShort().toBytesLE(),
+                    *(1..40).random().toShort().toBytesLE(),
+                    *(10..100).random().toShort().toBytesLE(),
+                    *(10..125).random().toShort().toBytesLE(),
+                    (0..40).random().toByte(),
+                    (0..40).random().toByte(),
+                    (0..40).random().toByte(),
+                    (0..40).random().toByte(),
+                    (0..40).random().toByte(),
+                    (0..40).random().toByte(),
+                    (0..12).random().toByte()
+                )
 
-            BluetoothServer.dataReceiveSubject.onNext(FrameData(data = arrayData))
+                BluetoothServer.dataReceiveSubject.onNext(FrameData(data = arrayData))
+            }
         }
+    } else {
+        testJob?.cancel("cancel test job")
     }
 
 }
 
 fun ByteArray.parseData(): DataInfo {
-    return ByteBuffer.wrap(this).let {
+    return /*ByteBuffer.wrap(this).let {
         DataInfo(
             it.get(),
             it.get(),
@@ -235,24 +252,23 @@ fun ByteArray.parseData(): DataInfo {
             it.get(),
             it.get()
             )
-    }
-//    DataInfo(
-//        this[0].toUByte().toInt(),
-//        this[1].toUByte().toInt(),
-//        this[2].toUByte().toInt(),
-//        this[3].toUByte().toInt(),
-//        this.copyOfRange(4, 6).toUnsignInt(),
-//        this.copyOfRange(6, 8).toUnsignInt(),
-//        this.copyOfRange(8, 10).toUnsignInt() / 10,
-//        this.copyOfRange(10, 12).toUnsignInt() / 10,
-//        this[12].toUByte().toInt(),
-//        this[13].toUByte().toInt(),
-//        this[14].toUByte().toInt(),
-//        this[15].toUByte().toInt(),
-//        this[16].toUByte().toInt(),
-//        this[17].toUByte().toInt(),
-//        this[18].toUByte().toInt()
-//    )
+    }*/DataInfo(
+        this[0].toUByte().toInt(),
+        this[1].toUByte().toInt(),
+        this[2].toUByte().toInt(),
+        this[3].toUByte().toInt(),
+        this.copyOfRange(4, 6).toUnsignInt(),
+        this.copyOfRange(6, 8).toUnsignInt(),
+        this.copyOfRange(8, 10).toUnsignInt() / 10,
+        this.copyOfRange(10, 12).toUnsignInt() / 10,
+        this[12].toUByte().toInt(),
+        this[13].toUByte().toInt(),
+        this[14].toUByte().toInt(),
+        this[15].toUByte().toInt(),
+        this[16].toUByte().toInt(),
+        this[17].toUByte().toInt(),
+        this[18].toUByte().toInt()
+    )
 }
 
 data class ParamsInfo(
