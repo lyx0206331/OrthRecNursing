@@ -51,6 +51,7 @@ object DispatchUtil {
     var everydayTrainingNum = 0
     var eachGroupTrainingNum = 0
     var targetJointAngle = 0
+    var sumTrainingDuration = 0
     var currentTrainingNum = 0
     var jointAngle = 0
     var jointAngleVelocity = 0
@@ -97,7 +98,15 @@ object DispatchUtil {
 //                testJob?.cancel("停止发送数据")
             }
         }
-    
+
+    var params: ParamsInfo = ParamsInfo()
+        get() = SP.get<ParamsInfo>(PARAMS) ?: ParamsInfo(
+            0.toShort(), 0.toShort(), 60.toByte(), 1.toByte(), 10.toByte(),
+            60, 40, 0, 1, 1,
+            1, 1, 1, 1
+        )
+    private var saveParamIndex = 0
+
     fun init() {
         BluetoothServer.frameHead = frameHead
         BluetoothServer.parseBlock = {
@@ -132,6 +141,10 @@ object DispatchUtil {
                 )*/
                 appendData(result)
                 lastFrameData = result
+                if (++saveParamIndex % 500 == 0) {
+                    params.historyTrainingDuration = lastFrameData.sumTrainingDuration.toShort()
+                    params.historyTrainingNum = lastFrameData.currentTrainingNum.toShort()
+                }
                 resultSubject.onNext(result)
             }
         }, {
@@ -151,6 +164,7 @@ object DispatchUtil {
         everydayTrainingNum = dataInfo.everydayTrainingNum.toInt()
         eachGroupTrainingNum = dataInfo.eachGroupTrainingNum.toInt()
         targetJointAngle = dataInfo.targetJointAngle.toInt()
+        sumTrainingDuration = dataInfo.sumTrainingDuration
         currentTrainingNum = dataInfo.currentTrainingNum.toInt()
         jointAngle = dataInfo.jointAngle.toInt()
         jointAngleVelocity = dataInfo.jointAngleVelocity.toInt()
@@ -187,8 +201,8 @@ data class DataInfo(
     var targetJointAngle: Int = 0,
     var sumTrainingDuration: Int = 0,
     var currentTrainingNum: Int = 0,
-    var jointAngle: Int = 0,
-    var jointAngleVelocity: Int = 0,
+    var jointAngle: Float = 0f,
+    var jointAngleVelocity: Float = 0f,
     var lateralFemoralMuscle: Int = 0,    //股外侧肌
     var medialFemoris: Int = 0,            //股内侧肌
     var bicepsFemoris: Int = 0,            //股二头肌
@@ -259,8 +273,8 @@ fun ByteArray.parseData(): DataInfo {
         this[3].toUByte().toInt(),
         this.copyOfRange(4, 6).toUnsignInt(),
         this.copyOfRange(6, 8).toUnsignInt(),
-        this.copyOfRange(8, 10).toUnsignInt() / 10,
-        this.copyOfRange(10, 12).toUnsignInt() / 10,
+        this.copyOfRange(8, 10).read2FloatLE() / 10,
+        this.copyOfRange(10, 12).read2FloatLE() / 10,
         this[12].toUByte().toInt(),
         this[13].toUByte().toInt(),
         this[14].toUByte().toInt(),
@@ -309,10 +323,8 @@ data class ParamsInfo(
         val hisDuration = historyTrainingDuration.toBytesLE()
         val hisNum = historyTrainingNum.toBytesLE()
         val content = byteArrayOf(
-            hisDuration[0],
-            hisDuration[1],
-            hisNum[0],
-            hisNum[1],
+            *hisDuration,
+            *hisNum,
             everydayTrainingDuration,
             everydayTrainingGroupNum,
             groupTrainingNum,

@@ -14,12 +14,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chwishay.orthrecnursing.DispatchUtil.format2Date
-import com.chwishay.orthrecnursing.DispatchUtil.lastFrameData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.dialog_setting.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.jetbrains.anko.find
 
 //                       _ooOoo_
@@ -197,11 +194,7 @@ class SettingDialog(context: Context, private val lifecycleOwner: LifecycleOwner
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_setting)
 
-        var paramsInfo: ParamsInfo = SP.get<ParamsInfo>(PARAMS) ?: ParamsInfo(
-            0.toShort(), 0.toShort(), 60.toByte(), 1.toByte(), 10.toByte(),
-            60, 40, 0, 1, 1,
-            1, 1, 1, 1
-        )
+        var paramsInfo: ParamsInfo = DispatchUtil.params
         etEverydayTrainingDuration.centerText = "${paramsInfo.everydayTrainingDuration}"
         etEverydayTrainingGroup.centerText = "${paramsInfo.everydayTrainingGroupNum}"
         etGroupTrainingNum.centerText = "${paramsInfo.groupTrainingNum}"
@@ -229,9 +222,6 @@ class SettingDialog(context: Context, private val lifecycleOwner: LifecycleOwner
                 showShortToast("参数输入异常，请检查参数")
                 return@onClick
             }
-            paramsInfo.historyTrainingDuration =
-                lastFrameData.sumTrainingDuration.toShort()
-            paramsInfo.historyTrainingNum = lastFrameData.currentTrainingNum.toShort()
             paramsInfo.everydayTrainingDuration =
                 Integer.parseInt(etEverydayTrainingDuration.centerText)
                     .toByte()
