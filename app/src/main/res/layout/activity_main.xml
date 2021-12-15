@@ -241,7 +241,7 @@
     <TextView
         android:id="@+id/tvState"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:gravity="center"
         android:layout_margin="@dimen/inner_frame_layout_padding"
         android:background="@color/white"

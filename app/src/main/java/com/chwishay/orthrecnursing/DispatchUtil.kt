@@ -1,5 +1,6 @@
 package com.chwishay.orthrecnursing
 
+import com.chwishay.orthrecnursing.BluetoothServer.LOG_TAG
 import com.chwishay.orthrecnursing.DispatchUtil.frameHead
 import com.chwishay.orthrecnursing.DispatchUtil.getVerifyCode
 import com.chwishay.orthrecnursing.DispatchUtil.jointAngleVelocity
@@ -100,6 +101,10 @@ object DispatchUtil {
         }
 
     var params: ParamsInfo = ParamsInfo()
+        set(value) {
+            field = value
+            SP.put(PARAMS, field)
+        }
         get() = SP.get<ParamsInfo>(PARAMS) ?: ParamsInfo(
             0.toShort(), 0.toShort(), 60.toByte(), 1.toByte(), 10.toByte(),
             60, 40, 0, 1, 1,
@@ -141,10 +146,11 @@ object DispatchUtil {
                 )*/
                 appendData(result)
                 lastFrameData = result
-                if (++saveParamIndex % 500 == 0) {
-                    params.historyTrainingDuration = lastFrameData.sumTrainingDuration.toShort()
-                    params.historyTrainingNum = lastFrameData.currentTrainingNum.toShort()
-                }
+//                if (++saveParamIndex % 500 == 0) {
+//                    params.historyTrainingDuration = lastFrameData.sumTrainingDuration.toShort()
+//                    params.historyTrainingNum = lastFrameData.currentTrainingNum.toShort()
+//                    params = params.copy()
+//                }
                 resultSubject.onNext(result)
             }
         }, {
@@ -273,8 +279,8 @@ fun ByteArray.parseData(): DataInfo {
         this[3].toUByte().toInt(),
         this.copyOfRange(4, 6).toUnsignInt(),
         this.copyOfRange(6, 8).toUnsignInt(),
-        this.copyOfRange(8, 10).read2FloatLE() / 10,
-        this.copyOfRange(10, 12).read2FloatLE() / 10,
+        this.copyOfRange(8, 10).read2IntLE() / 10f,
+        this.copyOfRange(10, 12).read2IntLE() / 10f,
         this[12].toUByte().toInt(),
         this[13].toUByte().toInt(),
         this[14].toUByte().toInt(),
@@ -323,8 +329,10 @@ data class ParamsInfo(
         val hisDuration = historyTrainingDuration.toBytesLE()
         val hisNum = historyTrainingNum.toBytesLE()
         val content = byteArrayOf(
-            *hisDuration,
-            *hisNum,
+            hisDuration[0],
+            hisDuration[1],
+            hisNum[0],
+            hisNum[1],
             everydayTrainingDuration,
             everydayTrainingGroupNum,
             groupTrainingNum,

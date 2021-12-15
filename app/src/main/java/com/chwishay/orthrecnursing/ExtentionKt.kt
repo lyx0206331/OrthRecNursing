@@ -111,7 +111,7 @@ fun Date.formatDateString(
  * 字节数组转换为浮点型(大端模式)
  */
 fun ByteArray.read2FloatBE(offset: Int = 0) =
-    if (this == null || this.size < offset + 4) throw IllegalArgumentException("传入参数不正确")
+    if (this == null) throw IllegalArgumentException("传入参数不正确")
     else {
         val arr = when(size) {
             0 -> byteArrayOf(0, 0, 0, 0)
@@ -121,10 +121,10 @@ fun ByteArray.read2FloatBE(offset: Int = 0) =
             else -> byteArrayOf(this[offset+0], this[offset+1], this[offset+2], this[offset+3])
         }
         java.lang.Float.intBitsToFloat(
-            0xff000000.and(this[offset].toInt().shl(24).toLong())
-                .or(0x00ff0000.and(this[offset + 1].toInt().shl(16)).toLong())
-                .or(0x0000ff00.and(this[offset + 2].toInt().shl(8)).toLong())
-                .or(0x000000ff.and(this[offset + 3].toInt()).toLong()).toInt()
+            0xff000000.and(arr[offset].toInt().shl(24).toLong())
+                .or(0x00ff0000.and(arr[offset + 1].toInt().shl(16)).toLong())
+                .or(0x0000ff00.and(arr[offset + 2].toInt().shl(8)).toLong())
+                .or(0x000000ff.and(arr[offset + 3].toInt()).toLong()).toInt()
         )
     }
 
@@ -132,13 +132,21 @@ fun ByteArray.read2FloatBE(offset: Int = 0) =
  * 字节数组转换为浮点型(小端模式)
  */
 fun ByteArray.read2FloatLE(offset: Int = 0) =
-    if (this == null || this.size < offset + 4) throw IllegalArgumentException("传入参数不正确")
-    else java.lang.Float.intBitsToFloat(
-        0xff000000.and(this[offset + 3].toInt().shl(24).toLong())
-            .or(0x00ff0000.and(this[offset + 2].toInt().shl(16)).toLong())
-            .or(0x0000ff00.and(this[offset + 1].toInt().shl(8)).toLong())
-            .or(0x000000ff.and(this[offset].toInt()).toLong()).toInt()
-    )
+    if (this == null) throw IllegalArgumentException("传入参数不正确")
+    else {
+        val data = when(this.size) {
+            0 -> byteArrayOf(0, 0, 0, 0)
+            1 -> byteArrayOf(this[0], 0, 0, 0)
+            2 -> byteArrayOf(this[0], this[1], 0, 0)
+            else -> byteArrayOf(this[offset+0], this[offset+1], this[offset+2], this[offset+3])
+        }
+        java.lang.Float.intBitsToFloat(
+            0xff000000.and(data[offset + 3].toInt().shl(24).toLong())
+                .or(0x00ff0000.and(data[offset + 2].toInt().shl(16)).toLong())
+                .or(0x0000ff00.and(data[offset + 1].toInt().shl(8)).toLong())
+                .or(0x000000ff.and(data[offset].toInt()).toLong()).toInt()
+        )
+    }
 
 fun Int.toBytesLE() =
     byteArrayOf(this.toByte(), this.shr(8).toByte(), this.shr(16).toByte(), this.shr(24).toByte())

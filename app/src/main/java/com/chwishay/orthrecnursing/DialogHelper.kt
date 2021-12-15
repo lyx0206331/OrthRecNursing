@@ -250,7 +250,7 @@ class SettingDialog(context: Context, private val lifecycleOwner: LifecycleOwner
                 if (cbAnteriorTibialTendonIfWork.isChecked) 1 else 0
             paramsInfo.peronealMuscleIfWork = if (cbPeronealMuscleIfWork.isChecked) 1 else 0
             lifecycleOwner.lifecycleScope.launch {
-                SP.put(PARAMS, paramsInfo)
+                DispatchUtil.params = paramsInfo
                 BluetoothServer.sendData(paramsInfo.toFrameByteArray())
                 cancel()
             }
