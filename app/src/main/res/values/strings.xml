@@ -115,4 +115,16 @@
     <string name="knee_joint_too_fast_or_too_low">膝关节运动过快或过慢提示</string>
     <string name="muscle_abnormal_force">肌肉非正常发力提示</string>
     <string name="action_up_to_standard">动作达标提示</string>
+    <string name="knee_joint_bending_overdone">膝关节屈曲过度\n请伸展膝关节</string>
+    <string name="knee_joint_stretch_overdone">膝关节伸展过度\n请收缩膝关节</string>
+    <string name="speed_is_too_fast">运动速度过快\n请降低速度</string>
+    <string name="speed_is_too_low">运动速度过慢\n请加快速度</string>
+    <string name="strengthen_outer_thigh">加强股外侧肌出力</string>
+    <string name="strengthen_medial_femoris">加强股内侧肌出力</string>
+    <string name="strengthen_biceps_femoris">加强股二头肌出力</string>
+    <string name="strengthen_semitendinosus_femoris">加强股半腱肌出力</string>
+    <string name="strengthen_tibialis_anterior_muscle">加强胫前肌出力</string>
+    <string name="strengthen_peroneus_longus">加强腓长肌出力</string>
+    <string name="well_done">很好，运动完成到位</string>
+    <string name="unknown_exception">未知异常</string>
 </resources>

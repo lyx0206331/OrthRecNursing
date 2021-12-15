@@ -50,14 +50,17 @@
                     style="@style/textStyle_v"
                     android:text="-m-s" />
             </TableRow>
-            <TableRow>
+            <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
                 <TextView
                     style="@style/textStyle_l"
                     android:text="@string/target_training_num" />
+
                 <TextView
                     android:id="@+id/tvTargetTrainingNum"
                     style="@style/textStyle_v"
                     android:text="--次" />
+
                 <TextView
                     style="@style/textStyle_l"
                     android:layout_marginLeft="@dimen/inner_frame_layout_padding"
@@ -67,15 +70,19 @@
                     style="@style/textStyle_v"
                     android:text="--次" />
             </TableRow>
-            <TableRow>
+
+            <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
                 <TextView
                     style="@style/textStyle_l"
                     android:text="@string/setting_joint_active_range"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
+
                 <TextView
                     style="@style/textStyle_v"
                     android:text="--°"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
+
                 <TextView
                     style="@style/textStyle_l"
                     android:layout_marginLeft="@dimen/inner_frame_layout_padding"
@@ -85,14 +92,18 @@
                     style="@style/textStyle_v"
                     android:text="--次" />
             </TableRow>
-            <TableRow>
+
+            <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
                 <TextView
                     style="@style/textStyle_l"
                     android:text="@string/setting_joint_active_range" />
+
                 <TextView
                     android:id="@+id/tvSettingJointActiveRange"
                     style="@style/textStyle_v"
                     android:text="--°" />
+
                 <TextView
                     style="@style/textStyle_l"
                     android:layout_marginLeft="@dimen/inner_frame_layout_padding"
@@ -102,14 +113,18 @@
                     style="@style/textStyle_v"
                     android:text="--°" />
             </TableRow>
-            <TableRow>
+
+            <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
                 <TextView
                     style="@style/textStyle_l"
                     android:text="@string/setting_joint_angle_velocity" />
+
                 <TextView
                     android:id="@+id/tvSettingJointAngleVelocity"
                     style="@style/textStyle_v"
                     android:text="--°/s" />
+
                 <TextView
                     style="@style/textStyle_l"
                     android:layout_marginLeft="@dimen/inner_frame_layout_padding"
@@ -119,14 +134,18 @@
                     style="@style/textStyle_v"
                     android:text="--°/s" />
             </TableRow>
-            <TableRow>
+
+            <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
                 <TextView
                     style="@style/textStyle_l"
                     android:text="@string/average_strength_of_lateral_thigh" />
+
                 <TextView
                     android:id="@+id/tvAverageStrengthOfLateralThigh"
                     style="@style/textStyle_v"
                     android:text="--" />
+
                 <TextView
                     style="@style/textStyle_l"
                     android:layout_marginLeft="@dimen/inner_frame_layout_padding"
@@ -136,14 +155,18 @@
                     style="@style/textStyle_v"
                     android:text="--" />
             </TableRow>
-            <TableRow>
+
+            <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
                 <TextView
                     style="@style/textStyle_l"
                     android:text="@string/average_strength_of_biceps_femoris" />
+
                 <TextView
                     android:id="@+id/tvAverageStrengthOfBicepsFemoris"
                     style="@style/textStyle_v"
                     android:text="--" />
+
                 <TextView
                     style="@style/textStyle_l"
                     android:layout_marginLeft="@dimen/inner_frame_layout_padding"
@@ -153,14 +176,18 @@
                     style="@style/textStyle_v"
                     android:text="--" />
             </TableRow>
-            <TableRow>
+
+            <TableRow android:layout_marginTop="@dimen/inner_frame_layout_padding">
+
                 <TextView
                     style="@style/textStyle_l"
                     android:text="@string/average_strength_of_tibialis_anteriormuscle" />
+
                 <TextView
                     android:id="@+id/tvAverageStrengthOfTibialisAnteriormuscle"
                     style="@style/textStyle_v"
                     android:text="--" />
+
                 <TextView
                     style="@style/textStyle_l"
                     android:layout_marginLeft="@dimen/inner_frame_layout_padding"

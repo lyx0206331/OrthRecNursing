@@ -7,7 +7,6 @@ import android.view.MenuItem
 import androidx.annotation.ColorInt
 import androidx.core.view.isVisible
 import com.chwishay.orthrecnursing.DispatchUtil.format2Date
-import com.chwishay.orthrecnursing.views.ExpandableEditText
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.YAxis
@@ -18,13 +17,10 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.find
 import kotlin.math.round
 import kotlin.system.exitProcess
 
 class MainActivity : BaseActivity() {
-
-    private var validCycleIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,8 +100,25 @@ class MainActivity : BaseActivity() {
                 )
                 chartPeroneusLongus.addEntry(LineEntity("腓长肌", it.peroneusLongus.toFloat()))
 
-
-//                "BYTES_VALUE".logE("${it}")
+                if (it.exceptionCode == 0) {
+                    tvState.isVisible = false
+                } else {
+                    tvState.isVisible = true
+                    tvState.text = when (it.exceptionCode) {
+                        1 -> getString(R.string.knee_joint_bending_overdone)
+                        2 -> getString(R.string.knee_joint_stretch_overdone)
+                        3 -> getString(R.string.speed_is_too_fast)
+                        4 -> getString(R.string.speed_is_too_low)
+                        5 -> getString(R.string.strengthen_outer_thigh)
+                        6 -> getString(R.string.strengthen_medial_femoris)
+                        7 -> getString(R.string.strengthen_biceps_femoris)
+                        8 -> getString(R.string.strengthen_semitendinosus_femoris)
+                        9 -> getString(R.string.strengthen_tibialis_anterior_muscle)
+                        10 -> getString(R.string.strengthen_peroneus_longus)
+                        11 -> getString(R.string.well_done)
+                        else -> getString(R.string.unknown_exception)
+                    }
+                }
             }
         }
 
@@ -114,11 +127,6 @@ class MainActivity : BaseActivity() {
                 if (it != BluetoothServer.STATE_BT_CONNECT_SUCCESS) {
                     DispatchUtil.isTimerStart = false
                 }
-            }
-
-        find<ExpandableEditText>(R.id.eet).onCenterTextChangedListener =
-            { text, start, before, count ->
-                "EET".logE("text:$text, start:$start, before:$before, count:$count")
             }
 
         PARAMS.logE("params:${SP.get<ParamsInfo>(PARAMS)}")

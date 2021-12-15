@@ -238,30 +238,21 @@
         </TableRow>
     </TableLayout>
 
-    <com.chwishay.orthrecnursing.views.ExpandableEditText
-        android:id="@+id/eet"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+    <TextView
+        android:id="@+id/tvState"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:layout_margin="@dimen/inner_frame_layout_padding"
         android:background="@color/white"
-        android:padding="10dp"
-        app:eet_center_hint="@string/curr_exercise_num_l"
-        app:eet_center_textSize="12sp"
-        app:eet_pre_text="abc"
-        app:eet_pre_textSize="12sp"
-        app:eet_suf_text="xyz"
-        app:eet_suf_textStyle="bold_italic"
-        app:eet_suf_textSize="17sp"
-        app:eet_suf_textColor="@color/teal_200"
-        app:eet_center_textStyle="bold"
-        app:eet_center_textColor="@color/colorPrimary"
-        app:eet_pre_to_center_spacing="10dp"
-        app:eet_suf_to_center_spacing="10dp"
-        app:eet_isCenterEditable="true"
-        app:eet_center_inputType="number"
+        android:textSize="20sp"
+        android:textColor="@color/redFE0000"
+        tools:text="@string/knee_joint_bending_overdone"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tableLayout"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@id/tableLayout" />
 
     <TextView
         android:id="@+id/tvLog"
