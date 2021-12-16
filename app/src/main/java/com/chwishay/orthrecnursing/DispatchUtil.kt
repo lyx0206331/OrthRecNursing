@@ -1,12 +1,12 @@
 package com.chwishay.orthrecnursing
 
-import com.chwishay.orthrecnursing.BluetoothServer.LOG_TAG
 import com.chwishay.orthrecnursing.DispatchUtil.frameHead
 import com.chwishay.orthrecnursing.DispatchUtil.getVerifyCode
 import com.chwishay.orthrecnursing.DispatchUtil.jointAngleVelocity
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.coroutines.*
+import java.nio.ByteBuffer
 
 //                       _ooOoo_
 //                      o8888888o
@@ -253,42 +253,45 @@ fun test() {
 
 }
 
+fun Float.toBytes() = java.lang.Float.floatToIntBits(this)
+
 fun ByteArray.parseData(): DataInfo {
-    return /*ByteBuffer.wrap(this).let {
+    return ByteBuffer.wrap(this).let {
         DataInfo(
-            it.get(),
-            it.get(),
-            it.get(),
-            it.get(),
-            it.short,
-            it.short,
-            it.short,
-            it.short,
-            it.get(),
-            it.get(),
-            it.get(),
-            it.get(),
-            it.get(),
-            it.get(),
-            it.get()
-            )
-    }*/DataInfo(
-        this[0].toUByte().toInt(),
-        this[1].toUByte().toInt(),
-        this[2].toUByte().toInt(),
-        this[3].toUByte().toInt(),
-        this.copyOfRange(4, 6).toUnsignInt(),
-        this.copyOfRange(6, 8).toUnsignInt(),
-        this.copyOfRange(8, 10).read2IntLE() / 10f,
-        this.copyOfRange(10, 12).read2IntLE() / 10f,
-        this[12].toUByte().toInt(),
-        this[13].toUByte().toInt(),
-        this[14].toUByte().toInt(),
-        this[15].toUByte().toInt(),
-        this[16].toUByte().toInt(),
-        this[17].toUByte().toInt(),
-        this[18].toUByte().toInt()
-    )
+            it.get().toUInt().toInt(),
+            it.get().toUInt().toInt(),
+            it.get().toUInt().toInt(),
+            it.get().toUInt().toInt(),
+            it.short.toUInt().toInt(),
+            it.short.toUInt().toInt(),
+            it.short / 10f,
+            it.short / 10f,
+            it.get().toUInt().toInt(),
+            it.get().toUInt().toInt(),
+            it.get().toUInt().toInt(),
+            it.get().toUInt().toInt(),
+            it.get().toUInt().toInt(),
+            it.get().toUInt().toInt(),
+            it.get().toUInt().toInt()
+        )
+    }
+//    return DataInfo(
+//        this[0].toUByte().toInt(),
+//        this[1].toUByte().toInt(),
+//        this[2].toUByte().toInt(),
+//        this[3].toUByte().toInt(),
+//        this.copyOfRange(4, 6).toUnsignInt(),
+//        this.copyOfRange(6, 8).toUnsignInt(),
+//        this.copyOfRange(8, 10).read2IntLE() / 10f,
+//        this.copyOfRange(10, 12).read2IntLE() / 10f,
+//        this[12].toUByte().toInt(),
+//        this[13].toUByte().toInt(),
+//        this[14].toUByte().toInt(),
+//        this[15].toUByte().toInt(),
+//        this[16].toUByte().toInt(),
+//        this[17].toUByte().toInt(),
+//        this[18].toUByte().toInt()
+//    )
 }
 
 data class ParamsInfo(

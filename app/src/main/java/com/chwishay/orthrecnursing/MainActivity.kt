@@ -57,7 +57,7 @@ class MainActivity : BaseActivity() {
                 tvCurrentTrainingDuration.text = "${it.sumTrainingDuration.toInt().format2Date()}"
                 tvCurrentTrainingNum.text = "${it.currentTrainingNum}次"
                 tvEverydayTrainingGroups.text =
-                    "${(SP.get<ParamsInfo>(PARAMS) ?: ParamsInfo()).everydayTrainingGroupNum}组"
+                    "${DispatchUtil.params.everydayTrainingGroupNum}组"
                 tvCurrentTrainingGroups.text =
                     "${round(1f * it.currentTrainingNum / it.eachGroupTrainingNum).toInt()}组"
                 tvGroupTrainingNum.text = "${it.eachGroupTrainingNum}次"
