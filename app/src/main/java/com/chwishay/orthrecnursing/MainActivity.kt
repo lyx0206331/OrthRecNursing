@@ -59,7 +59,7 @@ class MainActivity : BaseActivity() {
                 tvEverydayTrainingGroups.text =
                     "${DispatchUtil.params.everydayTrainingGroupNum}组"
                 tvCurrentTrainingGroups.text =
-                    "${round(1f * it.currentTrainingNum / it.eachGroupTrainingNum).toInt()}组"
+                    "${round(it.currentTrainingNum.toFloat() / it.eachGroupTrainingNum.toFloat()).toInt()}组"
                 tvGroupTrainingNum.text = "${it.eachGroupTrainingNum}次"
                 tvTargetJointAngle.text = "${it.targetJointAngle}°"
                 tvJointAngle.text = "${it.jointAngle}°"
@@ -230,7 +230,7 @@ class MainActivity : BaseActivity() {
             }
             R.id.action_start -> {
 //                test()
-//                BluetoothServer.mock()
+                BluetoothServer.mock()
                 if (BluetoothServer.isConnected) {
                     DispatchUtil.isTimerStart = !DispatchUtil.isTimerStart
                 } else {

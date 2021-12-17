@@ -160,7 +160,7 @@ class ReportDialog(context: Context, private val lifecycleOwner: LifecycleOwner)
         find<TextView>(R.id.tvTargetTrainingDuration).text =
             "${DispatchUtil.everydayTrainingDuration}m"
         find<TextView>(R.id.tvActuallyTrainingDuration).text =
-            "${DispatchUtil.eachGroupTrainingNum.format2Date()}"
+            "${DispatchUtil.eachGroupTrainingNum.toInt().format2Date()}"
         find<TextView>(R.id.tvTargetTrainingNum).text = "${DispatchUtil.everydayTrainingNum}次"
         find<TextView>(R.id.tvActuallyTrainingNum).text = "${DispatchUtil.targetJointAngle}次"
         find<TextView>(R.id.tvEffectiveTrainingNum).text = "${DispatchUtil.currentTrainingNum}次"
@@ -235,10 +235,10 @@ class SettingDialog(context: Context, private val lifecycleOwner: LifecycleOwner
                 Integer.parseInt(etTargetAngle.centerText)
                     .toByte()
             Integer.parseInt(etTargetAngleVelocity.centerText)
-                .toBytesLE().also {
-                paramsInfo.targetAngleVelocityLowBit = it[0]
-                paramsInfo.targetAngleVelocityHighBit = it[1]
-            }
+                .toByteArrayLE().also {
+                    paramsInfo.targetAngleVelocityLowBit = it[0]
+                    paramsInfo.targetAngleVelocityHighBit = it[1]
+                }
             paramsInfo.lateralFemoralMuscleIfWork =
                 if (cbLateralFemoralMuscleIfWork.isChecked) 1 else 0
             paramsInfo.medialFemoralMuscleIfWork =

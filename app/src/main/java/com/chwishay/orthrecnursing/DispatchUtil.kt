@@ -2,11 +2,9 @@ package com.chwishay.orthrecnursing
 
 import com.chwishay.orthrecnursing.DispatchUtil.frameHead
 import com.chwishay.orthrecnursing.DispatchUtil.getVerifyCode
-import com.chwishay.orthrecnursing.DispatchUtil.jointAngleVelocity
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.coroutines.*
-import java.nio.ByteBuffer
 
 //                       _ooOoo_
 //                      o8888888o
@@ -48,21 +46,21 @@ object DispatchUtil {
 
     fun onResultObservable(): Observable<DataInfo> = resultSubject
 
-    var everydayTrainingDuration = 0
-    var everydayTrainingNum = 0
-    var eachGroupTrainingNum = 0
-    var targetJointAngle = 0
-    var sumTrainingDuration = 0
-    var currentTrainingNum = 0
-    var jointAngle = 0
-    var jointAngleVelocity = 0
-    var lateralFemoralMuscle = 0
-    var medialFemoris = 0
-    var bicepsFemoris = 0
-    var semitendinosusFemoris = 0
-    var tibialisAnteriorMuscle = 0
-    var peroneusLongus = 0
-    var exception = 0
+    var everydayTrainingDuration = 0.toUInt()
+    var everydayTrainingNum = 0.toUInt()
+    var eachGroupTrainingNum = 0.toUInt()
+    var targetJointAngle = 0.toUInt()
+    var sumTrainingDuration = 0.toShort()
+    var currentTrainingNum = 0.toShort()
+    var jointAngle = 0f
+    var jointAngleVelocity = 0f
+    var lateralFemoralMuscle = 0.toUInt()
+    var medialFemoris = 0.toUInt()
+    var bicepsFemoris = 0.toUInt()
+    var semitendinosusFemoris = 0.toUInt()
+    var tibialisAnteriorMuscle = 0.toUInt()
+    var peroneusLongus = 0.toUInt()
+    var exception = 0.toUInt()
 
 //    val timeCounterLiveData = MutableLiveData("0m0s")
 
@@ -146,11 +144,11 @@ object DispatchUtil {
                 )*/
                 appendData(result)
                 lastFrameData = result
-//                if (++saveParamIndex % 500 == 0) {
-//                    params.historyTrainingDuration = lastFrameData.sumTrainingDuration.toShort()
-//                    params.historyTrainingNum = lastFrameData.currentTrainingNum.toShort()
-//                    params = params.copy()
-//                }
+                if (++saveParamIndex % 500 == 0) {
+                    params.historyTrainingDuration = lastFrameData.sumTrainingDuration.toShort()
+                    params.historyTrainingNum = lastFrameData.currentTrainingNum.toShort()
+                    params = params.copy()
+                }
                 resultSubject.onNext(result)
             }
         }, {
@@ -166,16 +164,15 @@ object DispatchUtil {
     }
 
     fun appendData(dataInfo: DataInfo) {
-        everydayTrainingDuration = dataInfo.everydayTrainingDuration.toInt()
-        everydayTrainingNum = dataInfo.everydayTrainingNum.toInt()
-        eachGroupTrainingNum = dataInfo.eachGroupTrainingNum.toInt()
-        targetJointAngle = dataInfo.targetJointAngle.toInt()
+        everydayTrainingDuration = dataInfo.everydayTrainingDuration
+        everydayTrainingNum = dataInfo.everydayTrainingNum
+        eachGroupTrainingNum = dataInfo.eachGroupTrainingNum
+        targetJointAngle = dataInfo.targetJointAngle
         sumTrainingDuration = dataInfo.sumTrainingDuration
-        currentTrainingNum = dataInfo.currentTrainingNum.toInt()
-        jointAngle = dataInfo.jointAngle.toInt()
-        jointAngleVelocity = dataInfo.jointAngleVelocity.toInt()
-        lateralFemoralMuscle =
-            if (dataInfo.jointAngle > lateralFemoralMuscle) dataInfo.jointAngle.toInt() else lateralFemoralMuscle
+        currentTrainingNum = dataInfo.currentTrainingNum
+        jointAngle = dataInfo.jointAngle
+        jointAngleVelocity = dataInfo.jointAngleVelocity
+        lateralFemoralMuscle += dataInfo.lateralFemoralMuscle
         medialFemoris += dataInfo.medialFemoris
         bicepsFemoris += dataInfo.bicepsFemoris
         semitendinosusFemoris += dataInfo.semitendinosusFemoris
@@ -184,37 +181,37 @@ object DispatchUtil {
     }
 
     fun resetData() {
-        everydayTrainingDuration = 0
-        everydayTrainingNum = 0
-        eachGroupTrainingNum = 0
-        targetJointAngle = 0
-        currentTrainingNum = 0
-        jointAngle = 0
-        jointAngleVelocity = 0
-        lateralFemoralMuscle = 0
-        medialFemoris = 0
-        bicepsFemoris = 0
-        semitendinosusFemoris = 0
-        tibialisAnteriorMuscle = 0
-        peroneusLongus = 0
+        everydayTrainingDuration = 0.toUInt()
+        everydayTrainingNum = 0.toUInt()
+        eachGroupTrainingNum = 0.toUInt()
+        targetJointAngle = 0.toUInt()
+        currentTrainingNum = 0.toShort()
+        jointAngle = 0f
+        jointAngleVelocity = 0f
+        lateralFemoralMuscle = 0.toUInt()
+        medialFemoris = 0.toUInt()
+        bicepsFemoris = 0.toUInt()
+        semitendinosusFemoris = 0.toUInt()
+        tibialisAnteriorMuscle = 0.toUInt()
+        peroneusLongus = 0.toUInt()
     }
 }
 
 data class DataInfo(
-    var everydayTrainingDuration: Int = 0,
-    var everydayTrainingNum: Int = 0,
-    var eachGroupTrainingNum: Int = 0,
-    var targetJointAngle: Int = 0,
-    var sumTrainingDuration: Int = 0,
-    var currentTrainingNum: Int = 0,
+    var everydayTrainingDuration: UInt = 0.toUInt(),
+    var everydayTrainingNum: UInt = 0.toUInt(),
+    var eachGroupTrainingNum: UInt = 0.toUInt(),
+    var targetJointAngle: UInt = 0.toUInt(),
+    var sumTrainingDuration: Short = 0,
+    var currentTrainingNum: Short = 0,
     var jointAngle: Float = 0f,
     var jointAngleVelocity: Float = 0f,
-    var lateralFemoralMuscle: Int = 0,    //股外侧肌
-    var medialFemoris: Int = 0,            //股内侧肌
-    var bicepsFemoris: Int = 0,            //股二头肌
-    var semitendinosusFemoris: Int = 0,    //股半腱肌
-    var tibialisAnteriorMuscle: Int = 0,  //胫前肌
-    var peroneusLongus: Int = 0,           //腓长肌
+    var lateralFemoralMuscle: UInt = 0.toUInt(),    //股外侧肌
+    var medialFemoris: UInt = 0.toUInt(),            //股内侧肌
+    var bicepsFemoris: UInt = 0.toUInt(),            //股二头肌
+    var semitendinosusFemoris: UInt = 0.toUInt(),    //股半腱肌
+    var tibialisAnteriorMuscle: UInt = 0.toUInt(),  //胫前肌
+    var peroneusLongus: UInt = 0.toUInt(),           //腓长肌
     var exceptionCode: Int = 0
 )
 
@@ -231,10 +228,10 @@ fun test() {
                     65,
                     20,
                     40,
-                    *(1..200).random().toShort().toBytesLE(),
-                    *(1..40).random().toShort().toBytesLE(),
-                    *(10..100).random().toShort().toBytesLE(),
-                    *(10..125).random().toShort().toBytesLE(),
+                    *(1..200).random().toShort().toByteArrayLE(),
+                    *(1..40).random().toShort().toByteArrayLE(),
+                    *(10..100).random().toShort().toByteArrayLE(),
+                    *(10..125).random().toShort().toByteArrayLE(),
                     (0..40).random().toByte(),
                     (0..40).random().toByte(),
                     (0..40).random().toByte(),
@@ -256,42 +253,23 @@ fun test() {
 fun Float.toBytes() = java.lang.Float.floatToIntBits(this)
 
 fun ByteArray.parseData(): DataInfo {
-    return ByteBuffer.wrap(this).let {
-        DataInfo(
-            it.get().toUInt().toInt(),
-            it.get().toUInt().toInt(),
-            it.get().toUInt().toInt(),
-            it.get().toUInt().toInt(),
-            it.short.toUInt().toInt(),
-            it.short.toUInt().toInt(),
-            it.short / 10f,
-            it.short / 10f,
-            it.get().toUInt().toInt(),
-            it.get().toUInt().toInt(),
-            it.get().toUInt().toInt(),
-            it.get().toUInt().toInt(),
-            it.get().toUInt().toInt(),
-            it.get().toUInt().toInt(),
-            it.get().toUInt().toInt()
-        )
-    }
-//    return DataInfo(
-//        this[0].toUByte().toInt(),
-//        this[1].toUByte().toInt(),
-//        this[2].toUByte().toInt(),
-//        this[3].toUByte().toInt(),
-//        this.copyOfRange(4, 6).toUnsignInt(),
-//        this.copyOfRange(6, 8).toUnsignInt(),
-//        this.copyOfRange(8, 10).read2IntLE() / 10f,
-//        this.copyOfRange(10, 12).read2IntLE() / 10f,
-//        this[12].toUByte().toInt(),
-//        this[13].toUByte().toInt(),
-//        this[14].toUByte().toInt(),
-//        this[15].toUByte().toInt(),
-//        this[16].toUByte().toInt(),
-//        this[17].toUByte().toInt(),
-//        this[18].toUByte().toInt()
-//    )
+    return DataInfo(
+        this[0].toUInt(),
+        this[1].toUInt(),
+        this[2].toUInt(),
+        this[3].toUInt(),
+        this.copyOfRange(4, 6).toShortLE(),
+        this.copyOfRange(6, 8).toShortLE(),
+        this.copyOfRange(8, 10).toShortLE() / 10f,
+        this.copyOfRange(10, 12).toShortLE() / 10f,
+        this[12].toUInt(),
+        this[13].toUInt(),
+        this[14].toUInt(),
+        this[15].toUInt(),
+        this[16].toUInt(),
+        this[17].toUInt(),
+        this[18].toInt()
+    )
 }
 
 data class ParamsInfo(
@@ -310,27 +288,13 @@ data class ParamsInfo(
                       var anteriorTibialTendonIfWork: Byte = 0, //胫前肌
                       var peronealMuscleIfWork: Byte = 0    //腓长肌
 ) {
-    fun fromDataInfo(dataInfo: DataInfo) {
-//        everydayTrainingDuration = 60
-//        everydayTrainingGroupNum = 1
-//        groupTrainingNum = 10
-        targetAngle = dataInfo.targetJointAngle.toByte()
-        targetAngleVelocityLowBit = jointAngleVelocity.toShort().toBytesLE()[0]
-        targetAngleVelocityHighBit = jointAngleVelocity.toShort().toBytesLE()[1]
-//        lateralFemoralMuscleIfWork = 1
-//        medialFemoralMuscleIfWork = 1
-//        bicepsFemorisIfWork = 1
-//        semitendinosusFemorisIfWork = 1
-//        anteriorTibialTendonIfWork = 1
-//        peronealMuscleIfWork = 1
-    }
 
     fun getTargetAngleVelocity() =
-        byteArrayOf(targetAngleVelocityLowBit, targetAngleVelocityHighBit).read2IntLE()
+        byteArrayOf(targetAngleVelocityLowBit, targetAngleVelocityHighBit).toShortLE()
 
     fun toFrameByteArray(): ByteArray {
-        val hisDuration = historyTrainingDuration.toBytesLE()
-        val hisNum = historyTrainingNum.toBytesLE()
+        val hisDuration = historyTrainingDuration.toByteArrayLE()
+        val hisNum = historyTrainingNum.toByteArrayLE()
         val content = byteArrayOf(
             hisDuration[0],
             hisDuration[1],

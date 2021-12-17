@@ -5,10 +5,13 @@ import android.os.Build
 import android.text.Editable
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.*
-import androidx.annotation.IntRange
-import com.chwishay.orthrecnursing.BuildConfig
+import androidx.annotation.ColorRes
+import androidx.annotation.IntDef
+import androidx.annotation.RequiresApi
+import androidx.annotation.StringRes
 import java.io.File
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -108,112 +111,134 @@ fun Date.formatDateString(
 ): String = SimpleDateFormat(formatStr, locale).format(this)
 
 /**
- * 字节数组转换为浮点型(大端模式)
+ * 大端模式下，字节数组转Short
  */
-fun ByteArray.read2FloatBE(offset: Int = 0) =
-    if (this == null) throw IllegalArgumentException("传入参数不正确")
-    else {
-        val arr = when(size) {
-            0 -> byteArrayOf(0, 0, 0, 0)
-            1 -> byteArrayOf(0, 0, 0, this[0])
-            2 -> byteArrayOf(0, 0, this[0], this[1])
-            3 -> byteArrayOf(0, this[0], this[1], this[2])
-            else -> byteArrayOf(this[offset+0], this[offset+1], this[offset+2], this[offset+3])
-        }
-        java.lang.Float.intBitsToFloat(
-            0xff000000.and(arr[offset].toInt().shl(24).toLong())
-                .or(0x00ff0000.and(arr[offset + 1].toInt().shl(16)).toLong())
-                .or(0x0000ff00.and(arr[offset + 2].toInt().shl(8)).toLong())
-                .or(0x000000ff.and(arr[offset + 3].toInt()).toLong()).toInt()
-        )
-    }
+fun ByteArray.toShortBE(offset: Int = 0, length: Int = this.size) =
+    ByteBuffer.wrap(this, offset, length).order(
+        ByteOrder.BIG_ENDIAN
+    ).short
 
 /**
- * 字节数组转换为浮点型(小端模式)
+ * 小端模式下，字节数组转Short
  */
-fun ByteArray.read2FloatLE(offset: Int = 0) =
-    if (this == null) throw IllegalArgumentException("传入参数不正确")
-    else {
-        val data = when(this.size) {
-            0 -> byteArrayOf(0, 0, 0, 0)
-            1 -> byteArrayOf(this[0], 0, 0, 0)
-            2 -> byteArrayOf(this[0], this[1], 0, 0)
-            else -> byteArrayOf(this[offset+0], this[offset+1], this[offset+2], this[offset+3])
-        }
-        java.lang.Float.intBitsToFloat(
-            0xff000000.and(data[offset + 3].toInt().shl(24).toLong())
-                .or(0x00ff0000.and(data[offset + 2].toInt().shl(16)).toLong())
-                .or(0x0000ff00.and(data[offset + 1].toInt().shl(8)).toLong())
-                .or(0x000000ff.and(data[offset].toInt()).toLong()).toInt()
-        )
-    }
-
-fun Int.toBytesLE() =
-    byteArrayOf(this.toByte(), this.shr(8).toByte(), this.shr(16).toByte(), this.shr(24).toByte())
-
-fun Short.toBytesLE() = byteArrayOf(this.toByte(), this.toInt().shr(8).toByte())
-
-fun Short.toBytesBE() = byteArrayOf(this.toInt().shr(8).toByte(), this.toByte())
-
-fun ByteArray.read2ShortLE(offset: Int = 0) =
-    if (this == null) throw java.lang.IllegalArgumentException("传入参数不正确")
-    else {
-        val arr = when (size) {
-            0 -> byteArrayOf(0, 0)
-            1 -> byteArrayOf(this[0], 0)
-            else -> byteArrayOf(this[offset + 0], this[offset + 1])
-        }
-        0xff00.and(arr[1].toInt().shl(8)).or(0x00ff.and(arr[0].toInt())).toShort()
-    }
-
-fun ByteArray.read2ShortBE(offset: Int = 0) =
-    if (this == null) throw java.lang.IllegalArgumentException("传入参数不正确")
-    else {
-        val arr = when(size) {
-            0 -> byteArrayOf(0, 0)
-            1 -> byteArrayOf(0, this[0])
-            else -> byteArrayOf(this[offset + 1], this[offset + 0])
-        }
-        0xff00.and(arr[0].toInt().shl(8)).or(0x00ff.and(arr[1].toInt())).toShort()
-    }
+fun ByteArray.toShortLE(offset: Int = 0, length: Int = this.size) =
+    ByteBuffer.wrap(this, offset, length).order(
+        ByteOrder.LITTLE_ENDIAN
+    ).short
 
 /**
- * 字节数组转换为整型(大端模式)
+ * 大端模式下，Short转字节数组
  */
-fun ByteArray?.read2IntBE(offset: Int = 0) =
-    if (this == null) throw IllegalArgumentException("传入参数不正确")
-    else {
-        val arr = when (this.size) {
-            0 -> byteArrayOf(0, 0, 0, 0)
-            1 -> byteArrayOf(0, 0, 0, this[0])
-            2 -> byteArrayOf(0, 0, this[1], this[0])
-            3 -> byteArrayOf(0, this[2], this[1], this[0])
-            else -> byteArrayOf(this[offset+3], this[offset+2], this[offset+1], this[offset])
-        }
-        0xff000000.and(arr[0].toInt().shl(24).toLong())
-            .or(0x00ff0000.and(arr[1].toInt().shl(16)).toLong())
-            .or(0x0000ff00.and(arr[2].toInt().shl(8)).toLong())
-            .or(0x000000ff.and(arr[3].toInt()).toLong()).toInt()
-    }
+fun Short.toByteArrayBE(capacity: Int = 2) =
+    ByteBuffer.allocate(capacity).order(ByteOrder.BIG_ENDIAN).putShort(this).array()
 
 /**
- * 字节数组转换为整型(小端模式)
+ * 小端模式下，Short转字节数组
  */
-fun ByteArray.read2IntLE(offset: Int = 0) =
-    if (this == null) throw IllegalArgumentException("传入参数不正确")
-    else {
-        val arr = when (this.size) {
-            0 -> byteArrayOf(0, 0, 0, 0)
-            1 -> byteArrayOf(this[0], 0, 0, 0)
-            2 -> byteArrayOf(this[0], this[1], 0, 0)
-            3 -> byteArrayOf(this[0], this[1], this[2], 0)
-            else -> byteArrayOf(this[offset+0], this[offset+1], this[offset+2], this[offset+3])
-        }
-        0xff000000.and(arr[3].toInt().shl(24).toLong())
-            .or(0x00ff0000.and(arr[2].toInt().shl(16)).toLong())
-            .or(0x0000ff00.and(arr[1].toInt().shl(8)).toLong())
-            .or(0x000000ff.and(arr[0].toInt()).toLong()).toInt()
-    }
+fun Short.toByteArrayLE(capacity: Int = 2) =
+    ByteBuffer.allocate(capacity).order(ByteOrder.LITTLE_ENDIAN).putShort(this).array()
+
+/**
+ * 大端模式下，字节数组转Int
+ */
+fun ByteArray.toIntBE(offset: Int = 0, length: Int = this.size) =
+    ByteBuffer.wrap(this, offset, length).order(
+        ByteOrder.BIG_ENDIAN
+    ).int
+
+/**
+ * 小端模式下，字节数组转Int
+ */
+fun ByteArray.toIntLE(offset: Int = 0, length: Int = this.size) =
+    ByteBuffer.wrap(this, offset, length).order(
+        ByteOrder.LITTLE_ENDIAN
+    ).int
+
+/**
+ * 大端模式下，Int转字节数组
+ */
+fun Int.toByteArrayBE(capacity: Int = 4): ByteArray =
+    ByteBuffer.allocate(capacity).order(ByteOrder.BIG_ENDIAN).putInt(this).array()
+
+/**
+ * 小端模式下，Int转字节数组
+ */
+fun Int.toByteArrayLE(capacity: Int = 4): ByteArray =
+    ByteBuffer.allocate(capacity).order(ByteOrder.LITTLE_ENDIAN).putInt(this).array()
+
+/**
+ * 大端模式下，字节数组转Float
+ */
+fun ByteArray.toFloatBE(offset: Int = 0, length: Int = this.size) =
+    ByteBuffer.wrap(this, offset, length).order(ByteOrder.BIG_ENDIAN).float
+
+/**
+ * 小端模式下，字节数组转Float
+ */
+fun ByteArray.toFloatLE(offset: Int = 0, length: Int = this.size) =
+    ByteBuffer.wrap(this, offset, length).order(ByteOrder.LITTLE_ENDIAN).float
+
+/**
+ * 大端模式下，Float转字节数组
+ */
+fun Float.toByteArrayBE(capacity: Int = 4): ByteArray =
+    ByteBuffer.allocate(capacity).order(ByteOrder.BIG_ENDIAN).putFloat(this).array()
+
+/**
+ * 小端模式下，Float转字节数组
+ */
+fun Float.toByteArrayLE(capacity: Int = 4): ByteArray =
+    ByteBuffer.allocate(capacity).order(ByteOrder.LITTLE_ENDIAN).putFloat(this).array()
+
+/**
+ * 大端模式下，字节数组转Long
+ */
+fun ByteArray.toLongBE(offset: Int = 0, length: Int = this.size) =
+    ByteBuffer.wrap(this, offset, length).order(ByteOrder.BIG_ENDIAN).long
+
+/**
+ * 小端模式下，字节数组转Long
+ */
+fun ByteArray.toLongLE(offset: Int = 0, length: Int = this.size) =
+    ByteBuffer.wrap(this, offset, length).order(
+        ByteOrder.LITTLE_ENDIAN
+    ).long
+
+/**
+ * 大端模式下，Long转字节数组
+ */
+fun Long.toByteArrayBE(capacity: Int = 8): ByteArray =
+    ByteBuffer.allocate(capacity).order(ByteOrder.BIG_ENDIAN).putLong(this).array()
+
+/**
+ * 小端模式下，Long转字节数组
+ */
+fun Long.toByteArrayLE(capacity: Int = 8): ByteArray =
+    ByteBuffer.allocate(capacity).order(ByteOrder.LITTLE_ENDIAN).putLong(this).array()
+
+/**
+ * 大端模式下，字节数组转Double
+ */
+fun ByteArray.toDoubleBE(offset: Int = 0, length: Int = this.size) =
+    ByteBuffer.wrap(this, offset, length).order(ByteOrder.BIG_ENDIAN).double
+
+/**
+ * 小端模式下，字节数组转Double
+ */
+fun ByteArray.toDoubleLE(offset: Int = 0, length: Int = this.size) =
+    ByteBuffer.wrap(this, offset, length).order(ByteOrder.LITTLE_ENDIAN).double
+
+/**
+ * 大端模式下，Double转字节数组
+ */
+fun Double.toByteArrayBE(capacity: Int = 8): ByteArray =
+    ByteBuffer.allocate(capacity).order(ByteOrder.BIG_ENDIAN).putDouble(this).array()
+
+/**
+ * 小端模式下，Double转字节数组
+ */
+fun Double.toByteArrayLE(capacity: Int = 8): ByteArray =
+    ByteBuffer.allocate(capacity).order(ByteOrder.LITTLE_ENDIAN).putDouble(this).array()
 
 /**
  * 字节数组转换为字符串
@@ -238,7 +263,7 @@ fun ByteArray?.formatHexString(seperator: String = ""): String? =
 fun String?.hexString2Bytes(): ByteArray? =
     if (this.isNullOrEmpty() || !this.isHexString()) null
     else {
-        val src = this.trim().toUpperCase()
+        val src = this.trim().uppercase(Locale.getDefault())
         val len = src.length / 2
         val result = ByteArray(len) { 0 }
         val hexChars = src.toCharArray()
@@ -264,7 +289,7 @@ fun String?.str2BinStr(): String? =
         val strChar = this.toCharArray()
         var result = ""
         strChar.forEach {
-            result += "${Integer.toBinaryString(it.toInt())} "
+            result += "${Integer.toBinaryString(it.code)} "
         }
         result.trim()
     }
