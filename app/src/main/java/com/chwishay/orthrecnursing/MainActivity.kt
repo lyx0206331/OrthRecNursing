@@ -55,11 +55,17 @@ class MainActivity : BaseActivity() {
             if (DispatchUtil.isTimerStart) {
                 tvEverydayTrainingDuration.text = "${it.everydayTrainingDuration}m"
                 tvCurrentTrainingDuration.text = "${it.sumTrainingDuration.toInt().format2Date()}"
-                tvCurrentTrainingNum.text = "${it.currentTrainingNum}次"
+                tvCurrentTrainingNum.text =
+                    "${it.currentTrainingNum % it.eachGroupTrainingNum.toInt().coerceAtLeast(1)}次"
                 tvEverydayTrainingGroups.text =
                     "${DispatchUtil.params.everydayTrainingGroupNum}组"
                 tvCurrentTrainingGroups.text =
-                    "${round(it.currentTrainingNum.toFloat() / it.eachGroupTrainingNum.toFloat()).toInt()}组"
+                    "${
+                        round(
+                            it.currentTrainingNum.toFloat() / it.eachGroupTrainingNum.toFloat()
+                                .coerceAtLeast(1f)
+                        ).toInt()
+                    }组"
                 tvGroupTrainingNum.text = "${it.eachGroupTrainingNum}次"
                 tvTargetJointAngle.text = "${it.targetJointAngle}°"
                 tvJointAngle.text = "${it.jointAngle}°"
