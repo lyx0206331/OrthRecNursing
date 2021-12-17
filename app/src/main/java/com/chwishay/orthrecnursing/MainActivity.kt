@@ -230,7 +230,7 @@ class MainActivity : BaseActivity() {
             }
             R.id.action_start -> {
 //                test()
-                BluetoothServer.mock()
+//                BluetoothServer.mock()
                 if (BluetoothServer.isConnected) {
                     DispatchUtil.isTimerStart = !DispatchUtil.isTimerStart
                 } else {
