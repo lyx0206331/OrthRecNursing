@@ -246,8 +246,9 @@ class MainActivity : BaseActivity() {
             }
             R.id.action_report -> {
 //                showShortToast("功能正在开发中，敬请期待...")
-                DispatchUtil.isTimerStart = false
-                ReportDialog(this, this).show()
+//                DispatchUtil.isTimerStart = false
+//                ReportDialog(this, this).show()
+                AudioTrackPlayer.playFromAssetsFile(this, "1.wav")
                 true
             }
             R.id.action_setting -> {
