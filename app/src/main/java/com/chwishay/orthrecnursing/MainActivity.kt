@@ -114,7 +114,7 @@ class MainActivity : BaseActivity() {
                         1 -> getString(R.string.knee_joint_bending_overdone)
                         2 -> getString(R.string.knee_joint_stretch_overdone)
                         3 -> getString(R.string.speed_is_too_fast)
-                        4 -> getString(R.string.speed_is_too_low)
+                        4 -> getString(R.string.speed_is_too_slow)
                         5 -> getString(R.string.strengthen_outer_thigh)
                         6 -> getString(R.string.strengthen_medial_femoris)
                         7 -> getString(R.string.strengthen_biceps_femoris)
@@ -248,7 +248,7 @@ class MainActivity : BaseActivity() {
 //                showShortToast("功能正在开发中，敬请期待...")
 //                DispatchUtil.isTimerStart = false
 //                ReportDialog(this, this).show()
-                AudioTrackPlayer.playFromAssetsFile(this, "1.wav")
+                AudioTrackPlayer.playFromAssetsFile(this, "raw/knee_joint_too_.mp3")
                 true
             }
             R.id.action_setting -> {

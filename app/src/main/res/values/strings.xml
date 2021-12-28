@@ -118,7 +118,7 @@
     <string name="knee_joint_bending_overdone">膝关节屈曲过度\n请伸展膝关节</string>
     <string name="knee_joint_stretch_overdone">膝关节伸展过度\n请收缩膝关节</string>
     <string name="speed_is_too_fast">运动速度过快\n请降低速度</string>
-    <string name="speed_is_too_low">运动速度过慢\n请加快速度</string>
+    <string name="speed_is_too_slow">运动速度过慢\n请加快速度</string>
     <string name="strengthen_outer_thigh">加强股外侧肌出力</string>
     <string name="strengthen_medial_femoris">加强股内侧肌出力</string>
     <string name="strengthen_biceps_femoris">加强股二头肌出力</string>
