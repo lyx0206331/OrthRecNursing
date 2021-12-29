@@ -125,7 +125,7 @@ class MainActivity : BaseActivity() {
                 chartPeroneusLongus.addEntry(LineEntity("腓长肌", it.peroneusLongus.toFloat()))
 
                 if (it.exceptionCode == 0) {
-                    tvState.isVisible = false
+                    tvState.text = ""
                 } else {
                     tvState.isVisible = true
                     tvState.text = when (it.exceptionCode) {
@@ -241,8 +241,8 @@ class MainActivity : BaseActivity() {
                 lds.axisDependency = YAxis.AxisDependency.LEFT
                 lds.color = color
                 lds.setCircleColor(Color.WHITE)
-                lds.lineWidth = 1f
-                lds.circleRadius = 2f
+                lds.lineWidth = .5f
+                lds.circleRadius = 1f
                 lds.fillAlpha = 65
                 lds.fillColor = color
                 lds.highLightColor = Color.rgb(244, 177, 177)
@@ -266,7 +266,7 @@ class MainActivity : BaseActivity() {
 
         this.notifyDataSetChanged()
 
-        this.setVisibleXRangeMaximum(100f)
+        this.setVisibleXRangeMaximum(200f)
 
         this.moveViewToX(d.entryCount.toFloat())
     }
