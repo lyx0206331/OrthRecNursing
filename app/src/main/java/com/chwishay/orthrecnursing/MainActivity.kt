@@ -22,6 +22,24 @@ import kotlin.system.exitProcess
 
 class MainActivity : BaseActivity() {
 
+    private val player by lazy {
+        SoundPlayer(this).apply {
+            soundRawList = arrayListOf(
+                R.raw.knee_joint_bending_overdone,
+                R.raw.knee_joint_stretch_overdone,
+                R.raw.speed_is_too_fast,
+                R.raw.speed_is_too_slow,
+                R.raw.strengthen_outer_thigh,
+                R.raw.strengthen_medial_femoris,
+                R.raw.strengthen_biceps_femoris,
+                R.raw.strengthen_semitendinosus_femoris,
+                R.raw.strengthen_tibialis_anterior_muscle,
+                R.raw.strengthen_peroneus_longus
+            )
+        }
+    }
+    var index = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -111,17 +129,49 @@ class MainActivity : BaseActivity() {
                 } else {
                     tvState.isVisible = true
                     tvState.text = when (it.exceptionCode) {
-                        1 -> getString(R.string.knee_joint_bending_overdone)
-                        2 -> getString(R.string.knee_joint_stretch_overdone)
-                        3 -> getString(R.string.speed_is_too_fast)
-                        4 -> getString(R.string.speed_is_too_slow)
-                        5 -> getString(R.string.strengthen_outer_thigh)
-                        6 -> getString(R.string.strengthen_medial_femoris)
-                        7 -> getString(R.string.strengthen_biceps_femoris)
-                        8 -> getString(R.string.strengthen_semitendinosus_femoris)
-                        9 -> getString(R.string.strengthen_tibialis_anterior_muscle)
-                        10 -> getString(R.string.strengthen_peroneus_longus)
-                        11 -> getString(R.string.well_done)
+                        1 -> {
+                            player.play(0)
+                            getString(R.string.knee_joint_bending_overdone)
+                        }
+                        2 -> {
+                            player.play(1)
+                            getString(R.string.knee_joint_stretch_overdone)
+                        }
+                        3 -> {
+                            player.play(2)
+                            getString(R.string.speed_is_too_fast)
+                        }
+                        4 -> {
+                            player.play(3)
+                            getString(R.string.speed_is_too_slow)
+                        }
+                        5 -> {
+                            player.play(4)
+                            getString(R.string.strengthen_outer_thigh)
+                        }
+                        6 -> {
+                            player.play(5)
+                            getString(R.string.strengthen_medial_femoris)
+                        }
+                        7 -> {
+                            player.play(6)
+                            getString(R.string.strengthen_biceps_femoris)
+                        }
+                        8 -> {
+                            player.play(7)
+                            getString(R.string.strengthen_semitendinosus_femoris)
+                        }
+                        9 -> {
+                            player.play(8)
+                            getString(R.string.strengthen_tibialis_anterior_muscle)
+                        }
+                        10 -> {
+                            player.play(9)
+                            getString(R.string.strengthen_peroneus_longus)
+                        }
+                        11 -> {
+                            getString(R.string.well_done)
+                        }
                         else -> getString(R.string.unknown_exception)
                     }
                 }
@@ -216,7 +266,7 @@ class MainActivity : BaseActivity() {
 
         this.notifyDataSetChanged()
 
-        this.setVisibleXRangeMaximum(1000f)
+        this.setVisibleXRangeMaximum(100f)
 
         this.moveViewToX(d.entryCount.toFloat())
     }
@@ -245,10 +295,10 @@ class MainActivity : BaseActivity() {
                 true
             }
             R.id.action_report -> {
-//                showShortToast("功能正在开发中，敬请期待...")
+                showShortToast("功能正在开发中，敬请期待...")
 //                DispatchUtil.isTimerStart = false
 //                ReportDialog(this, this).show()
-                AudioTrackPlayer.playFromAssetsFile(this, "raw/knee_joint_too_.mp3")
+//                player.play(index++)
                 true
             }
             R.id.action_setting -> {
@@ -278,6 +328,7 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
 //        BluetoothServer.disconnect()
 //        BluetoothServer.unregisterBtReceiver()
+        player.release()
         DispatchUtil.isTimerStart = false
         super.onDestroy()
         exitProcess(0)
